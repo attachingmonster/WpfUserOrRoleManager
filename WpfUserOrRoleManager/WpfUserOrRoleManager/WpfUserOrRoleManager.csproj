@@ -65,7 +65,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BLL\ChangePassword.cs" />
+    <Compile Include="BLL\Login.cs" />
+    <Compile Include="BLL\SignUp.cs" />
+    <Compile Include="DAL\ChangePswD.cs" />
+    <Compile Include="DAL\GetUsers.cs" />
+    <Compile Include="DAL\SignUpD.cs" />
     <Compile Include="DAL\UnitOfWork.cs" />
+    <Compile Include="Method\CreateMD5.cs" />
     <Compile Include="Repositories\GenericRepository.cs" />
     <Compile Include="Repositories\IGenericRepository.cs" />
     <Page Include="MainWindow.xaml">
