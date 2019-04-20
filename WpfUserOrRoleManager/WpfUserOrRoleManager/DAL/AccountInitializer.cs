@@ -13,11 +13,11 @@ namespace WpfUserOrRoleManager.DAL
     {
         protected override void Seed(AccountContext context)
         {
-            var sysUsers = new List<SysUser>
-            {
-                new SysUser{ID=1,UserAccount="123",UserPassword="abc" }
-            };
-            sysUsers.ForEach(s=>context.SysUsers.Add(s));
+            //var sysUsers = new List<SysUser>
+            //{
+            //    new SysUser{ID=1,UserAccount="123",UserPassword="abc" }
+            //};
+            //sysUsers.ForEach(s=>context.SysUsers.Add(s));
         }
     }
 }
