@@ -6,19 +6,10 @@ using System.Threading.Tasks;
 
 namespace WpfUserOrRoleManager.Models
 {
-    /// <summary>
-    /// 用户表
-    /// </summary>
     public class SysUser
     {
         public int ID { get; set; }
-        /// <summary>
-        /// 账号
-        /// </summary>
         public string UserAccount { get; set; }
-        /// <summary>
-        /// 密码
-        /// </summary>
         public string UserPassword { get; set; }
     }
 }
