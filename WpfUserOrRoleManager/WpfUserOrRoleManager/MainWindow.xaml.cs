@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfUserOrRoleManager.DAL;
 
 namespace WpfUserOrRoleManager
 {
@@ -23,6 +24,24 @@ namespace WpfUserOrRoleManager
         public MainWindow()
         {
             InitializeComponent();
+            var user = unitOfWork.SysUserRepository.Get();
+        }
+        AccountContext db = new AccountContext();
+        UnitOfWork unitOfWork = new UnitOfWork();
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var users = unitOfWork.SysUserRepository.Get();
+            var user = users.Where(s => s.Account == this.tbxUserName.Text && s.Password == this.pbxPassword.Password).FirstOrDefault();
+            if (user == null)
+            {
+                MessageBox.Show("用户和密码出错");
+            }
+            else
+            {
+                MessageBox.Show("登入成功");
+            }
+
         }
     }
 }
