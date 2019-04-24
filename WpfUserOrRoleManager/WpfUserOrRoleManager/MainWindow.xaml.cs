@@ -44,18 +44,22 @@ namespace WpfUserOrRoleManager
         {
             this.DragMove();
         }
-
+        /// <summary>
+        /// 登陆按钮事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Login_Click(object sender, RoutedEventArgs e)
         {
-            var users = unitOfWork.SysUserRepository.Get();
-            var user = users.Where(s => s.UserAccount == this.tbxUserAccount.Text && s.UserPassword == this.pbxPassword.Password).FirstOrDefault();
-            if (user == null)
+            var users = unitOfWork.SysUserRepository.Get();//获得表里的记录
+            var user = users.Where(s => s.UserAccount == this.tbxUserAccount.Text && s.UserPassword == this.pbxPassword.Password).FirstOrDefault();//得到登陆的用户信息
+            if (user != null)
             {
-                MessageBox.Show("用户和密码出错");
+                MessageBox.Show("登入成功");
             }
             else
             {
-                MessageBox.Show("登入成功");
+                MessageBox.Show("用户和密码出错");
                
             }
         }
