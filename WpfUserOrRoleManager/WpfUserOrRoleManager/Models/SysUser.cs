@@ -13,11 +13,11 @@ namespace WpfUserOrRoleManager.Models
     {
         public int ID { get; set; }
         /// <summary>
-        /// 账号
+        /// 用户账号
         /// </summary>
         public string UserAccount { get; set; }
         /// <summary>
-        /// 密码
+        /// 用户密码
         /// </summary>
         public string UserPassword { get; set; }
     }
