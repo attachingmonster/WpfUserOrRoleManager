@@ -22,5 +22,4 @@ namespace WpfUserOrRoleManager.Method
             return strbul.ToString();
         }
     }
-
 }
