@@ -20,5 +20,6 @@ namespace WpfUserOrRoleManager.Models
         /// 用户密码
         /// </summary>
         public string UserPassword { get; set; }
+        //添加回答问题字段
     }
 }

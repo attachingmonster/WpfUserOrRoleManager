@@ -104,6 +104,7 @@ namespace WpfUserOrRoleManager
                         var CurrentUser = new SysUser();
                         CurrentUser.UserAccount = tbxUserAccount_register.Text;
                         CurrentUser.UserPassword = CreateMD5.EncryptWithMD5(pbxOldPassword_register.Password);
+                        //增加回答问题进入 用户表
                         unitOfWork.SysUserRepository.Insert(CurrentUser);    //增加新User
                         unitOfWork.Save();
                         MessageBox.Show("注册成功");
@@ -126,7 +127,7 @@ namespace WpfUserOrRoleManager
             RegisterWindow.Visibility = Visibility.Collapsed;
         }
 
-
+        //密码拾回事件
 
         /// <summary>
         /// 修改密码界面事件
