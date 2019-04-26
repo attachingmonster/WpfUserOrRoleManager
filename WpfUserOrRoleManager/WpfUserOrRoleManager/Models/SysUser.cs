@@ -20,6 +20,9 @@ namespace WpfUserOrRoleManager.Models
         /// 用户密码
         /// </summary>
         public string UserPassword { get; set; }
-        //添加回答问题字段
+        /// <summary>
+        /// 回答拾回问题答案
+        /// </summary>
+        public string UserAnswer{ get; set; }
     }
 }

@@ -85,34 +85,55 @@ namespace WpfUserOrRoleManager
 
         private void loginRegister_Click(object sender, RoutedEventArgs e) //切换界面事件
         {
-            LoginWindow.Visibility = Visibility.Collapsed;
-            RegisterWindow.Visibility = Visibility.Visible;
+            Controls.Visibility = Visibility.Collapsed;
+            RegisterWindow.Visibility = Visibility.Visible;          
         }
         private void Registering_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                var u = unitOfWork.SysUserRepository.Get().Where(s => s.UserAccount.Equals(tbxUserAccount_register.Text)).FirstOrDefault();  //查找是否存在账号
-                if (u != null)
+                if (tbxUserAccount_register.Text != "")
                 {
-                    throw new Exception("用户名已存在！");
-                }
-                else
-                {
-                    if (pbxSurepbxPassword_register.Password.Equals(pbxOldPassword_register.Password))//判断密码与确认密码是否相等
+                    var u = unitOfWork.SysUserRepository.Get().Where(s => s.UserAccount.Equals(tbxUserAccount_register.Text)).FirstOrDefault();  //查找是否存在账号
+                    if (u == null)
                     {
-                        var CurrentUser = new SysUser();
-                        CurrentUser.UserAccount = tbxUserAccount_register.Text;
-                        CurrentUser.UserPassword = CreateMD5.EncryptWithMD5(pbxOldPassword_register.Password);
-                        //增加回答问题进入 用户表
-                        unitOfWork.SysUserRepository.Insert(CurrentUser);    //增加新User
-                        unitOfWork.Save();
-                        MessageBox.Show("注册成功");
+                        if (pbxUserPassword_register.Password != "")
+                        {
+                            if (pbxSurePassword_register.Password.Equals(pbxUserPassword_register.Password))//判断密码与确认密码是否相等
+                            {
+                                if (tbxUserAnswer_register.Text != "")
+                                {
+                                    var CurrentUser = new SysUser();
+                                    CurrentUser.UserAccount = tbxUserAccount_register.Text;
+                                    CurrentUser.UserPassword = CreateMD5.EncryptWithMD5(pbxUserPassword_register.Password);
+                                    CurrentUser.UserAnswer = CreateMD5.EncryptWithMD5(tbxUserAnswer_register.Text);
+                                    unitOfWork.SysUserRepository.Insert(CurrentUser);    //增加新User
+                                    unitOfWork.Save();
+                                    MessageBox.Show("注册成功");
+                                }
+                                else
+                                {
+                                    throw new Exception("密码拾回问题答案不能为空！");
+                                }
+                            }
+                            else
+                            {
+                                throw new Exception("两次输入的密码不一致！");
+                            }
+                        }
+                        else
+                        {
+                            throw new Exception("密码不能为空！");
+                        }
                     }
                     else
                     {
-                        throw new Exception("两次输入的密码不一致！");
+                        throw new Exception("用户名已存在！");
                     }
+                }
+                else
+                {
+                    throw new Exception("账号不能为空！");
                 }
 
             }
@@ -123,11 +144,77 @@ namespace WpfUserOrRoleManager
         }
         private void registerBack_Click(object sender, RoutedEventArgs e)   //返回事件
         {
-            LoginWindow.Visibility = Visibility.Visible;
+            Controls.Visibility = Visibility.Visible;
             RegisterWindow.Visibility = Visibility.Collapsed;
         }
 
-        //密码拾回事件
+
+        /// <summary>
+        /// 密码拾回界面事件
+        /// </summary>
+
+        private void loginetrievePwd_Click(object sender, RoutedEventArgs e)  //切换界面事件
+        {
+            Controls.Visibility = Visibility.Collapsed;
+            RetrievePasswordWindow.Visibility = Visibility.Visible;
+        }
+        private void EtrievePwd_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {          
+                var u = unitOfWork.SysUserRepository.Get().Where(s => s.UserAccount.Equals(tbxUserAccount_etrievePwd.Text)).FirstOrDefault();  //查找是否存在账号
+                if (u != null)
+                {
+                    if (tbxUserAnswer_etrievePwd.Text != "")
+                    {
+                        if (u.UserAnswer.Equals(CreateMD5.EncryptWithMD5(tbxUserAnswer_etrievePwd.Text)))
+                        {
+
+                            if (pbxUserPassword_etrievePwd.Password != "")
+                            {
+                                if (pbxSurePassword_etrievePwd.Password.Equals(pbxUserPassword_etrievePwd.Password))//判断密码与确认密码是否相等
+                                {
+                                    u.UserPassword = CreateMD5.EncryptWithMD5(pbxUserPassword_etrievePwd.Password);
+                                    unitOfWork.SysUserRepository.Update(u);
+                                    unitOfWork.Save();
+                                    MessageBox.Show("密码拾回成功!");
+                                }
+                                else
+                                {
+                                    throw new Exception("两次输入的密码不一致！");
+                                }
+                            }
+                            else
+                            {
+                                throw new Exception("新密码不能为空！");
+                            }
+                        }
+                        else
+                        {
+                            throw new Exception("密码拾回问题答案错误");
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("请您输入密码拾回问题答案");
+                    }
+                }
+                else
+                {
+                    throw new Exception("账号不存在！");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("找回密码失败！错误信息：\n" + ex.Message);
+            }
+        }
+        private void etrievePwdBack_Click(object sender, RoutedEventArgs e) //返回事件
+        {
+            Controls.Visibility = Visibility.Visible;
+            RetrievePasswordWindow.Visibility = Visibility.Collapsed;
+        }
+
 
         /// <summary>
         /// 修改密码界面事件
@@ -135,33 +222,37 @@ namespace WpfUserOrRoleManager
 
         private void loginChangePwd_Click(object sender, RoutedEventArgs e)   //切换界面事件
         {
-            LoginWindow.Visibility = Visibility.Collapsed;
+            Controls.Visibility = Visibility.Collapsed;
             ChangePwdWindow.Visibility = Visibility.Visible;
         }
         private void ChangePsw_Click(object sender, RoutedEventArgs e)
         {
             try
-            {
-                string Account = tbxUserAccount_changePwd.Text;                                    //账号
+            {                                   
                 string OldPassword = CreateMD5.EncryptWithMD5(pbxOldPassword_changePwd.Password);     //原密码
                 string NewPassword = CreateMD5.EncryptWithMD5(pbxPassword_changePwd.Password);     //新密码
 
-                var u = unitOfWork.SysUserRepository.Get().Where(s => s.UserAccount.Equals(Account.Trim()) && s.UserPassword.ToLower().Equals(OldPassword)).FirstOrDefault();//账号是否存在与密码是否相等
+                var u = unitOfWork.SysUserRepository.Get().Where(s => s.UserAccount.Equals(tbxUserAccount_changePwd.Text.Trim()) && s.UserPassword.ToLower().Equals(OldPassword)).FirstOrDefault();//账号是否存在与密码是否相等
                 if (u != null)
                 {
-                    if (pbxSurepbxPassword_changePwd.Password.Equals(pbxPassword_changePwd.Password)) //新密码与确认密码是否相等
+                    if (pbxPassword_changePwd.Password != "")
                     {
-                        u.UserAccount = Account;
-                        u.UserPassword = NewPassword;
-                        unitOfWork.SysUserRepository.Update(u);
-                        unitOfWork.Save();
-                        MessageBox.Show("修改成功!");
+                        if (pbxSurePassword_changePwd.Password.Equals(pbxPassword_changePwd.Password)) //新密码与确认密码是否相等
+                        {
+                            u.UserPassword = NewPassword;
+                            unitOfWork.SysUserRepository.Update(u);
+                            unitOfWork.Save();
+                            MessageBox.Show("修改成功!");
+                        }
+                        else
+                        {
+                            throw new Exception("两次输入的密码不一致！");
+                        }
                     }
                     else
                     {
-                        throw new Exception("两次输入的密码不一致！");
+                        throw new Exception("新密码不能为空！");
                     }
-
                 }
                 else
                 {
@@ -176,11 +267,8 @@ namespace WpfUserOrRoleManager
         }
         private void changePwdBack_Click(object sender, RoutedEventArgs e)    //返回事件
         {
-            LoginWindow.Visibility = Visibility.Visible;
+            Controls.Visibility = Visibility.Visible;
             ChangePwdWindow.Visibility = Visibility.Collapsed;
         }
-
-
-
     }
 }
