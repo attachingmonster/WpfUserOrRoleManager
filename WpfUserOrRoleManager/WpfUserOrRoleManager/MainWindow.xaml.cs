@@ -85,7 +85,7 @@ namespace WpfUserOrRoleManager
 
         private void loginRegister_Click(object sender, RoutedEventArgs e) //切换界面事件
         {
-            Controls.Visibility = Visibility.Collapsed;
+            LoginWindow.Visibility = Visibility.Collapsed;
             RegisterWindow.Visibility = Visibility.Visible;          
         }
         private void Registering_Click(object sender, RoutedEventArgs e)
@@ -144,7 +144,7 @@ namespace WpfUserOrRoleManager
         }
         private void registerBack_Click(object sender, RoutedEventArgs e)   //返回事件
         {
-            Controls.Visibility = Visibility.Visible;
+            LoginWindow.Visibility = Visibility.Visible;
             RegisterWindow.Visibility = Visibility.Collapsed;
         }
 
@@ -155,7 +155,7 @@ namespace WpfUserOrRoleManager
 
         private void loginetrievePwd_Click(object sender, RoutedEventArgs e)  //切换界面事件
         {
-            Controls.Visibility = Visibility.Collapsed;
+            LoginWindow.Visibility = Visibility.Collapsed;
             RetrievePasswordWindow.Visibility = Visibility.Visible;
         }
         private void EtrievePwd_Click(object sender, RoutedEventArgs e)
@@ -211,7 +211,7 @@ namespace WpfUserOrRoleManager
         }
         private void etrievePwdBack_Click(object sender, RoutedEventArgs e) //返回事件
         {
-            Controls.Visibility = Visibility.Visible;
+            LoginWindow.Visibility = Visibility.Visible;
             RetrievePasswordWindow.Visibility = Visibility.Collapsed;
         }
 
@@ -222,7 +222,7 @@ namespace WpfUserOrRoleManager
 
         private void loginChangePwd_Click(object sender, RoutedEventArgs e)   //切换界面事件
         {
-            Controls.Visibility = Visibility.Collapsed;
+            LoginWindow.Visibility = Visibility.Collapsed;
             ChangePwdWindow.Visibility = Visibility.Visible;
         }
         private void ChangePsw_Click(object sender, RoutedEventArgs e)
@@ -267,7 +267,7 @@ namespace WpfUserOrRoleManager
         }
         private void changePwdBack_Click(object sender, RoutedEventArgs e)    //返回事件
         {
-            Controls.Visibility = Visibility.Visible;
+            LoginWindow.Visibility = Visibility.Visible;
             ChangePwdWindow.Visibility = Visibility.Collapsed;
         }
     }
