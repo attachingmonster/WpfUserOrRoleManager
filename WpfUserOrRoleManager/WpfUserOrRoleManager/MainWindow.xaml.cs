@@ -106,7 +106,11 @@ namespace WpfUserOrRoleManager
             {
                 if(newpbxPassword.Password!="")
                 {
-                    if (newpbxPassword.Password == confirmpbxPassword.Password)//判断新密码与确认密码是否相等
+                    if (newpbxPassword.Password == oldpbxPassword.Password)
+                    {
+                        MessageBox.Show("您的原密码和新密码输入一致，请重新修改密码！");//重点，不可忽略
+                    }
+                    else if (newpbxPassword.Password == confirmpbxPassword.Password)//判断新密码与确认密码是否相等
                     {
                         user.Password = NewPassword;
                         unitOfWork.SysUserRepository.Update(user);
@@ -116,10 +120,6 @@ namespace WpfUserOrRoleManager
                         login.Visibility = Visibility.Visible;
                         loginsystem.Height = 514.089;
                         loginsystem.Width = 848.5;
-                    }
-                    else if(newpbxPassword.Password ==oldpbxPassword.Password)
-                    {
-                        MessageBox.Show("您的原密码和新密码输入一致，请重新修改密码！");//重点，不可忽略
                     }
                     else
                     {
