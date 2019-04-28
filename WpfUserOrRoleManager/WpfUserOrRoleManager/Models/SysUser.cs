@@ -10,6 +10,7 @@ namespace WpfUserOrRoleManager.Models
     {
         public int ID { get; set; }
         public string Account { get; set; }     
-        public string Password { get; set; }      
+        public string Password { get; set; }
+        public string QuestionAnswer { get; set; }
     }
 }

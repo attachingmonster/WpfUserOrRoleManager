@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WpfUserOrRoleManager.DAL;
+using WpfUserOrRoleManager.Model;
+using WpfUserOrRoleManager.Models;
 
 namespace WpfUserOrRoleManager
 {
@@ -29,7 +31,7 @@ namespace WpfUserOrRoleManager
         AccountContext db = new AccountContext();
         UnitOfWork unitOfWork = new UnitOfWork();
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Login_Click(object sender, RoutedEventArgs e)//登陆事件
         {
             if (tbxUserName.Text == "" || pbxPassword.Password == "")
             {
@@ -38,7 +40,7 @@ namespace WpfUserOrRoleManager
             else
             {
                 var users = unitOfWork.SysUserRepository.Get();
-                var user = users.Where(s => s.Account == this.tbxUserName.Text && s.Password == this.pbxPassword.Password).FirstOrDefault();
+                var user = users.Where(s => s.Account.Equals(tbxUserName.Text) && s.Password.Equals(CreateMD5.EncryptWithMD5(pbxPassword.Password))).FirstOrDefault();//判断数据库中是否存在账号密码
                 if (user == null)
                 {
                     MessageBox.Show("用户或密码出错！");
@@ -53,22 +55,22 @@ namespace WpfUserOrRoleManager
 
         }
 
-        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)//点击鼠标实现窗口拖动
         {
             this.DragMove();
         }
 
-        private void Min_Click(object sender, RoutedEventArgs e)
+        private void Min_Click(object sender, RoutedEventArgs e)//缩小登录窗口
         {
             SystemCommands.MinimizeWindow(this);
         }
 
-        private void Close_Click(object sender, RoutedEventArgs e)
+        private void Close_Click(object sender, RoutedEventArgs e)//关闭登录窗口
         {
             SystemCommands.CloseWindow(this);
         }
 
-        private void Change_password(object sender, RoutedEventArgs e)
+        private void Change_password(object sender, RoutedEventArgs e)//在登录界面点击修改密码按钮时发生的事件
         {
             login.Visibility = Visibility.Collapsed;
             changepassword.Visibility = Visibility.Visible;
@@ -76,17 +78,17 @@ namespace WpfUserOrRoleManager
             loginsystem.Width = 424.623;
         }
 
-        private void changepwdMin_Click(object sender, RoutedEventArgs e)
+        private void changepwdMin_Click(object sender, RoutedEventArgs e)//缩小修改密码界面的窗口
         {
             SystemCommands.MinimizeWindow(this);
         }
 
-        private void changepwdClose_Click(object sender, RoutedEventArgs e)
+        private void changepwdClose_Click(object sender, RoutedEventArgs e)//关闭修改密码界面的窗口
         {
             SystemCommands.CloseWindow(this);
         }
 
-        private void changepwdreturn(object sender, RoutedEventArgs e)
+        private void changepwdreturn(object sender, RoutedEventArgs e)//修改密码界面的返回事件
         {
             changepassword.Visibility = Visibility.Collapsed;
             login.Visibility = Visibility.Visible;         
@@ -94,33 +96,198 @@ namespace WpfUserOrRoleManager
             loginsystem.Width = 848.5;
         }
 
-        private void Confirmchange(object sender, RoutedEventArgs e)
+        private void Confirmchange(object sender, RoutedEventArgs e)//实现修改密码功能
         {
-            string UseAccount = tbxUserName2.Text;//需要修改的账号的控件名为ggg
-            string UserPassword = oldpbxPassword.Password;//输入的原密码的控件名为www
-            string Newpassword = newpbxPassword.Password;//输入的新密码的控件名为hhh
+            string OldPassword = Model.CreateMD5.EncryptWithMD5(oldpbxPassword.Password);     //原密码
+            string NewPassword = Model.CreateMD5.EncryptWithMD5(newpbxPassword.Password);     //新密码
             var user = unitOfWork.SysUserRepository.Get()
-                .Where(s => s.Account.Equals(UseAccount.Trim()) && s.Password.ToLower().Equals(UserPassword)).FirstOrDefault();
+                .Where(s => s.Account.Equals(tbxUserName2.Text.Trim()) && s.Password.ToLower().Equals(OldPassword)).FirstOrDefault();//判断账号是否存在与密码是否相等
             if (user != null)
             {
-                if (newpbxPassword.Password== confirmpbxPassword.Password)//新密码的控件名为hhh，确认密码的控件名为kkk
+                if(newpbxPassword.Password!="")
                 {
-                    user.Account = UseAccount;
-                    user.Password = Newpassword;
-                    unitOfWork.SysUserRepository.Update(user);
-                    unitOfWork.Save();
-                    MessageBox.Show("修改成功，请登录");
+                    if (newpbxPassword.Password == confirmpbxPassword.Password)//判断新密码与确认密码是否相等
+                    {
+                        user.Password = NewPassword;
+                        unitOfWork.SysUserRepository.Update(user);
+                        unitOfWork.Save();
+                        MessageBox.Show("修改成功，请登录");
+                    }
+                    else
+                    {
+                        MessageBox.Show("您的两次新密码填写不一致！");
+                    }
+
                 }
                 else
                 {
-                    MessageBox.Show("您的两次新密码填写不一致！");
+                    MessageBox.Show("新密码不能为空！");
                 }
-
             }
             else
             {
-                MessageBox.Show("修改失败");
+                MessageBox.Show("修改密码失败！错误原因：用户名不存在或原密码输入错误！");
+            }
+        }
+
+        private void loginRegister_Click(object sender, RoutedEventArgs e)//点击登录界面的注册账号按钮时发生的事件
+        {
+            login.Visibility = Visibility.Collapsed;
+            RegisterWindow.Visibility = Visibility.Visible;
+            loginsystem.Height = 447.739;
+            loginsystem.Width = 424.623;
+        }
+
+        private void RegisterMin_Click(object sender, RoutedEventArgs e)//缩小注册账号界面
+        {
+            SystemCommands.MinimizeWindow(this);
+        }
+
+        private void RegisterClose_Click(object sender, RoutedEventArgs e)//关闭注册账号界面
+        {
+            SystemCommands.CloseWindow(this);
+        }
+
+        private void RegisterReturn_Click(object sender, RoutedEventArgs e)//注册界面的返回事件
+        {
+            RegisterWindow.Visibility = Visibility.Collapsed;
+            login.Visibility = Visibility.Visible;
+            loginsystem.Height = 514.089;
+            loginsystem.Width = 848.5;
+        }
+
+        private void Registering_Click(object sender, RoutedEventArgs e)//实现注册账号功能
+        {
+            try
+            {
+                if (Account_register.Text != "")
+                {
+                    var u = unitOfWork.SysUserRepository.Get().Where(s => s.Account.Equals(Account_register.Text)).FirstOrDefault();  //查找是否存在账号
+                    if (u == null)
+                    {
+                        if (Password_register.Password != "")
+                        {
+                            if (SurePassword_register.Password.Equals(Password_register.Password))//判断密码与确认密码是否相等
+                            {
+                                if (QuestionAnswer_register.Text != "")
+                                {
+                                    var CurrentUser = new SysUser();
+                                    CurrentUser.Account = Account_register.Text;
+                                    CurrentUser.Password = CreateMD5.EncryptWithMD5(Password_register.Password);
+                                    CurrentUser.QuestionAnswer = CreateMD5.EncryptWithMD5(QuestionAnswer_register.Text);
+                                    unitOfWork.SysUserRepository.Insert(CurrentUser);    //增加新User
+                                    unitOfWork.Save();
+                                    MessageBox.Show("注册成功");
+                                }
+                                else
+                                {
+                                    throw new Exception("密码拾回问题答案不能为空！");
+                                }
+                            }
+                            else
+                            {
+                                throw new Exception("两次输入的密码不一致！");
+                            }
+                        }
+                        else
+                        {
+                            throw new Exception("密码不能为空！");
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("用户名已存在！");
+                    }
+                }
+                else
+                {
+                    throw new Exception("账号不能为空！");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("注册失败！错误信息：\n" + ex.Message);
+            }
+        }
+
+        private void loginetrievePwd_Click(object sender, RoutedEventArgs e)//登录界面上点击找回密码按钮发生的事件
+        {
+            login.Visibility = Visibility.Collapsed;
+            RetrievePasswordWindow.Visibility = Visibility.Visible;
+            loginsystem.Height = 447.739;
+            loginsystem.Width = 424.623;
+        }
+
+        private void loginetrieveMin_Click(object sender, RoutedEventArgs e)//缩小找回密码界面
+        {
+            SystemCommands.MinimizeWindow(this);
+        }
+
+        private void loginetrieveClose_Click(object sender, RoutedEventArgs e)//关闭找回密码界面
+        {
+            SystemCommands.CloseWindow(this);
+        }
+
+        private void loginetrieveBack_Click(object sender, RoutedEventArgs e)//找回密码界面的返回事件
+        {
+            RetrievePasswordWindow.Visibility = Visibility.Collapsed;
+            login.Visibility = Visibility.Visible;
+            loginsystem.Height = 514.089;
+            loginsystem.Width = 848.5;
+        }
+
+        private void EtrievePwd_Click(object sender, RoutedEventArgs e)//实现找回密码功能
+        {
+            try
+            {
+                var u = unitOfWork.SysUserRepository.Get().Where(s => s.Account.Equals(Account_etrievePwd.Text)).FirstOrDefault();  //查找是否存在账号
+                if (u != null)
+                {
+                    if (QuestionAnswer_etrievePwd.Text != "")
+                    {
+                        if (u.QuestionAnswer.Equals(CreateMD5.EncryptWithMD5(QuestionAnswer_etrievePwd.Text)))
+                        {
+
+                            if (NewPassword_etrievePwd.Password != "")
+                            {
+                                if (SurePassword_etrievePwd.Password.Equals(NewPassword_etrievePwd.Password))//判断密码与确认密码是否相等
+                                {
+                                    u.Password = CreateMD5.EncryptWithMD5(NewPassword_etrievePwd.Password);
+                                    unitOfWork.SysUserRepository.Update(u);
+                                    unitOfWork.Save();
+                                    MessageBox.Show("密码拾回成功!");
+                                }
+                                else
+                                {
+                                    throw new Exception("两次输入的密码不一致！");
+                                }
+                            }
+                            else
+                            {
+                                throw new Exception("新密码不能为空！");
+                            }
+                        }
+                        else
+                        {
+                            throw new Exception("密码拾回问题答案错误");
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("请您输入密码拾回问题答案");
+                    }
+                }
+                else
+                {
+                    throw new Exception("账号不存在！");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("找回密码失败！错误信息：\n" + ex.Message);
             }
         }
     }
-}
+ }
+
