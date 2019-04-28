@@ -112,10 +112,14 @@ namespace WpfUserOrRoleManager
                         unitOfWork.SysUserRepository.Update(user);
                         unitOfWork.Save();
                         MessageBox.Show("修改成功，请登录");
+                        changepassword.Visibility = Visibility.Collapsed;
+                        login.Visibility = Visibility.Visible;
+                        loginsystem.Height = 514.089;
+                        loginsystem.Width = 848.5;
                     }
                     else if(newpbxPassword.Password == newpbxPassword.Password)
                     {
-                        MessageBox.Show("您的原密码和新密码输入一致，请重新修改密码！");
+                        MessageBox.Show("您的原密码和新密码输入一致，请重新修改密码！");//重点，不可忽略
                     }
                     else
                     {
