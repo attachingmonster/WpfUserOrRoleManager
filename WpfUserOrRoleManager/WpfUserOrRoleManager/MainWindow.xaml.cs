@@ -117,13 +117,13 @@ namespace WpfUserOrRoleManager
                         loginsystem.Height = 514.089;
                         loginsystem.Width = 848.5;
                     }
-                    else if(newpbxPassword.Password == newpbxPassword.Password)
+                    else if(newpbxPassword.Password ==oldpbxPassword.Password)
                     {
                         MessageBox.Show("您的原密码和新密码输入一致，请重新修改密码！");//重点，不可忽略
                     }
                     else
                     {
-                        MessageBox.Show("您的两次新密码填写不一致！");
+                        MessageBox.Show("您的新密码与确认密码填写不一致！");
                     }
 
                 }
