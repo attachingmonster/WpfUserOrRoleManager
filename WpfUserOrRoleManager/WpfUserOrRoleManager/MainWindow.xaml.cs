@@ -113,6 +113,10 @@ namespace WpfUserOrRoleManager
                         unitOfWork.Save();
                         MessageBox.Show("修改成功，请登录");
                     }
+                    else if(newpbxPassword.Password == newpbxPassword.Password)
+                    {
+                        MessageBox.Show("您的原密码和新密码输入一致，请重新修改密码！");
+                    }
                     else
                     {
                         MessageBox.Show("您的两次新密码填写不一致！");
