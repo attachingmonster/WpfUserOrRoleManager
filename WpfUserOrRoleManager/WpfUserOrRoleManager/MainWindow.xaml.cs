@@ -92,21 +92,21 @@ namespace WpfUserOrRoleManager
         {
             try
             {
-                if (tbxUserAccount_register.Text != "")
+                if (tbxUserAccountRegister.Text != "")
                 {
-                    var u = unitOfWork.SysUserRepository.Get().Where(s => s.UserAccount.Equals(tbxUserAccount_register.Text)).FirstOrDefault();  //查找是否存在账号
+                    var u = unitOfWork.SysUserRepository.Get().Where(s => s.UserAccount.Equals(tbxUserAccountRegister.Text)).FirstOrDefault();  //查找是否存在账号
                     if (u == null)
                     {
-                        if (pbxUserPassword_register.Password != "")
+                        if (pbxUserPasswordRegister.Password != "")
                         {
-                            if (pbxSurePassword_register.Password.Equals(pbxUserPassword_register.Password))//判断密码与确认密码是否相等
+                            if (pbxSurePassword_register.Password.Equals(pbxUserPasswordRegister.Password))//判断密码与确认密码是否相等
                             {
-                                if (tbxUserAnswer_register.Text != "")
+                                if (tbxUserAnswerRegister.Text != "")
                                 {
                                     var CurrentUser = new SysUser();
-                                    CurrentUser.UserAccount = tbxUserAccount_register.Text;
-                                    CurrentUser.UserPassword = CreateMD5.EncryptWithMD5(pbxUserPassword_register.Password);
-                                    CurrentUser.UserAnswer = CreateMD5.EncryptWithMD5(tbxUserAnswer_register.Text);
+                                    CurrentUser.UserAccount = tbxUserAccountRegister.Text;
+                                    CurrentUser.UserPassword = CreateMD5.EncryptWithMD5(pbxUserPasswordRegister.Password);
+                                    CurrentUser.UserAnswer = CreateMD5.EncryptWithMD5(tbxUserAnswerRegister.Text);
                                     unitOfWork.SysUserRepository.Insert(CurrentUser);    //增加新User
                                     unitOfWork.Save();
                                     MessageBox.Show("注册成功");
@@ -160,6 +160,7 @@ namespace WpfUserOrRoleManager
         }
         private void EtrievePwd_Click(object sender, RoutedEventArgs e)
         {
+            //1、把 Python 命名格式改为现在的  驼峰格式  2、拾回密码采用问答方式，注册时问题与答案应该合并加密后放入一个字段里，因为这个是隐私，需要加密为密文。3、密码拾回后如何重置密码考虑下业务逻辑
             try
             {          
                 var u = unitOfWork.SysUserRepository.Get().Where(s => s.UserAccount.Equals(tbxUserAccount_etrievePwd.Text)).FirstOrDefault();  //查找是否存在账号
