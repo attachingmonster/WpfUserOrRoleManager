@@ -61,14 +61,14 @@ namespace WpfUserOrRoleManager
         {
             try
             {
-                var u = unitOfWork.SysUserRepository.Get().Where(s => s.UserAccount.Equals(tbxUserAccount_login.Text)&& s.UserPassword.Equals(CreateMD5.EncryptWithMD5(pbxPassword_login.Password))).FirstOrDefault();//判断数据库中是否存在账号密码
+                var u = unitOfWork.SysUserRepository.Get().Where(s => s.UserAccount.Equals(tbxUserAccount_login.Text) && s.UserPassword.Equals(CreateMD5.EncryptWithMD5(pbxPassword_login.Password))).FirstOrDefault();//判断数据库中是否存在账号密码
                 if (u == null)
                 {
                     throw new Exception("账号不存在或密码错误！");
                 }
                 else
-                {   
-                        MessageBox.Show("登陆成功！");
+                {
+                    MessageBox.Show("登陆成功！");
                 }
             }
             catch (Exception ex)
@@ -85,28 +85,28 @@ namespace WpfUserOrRoleManager
 
         private void loginRegister_Click(object sender, RoutedEventArgs e) //切换界面事件
         {
-            LoginWindow.Visibility = Visibility.Collapsed;
-            RegisterWindow.Visibility = Visibility.Visible;          
+            Controls.Visibility = Visibility.Collapsed;
+            RegisterWindow.Visibility = Visibility.Visible;
         }
         private void Registering_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                if (tbxUserAccountRegister.Text != "")
+                if (tbxUserAccount_register.Text != "")
                 {
-                    var u = unitOfWork.SysUserRepository.Get().Where(s => s.UserAccount.Equals(tbxUserAccountRegister.Text)).FirstOrDefault();  //查找是否存在账号
+                    var u = unitOfWork.SysUserRepository.Get().Where(s => s.UserAccount.Equals(tbxUserAccount_register.Text)).FirstOrDefault();  //查找是否存在账号
                     if (u == null)
                     {
-                        if (pbxUserPasswordRegister.Password != "")
+                        if (pbxUserPassword_register.Password != "")
                         {
-                            if (pbxSurePassword_register.Password.Equals(pbxUserPasswordRegister.Password))//判断密码与确认密码是否相等
+                            if (pbxSurePassword_register.Password.Equals(pbxUserPassword_register.Password))//判断密码与确认密码是否相等
                             {
-                                if (tbxUserAnswerRegister.Text != "")
+                                if (tbxUserAnswer_register.Text != "")
                                 {
                                     var CurrentUser = new SysUser();
-                                    CurrentUser.UserAccount = tbxUserAccountRegister.Text;
-                                    CurrentUser.UserPassword = CreateMD5.EncryptWithMD5(pbxUserPasswordRegister.Password);
-                                    CurrentUser.UserAnswer = CreateMD5.EncryptWithMD5(tbxUserAnswerRegister.Text);
+                                    CurrentUser.UserAccount = tbxUserAccount_register.Text;
+                                    CurrentUser.UserPassword = CreateMD5.EncryptWithMD5(pbxUserPassword_register.Password);
+                                    CurrentUser.UserAnswer = CreateMD5.EncryptWithMD5(tbxUserAnswer_register.Text);
                                     unitOfWork.SysUserRepository.Insert(CurrentUser);    //增加新User
                                     unitOfWork.Save();
                                     MessageBox.Show("注册成功");
@@ -144,7 +144,7 @@ namespace WpfUserOrRoleManager
         }
         private void registerBack_Click(object sender, RoutedEventArgs e)   //返回事件
         {
-            LoginWindow.Visibility = Visibility.Visible;
+            Controls.Visibility = Visibility.Visible;
             RegisterWindow.Visibility = Visibility.Collapsed;
         }
 
@@ -155,14 +155,13 @@ namespace WpfUserOrRoleManager
 
         private void loginetrievePwd_Click(object sender, RoutedEventArgs e)  //切换界面事件
         {
-            LoginWindow.Visibility = Visibility.Collapsed;
+            Controls.Visibility = Visibility.Collapsed;
             RetrievePasswordWindow.Visibility = Visibility.Visible;
         }
         private void EtrievePwd_Click(object sender, RoutedEventArgs e)
         {
-            //1、把 Python 命名格式改为现在的  驼峰格式  2、拾回密码采用问答方式，注册时问题与答案应该合并加密后放入一个字段里，因为这个是隐私，需要加密为密文。3、密码拾回后如何重置密码考虑下业务逻辑
             try
-            {          
+            {
                 var u = unitOfWork.SysUserRepository.Get().Where(s => s.UserAccount.Equals(tbxUserAccount_etrievePwd.Text)).FirstOrDefault();  //查找是否存在账号
                 if (u != null)
                 {
@@ -212,7 +211,7 @@ namespace WpfUserOrRoleManager
         }
         private void etrievePwdBack_Click(object sender, RoutedEventArgs e) //返回事件
         {
-            LoginWindow.Visibility = Visibility.Visible;
+            Controls.Visibility = Visibility.Visible;
             RetrievePasswordWindow.Visibility = Visibility.Collapsed;
         }
 
@@ -223,13 +222,13 @@ namespace WpfUserOrRoleManager
 
         private void loginChangePwd_Click(object sender, RoutedEventArgs e)   //切换界面事件
         {
-            LoginWindow.Visibility = Visibility.Collapsed;
+            Controls.Visibility = Visibility.Collapsed;
             ChangePwdWindow.Visibility = Visibility.Visible;
         }
         private void ChangePsw_Click(object sender, RoutedEventArgs e)
         {
             try
-            {                                   
+            {
                 string OldPassword = CreateMD5.EncryptWithMD5(pbxOldPassword_changePwd.Password);     //原密码
                 string NewPassword = CreateMD5.EncryptWithMD5(pbxPassword_changePwd.Password);     //新密码
 
@@ -268,7 +267,7 @@ namespace WpfUserOrRoleManager
         }
         private void changePwdBack_Click(object sender, RoutedEventArgs e)    //返回事件
         {
-            LoginWindow.Visibility = Visibility.Visible;
+            Controls.Visibility = Visibility.Visible;
             ChangePwdWindow.Visibility = Visibility.Collapsed;
         }
     }
