@@ -173,33 +173,48 @@ namespace WpfUserOrRoleManager
                     var u = unitOfWork.SysUserRepository.Get().Where(s => s.Account.Equals(Account_register.Text)).FirstOrDefault();  //查找是否存在账号
                     if (u == null)
                     {
-                        if (Password_register.Password != "")
+                        if (Account_register.Text.Trim() != "")
                         {
-                            if (SurePassword_register.Password.Equals(Password_register.Password))//判断密码与确认密码是否相等
+                            if(Password_register.Password != "")
                             {
-                                if (QuestionAnswer_register.Text != "")
-                                {
-                                    var CurrentUser = new SysUser();
-                                    CurrentUser.Account = Account_register.Text;
-                                    CurrentUser.Password = CreateMD5.EncryptWithMD5(Password_register.Password);
-                                    CurrentUser.QuestionAnswer = CreateMD5.EncryptWithMD5(QuestionAnswer_register.Text);
-                                    unitOfWork.SysUserRepository.Insert(CurrentUser);    //增加新User
-                                    unitOfWork.Save();
-                                    MessageBox.Show("注册成功");
+                                if(Password_register.Password.Length > 8)
+                                 {
+
+                                    if (SurePassword_register.Password.Equals(Password_register.Password))//判断密码与确认密码是否相等
+                                    {
+                                        if (QuestionAnswer_register.Text != "")
+                                        {
+                                            var CurrentUser = new SysUser();
+                                            CurrentUser.Account = Account_register.Text;
+                                            CurrentUser.Password = CreateMD5.EncryptWithMD5(Password_register.Password);
+                                            CurrentUser.QuestionAnswer = CreateMD5.EncryptWithMD5(QuestionAnswer_register.Text);
+                                            unitOfWork.SysUserRepository.Insert(CurrentUser);    //增加新User
+                                            unitOfWork.Save();
+                                            MessageBox.Show("注册成功");
+                                        }
+                                        else
+                                        {
+                                            throw new Exception("密码拾回问题答案不能为空！");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        throw new Exception("两次输入的密码不一致！");
+                                    }
                                 }
                                 else
                                 {
-                                    throw new Exception("密码拾回问题答案不能为空！");
+                                    MessageBox.Show("您的密码安全性较低，请重新设置大于8个字符的密码！");
                                 }
                             }
                             else
                             {
-                                throw new Exception("两次输入的密码不一致！");
+                                MessageBox.Show("密码不能为空！");
                             }
                         }
                         else
                         {
-                            throw new Exception("密码不能为空！");
+                            throw new Exception("用户名不能全是空格！");
                         }
                     }
                     else
