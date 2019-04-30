@@ -81,14 +81,14 @@ namespace WpfUserOrRoleManager
             }
         }
 
-        private void loginShowPassword_Check(object sender, RoutedEventArgs e)//显示密码事件
+        private void loginShowPassword_Check(object sender, RoutedEventArgs e)//登陆界面中显示密码事件
         {
             tbxUserPasswordLogin.Visibility = Visibility.Visible;
             pbxUserPasswordLogin.Visibility = Visibility.Collapsed;
             tbxUserPasswordLogin.Text = pbxUserPasswordLogin.Password;
         }
 
-        private void loginHiddenPassword_Check(object sender, RoutedEventArgs e)//隐藏密码事件
+        private void loginHiddenPassword_Check(object sender, RoutedEventArgs e)//登陆界面中隐藏密码事件
         {
             pbxUserPasswordLogin.Visibility = Visibility.Visible;
             tbxUserPasswordLogin.Visibility = Visibility.Collapsed;
@@ -110,17 +110,49 @@ namespace WpfUserOrRoleManager
         {
             try
             {
+                if (tbxUserPasswordRegister.Visibility != Visibility.Collapsed)//如果显示密码事件开始，则让显示密码值赋值给隐藏密码的值
+                {
+                    pbxUserPasswordRegister.Password = tbxUserPasswordRegister.Text;
+                    pbxSurePasswordRegister.Password = tbxSurePasswordRegister.Text;
+                }
                 if (tbxUserAccountRegister.Text != "")
                 {
                     var u = unitOfWork.SysUserRepository.Get().Where(s => s.UserAccount.Equals(tbxUserAccountRegister.Text)).FirstOrDefault();  //查找是否存在账号
                     if (u == null)
                     {
+                        foreach (char c in tbxUserAccountRegister.Text)   //规范账号必须由字母和数字构成
+                        {
+                            if (  !(  ('0' <= c && c <= '9') || ('A' <= c && c <= 'Z') || ('a' <= c && c <= 'z')  )  )
+                            {
+                                throw new Exception("账号必须只由字母和数字构成！");
+                            }
+                        }
                         if (pbxUserPasswordRegister.Password != "")
                         {
+                            int number = 0, character = 0;
+                            foreach (char c in pbxUserPasswordRegister.Password)   //规范密码必须由ASCII码33~126之间的字符构成
+                            {
+                                if (!(33 <= c && c <= 126))
+                                {
+                                    throw new Exception("符号错误，请重新输入！");
+                                }
+                                if ('0' <= c && c <= '9') //number记录数字个数
+                                {
+                                    number++;
+                                }
+                                else                      //character记录字符个数
+                                {
+                                    character++;
+                                }
+                            }
+                            if (number < 5 || character < 2)  //密码的安全系数
+                            {
+                                throw new Exception("密码安全系数太低！");
+                            }
                             if (pbxSurePasswordRegister.Password.Equals(pbxUserPasswordRegister.Password))//判断密码与确认密码是否相等
                             {
-                                String UserAnswer = "1" + tbxUserAnswer1Register.Text + "2" + tbxUserAnswer2Register.Text + "3" + tbxUserAnswer3Register.Text + "4" + tbxUserAnswer4Register.Text + "5" + tbxUserAnswer5Register.Text;
-                                if (UserAnswer != "")
+                                String UserAnswer = "1" + tbxUserAnswer1Register.Text + "2" + tbxUserAnswer2Register.Text + "3" + tbxUserAnswer3Register.Text + "4" + tbxUserAnswer4Register.Text + "5" + tbxUserAnswer5Register.Text;//拾回密码的答案连接
+                                if (UserAnswer != "1"+"2"+"3"+"4"+"5")
                                 {
                                     var CurrentUser = new SysUser();
                                     CurrentUser.UserAccount = tbxUserAccountRegister.Text;
@@ -167,6 +199,26 @@ namespace WpfUserOrRoleManager
             LoginWindow.Visibility = Visibility.Visible;
             Height = 311;
         }
+        private void registerShowPassword_Check(object sender, RoutedEventArgs e) //注册界面中显示密码事件
+        {
+            tbxUserPasswordRegister.Visibility = Visibility.Visible;
+            pbxUserPasswordRegister.Visibility = Visibility.Collapsed;
+            tbxUserPasswordRegister.Text = pbxUserPasswordRegister.Password;
+
+            tbxSurePasswordRegister.Visibility = Visibility.Visible;
+            pbxSurePasswordRegister.Visibility = Visibility.Collapsed;
+            tbxSurePasswordRegister.Text = pbxSurePasswordRegister.Password;
+        }
+        private void registerHiddenPassword_Check(object sender, RoutedEventArgs e) //注册界面中隐藏密码事件
+        {
+            tbxUserPasswordRegister.Visibility = Visibility.Collapsed;
+            pbxUserPasswordRegister.Visibility = Visibility.Visible;
+            pbxUserPasswordRegister.Password = tbxUserPasswordRegister.Text;
+
+            tbxSurePasswordRegister.Visibility = Visibility.Collapsed;
+            pbxSurePasswordRegister.Visibility = Visibility.Visible;
+            pbxSurePasswordRegister.Password = tbxSurePasswordRegister.Text;
+        }
 
 
         /// <summary>
@@ -187,7 +239,7 @@ namespace WpfUserOrRoleManager
                 if (u != null)
                 {
                     String UserAnswer = "1" + tbxUserAnswer1EtrievePwd.Text + "2" + tbxUserAnswer2EtrievePwd.Text + "3" + tbxUserAnswer3EtrievePwd.Text + "4" + tbxUserAnswer4EtrievePwd.Text + "5" + tbxUserAnswer5EtrievePwd.Text;//拾回密码答案
-                    if (UserAnswer != "")
+                    if (UserAnswer != "1" + "2" + "3" + "4" + "5")
                     {
                         if (u.UserAnswer.Equals(CreateMD5.EncryptWithMD5(UserAnswer)))
                         {
@@ -232,6 +284,26 @@ namespace WpfUserOrRoleManager
             {
                 if (pbxUserPasswordResetPwd.Password != "")
                 {
+                    int number = 0, character = 0;
+                    foreach (char c in pbxUserPasswordResetPwd.Password)   //规范密码必须由ASCII码33~126之间的字符构成
+                    {
+                        if (!(33 <= c && c <= 126))
+                        {
+                            throw new Exception("符号错误，请重新输入！");
+                        }
+                        if ('0' <= c && c <= '9') //number记录数字个数
+                        {
+                            number++;
+                        }
+                        else                      //character记录字符个数
+                        {
+                            character++;
+                        }
+                    }
+                    if (number < 5 || character < 2)  //密码的安全系数
+                    {
+                        throw new Exception("新密码安全系数太低！");
+                    }
                     if (pbxSurePasswordResetPwd.Password.Equals(pbxUserPasswordResetPwd.Password))//判断密码与确认密码是否相等
                     {
                         var u = unitOfWork.SysUserRepository.Get().Where(s => s.UserAccount.Equals(tbxUserAccountEtrievePwd.Text)).FirstOrDefault();  //获取与需要拾回密码的SysUser
@@ -285,6 +357,26 @@ namespace WpfUserOrRoleManager
                     {
                         if (!pbxOldPasswordChangePwd.Password.Equals(pbxUserPasswordChangePwd.Password))
                         {
+                            int number = 0, character = 0;
+                            foreach (char c in pbxUserPasswordChangePwd.Password)   //规范密码必须由ASCII码33~126之间的字符构成
+                            {
+                                if (!(33 <= c && c <= 126))
+                                {
+                                    throw new Exception("符号错误，请重新输入！");
+                                }
+                                if ('0' <= c && c <= '9') //number记录数字个数
+                                {
+                                    number++;
+                                }
+                                else                      //character记录字符个数
+                                {
+                                    character++;
+                                }
+                            }
+                            if (number < 5 || character < 2)  //密码的安全系数
+                            {
+                                throw new Exception("新密码安全系数太低！");
+                            }
                             if (pbxSurePasswordChangePwd.Password.Equals(pbxUserPasswordChangePwd.Password)) //新密码与确认密码是否相等
                             {
                                 u.UserPassword = NewPassword;
@@ -323,6 +415,8 @@ namespace WpfUserOrRoleManager
             LoginWindow.Visibility = Visibility.Visible;
             ChangePasswordWindow.Visibility = Visibility.Collapsed;
         }
+
+    
     }
 }
 
