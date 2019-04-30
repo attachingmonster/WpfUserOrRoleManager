@@ -191,6 +191,10 @@ namespace WpfUserOrRoleManager
                                             unitOfWork.SysUserRepository.Insert(CurrentUser);    //增加新User
                                             unitOfWork.Save();
                                             MessageBox.Show("注册成功");
+                                            RegisterWindow.Visibility = Visibility.Collapsed;
+                                            login.Visibility = Visibility.Visible;
+                                            loginsystem.Height = 514.089;
+                                            loginsystem.Width = 848.5;
                                         }
                                         else
                                         {
@@ -279,7 +283,12 @@ namespace WpfUserOrRoleManager
                                     u.Password = CreateMD5.EncryptWithMD5(NewPassword_etrievePwd.Password);
                                     unitOfWork.SysUserRepository.Update(u);
                                     unitOfWork.Save();
-                                    MessageBox.Show("密码拾回成功!");
+                                    MessageBox.Show("密码拾回成功，请重新登录！");
+                                    RetrievePasswordWindow.Visibility = Visibility.Collapsed;
+                                    login.Visibility = Visibility.Visible;
+                                    loginsystem.Height = 514.089;
+                                    loginsystem.Width = 848.5;
+
                                 }
                                 else
                                 {
@@ -310,6 +319,15 @@ namespace WpfUserOrRoleManager
             {
                 MessageBox.Show("找回密码失败！错误信息：\n" + ex.Message);
             }
+        }
+
+        private void Loginsystem_Loaded(object sender, RoutedEventArgs e)
+        {
+            var users = unitOfWork.SysUserRepository.Get();
+            tbxUserName.ItemsSource = users.ToList();
+            tbxUserName.DisplayMemberPath = "Account";
+            //this.cbxUser.Items.Add(user.UserName);
+            this.tbxUserName.SelectedIndex = 0;
         }
     }
  }

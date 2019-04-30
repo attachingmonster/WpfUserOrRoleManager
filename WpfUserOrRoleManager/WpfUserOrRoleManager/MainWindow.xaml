@@ -7,7 +7,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfUserOrRoleManager"
         mc:Ignorable="d"
-        Title="MainWindow" Height="514.089" Width="848.5" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" MouseLeftButtonDown="Window_MouseLeftButtonDown">
+        Title="MainWindow" Height="514.089" Width="842.5" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" MouseLeftButtonDown="Window_MouseLeftButtonDown" Loaded="Loginsystem_Loaded">
     <Window.Resources>
         <Color x:Key="Color1">#FF9AB1C0</Color>
         <Color x:Key="Color2">White</Color>
@@ -42,11 +42,11 @@
             </Label.Foreground>
         </Label>
         <Label Content="用户" HorizontalAlignment="Left" Margin="440,189,0,0" VerticalAlignment="Top" Height="45" Width="76" FontSize="32" Foreground="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}" FontFamily="STCaiyun" FontWeight="Bold"/>
-        <TextBox Name="tbxUserName" HorizontalAlignment="Left" Height="35" Margin="530,193,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="220" BorderThickness="2" FontSize="24" Foreground="#FF1A2FB4" FontFamily="Perpetua Titling MT" FontWeight="Bold" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}" RenderTransformOrigin="0,0">
-            <TextBox.Background>
+        <ComboBox Name="tbxUserName" HorizontalAlignment="Left" Height="35" Margin="530,193,0,0"  Text="" VerticalAlignment="Top" Width="220" BorderThickness="2" FontSize="24" Foreground="#FF1A2FB4" FontFamily="Perpetua Titling MT" FontWeight="Bold" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}" RenderTransformOrigin="0,0" Opacity="0.4" IsEditable="True">
+               <ComboBox.Background>
                 <SolidColorBrush Color="#FF9AB1C0" Opacity="0.5"/>
-            </TextBox.Background>
-        </TextBox>
+            </ComboBox.Background>
+        </ComboBox>
         <Label Content="密码" HorizontalAlignment="Left" Margin="440,233,0,0" VerticalAlignment="Top" FontSize="32" FontFamily="STCaiyun" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
         <PasswordBox Name="pbxPassword" HorizontalAlignment="Left" Height="35" Margin="530,241,0,0" VerticalAlignment="Top" Width="220" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}" BorderThickness="2" FontSize="24" FontFamily="Perpetua Titling MT" FontWeight="Bold" Foreground="#FF1A2FB4">
             <PasswordBox.Background>
