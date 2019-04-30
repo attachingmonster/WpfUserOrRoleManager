@@ -7,19 +7,14 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="311" Width="536" WindowStyle="None" VerticalAlignment="Center"   WindowStartupLocation="CenterScreen" ResizeMode="NoResize" MouseDown="Move_window" Background="#00F0E7E7" >
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition Height="0*"/>
-        </Grid.RowDefinitions>
 
 
         <!--登陆界面-->
 
-        <Grid Name="Controls" Margin="0,0,-2,-2"  Grid.RowSpan="2" >
+        <Grid Name="LoginWindow" Margin="0,0,-2,-2"  Grid.RowSpan="2" Visibility="Visible" >
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="184*"/>
+                <ColumnDefinition Width="161*"/>
                 <ColumnDefinition Width="309*"/>
-
                 <ColumnDefinition Width="161*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
@@ -28,11 +23,10 @@
                 <RowDefinition Height="50*"/>
                 <RowDefinition Height="120*"/>
             </Grid.RowDefinitions>
-
             <Image Source="image/xk.jpg"  Grid.RowSpan="4" Margin="-20,-6,-17,-7" Grid.ColumnSpan="3"   />
             <Label Content="账号：" HorizontalAlignment="Left" Margin="90,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="54" Height="31" Foreground="#FFF9F1F1" FontSize="18" FontWeight="Bold"/>
             <Label Content="密码：" HorizontalAlignment="Left" Margin="90,10,0,0" Grid.Row="2" VerticalAlignment="Top" Width="54" Height="31" Foreground="#FFF9F1F1" FontSize="18" FontWeight="Bold" RenderTransformOrigin="0.463,0.516"/>
-            <TextBox Name="tbxUserAccount_login" Grid.Column="1" HorizontalAlignment="Left" Height="34" Margin="9,10,0,0" Grid.Row="1" TextWrapping="Wrap"  VerticalAlignment="Top" Width="260" FontSize="14" >
+            <TextBox Name="tbxUserAccountLogin" Grid.Column="1" HorizontalAlignment="Left" Height="34" Margin="9,10,0,0" Grid.Row="1" TextWrapping="Wrap"  VerticalAlignment="Top" Width="245" FontSize="23" FontFamily="Global Serif" >
                 <TextBox.BorderBrush>
                     <SolidColorBrush Color="#FFF3F4F7" Opacity="0.3"/>
                 </TextBox.BorderBrush>
@@ -40,7 +34,7 @@
                     <SolidColorBrush Color="White" Opacity="0.3"/>
                 </TextBox.Background>
             </TextBox>
-            <PasswordBox x:Name="pbxPassword_login" Grid.Column="1" HorizontalAlignment="Left" Margin="9,10,0,0" Grid.Row="2" VerticalAlignment="Top" Width="260" Height="34">
+            <PasswordBox x:Name="pbxUserPasswordLogin" Grid.Column="1" HorizontalAlignment="Left" Margin="9,10,0,0" Grid.Row="2" VerticalAlignment="Top" Width="245" Height="34" FontSize="23" FontFamily="Global Serif" >
                 <PasswordBox.BorderBrush>
                     <SolidColorBrush Color="#FFF9FAFF" Opacity="0.3"/>
                 </PasswordBox.BorderBrush>
@@ -48,7 +42,16 @@
                     <SolidColorBrush Color="White" Opacity="0.35"/>
                 </PasswordBox.Background>
             </PasswordBox>
-            <Button Content="X" Grid.Column="2" HorizontalAlignment="Left" Margin="103,-2,0,0" VerticalAlignment="Top" Width="30" Height="30" Foreground="#FFF5E8E8" RenderTransformOrigin="0.733,0.233" FontSize="18" Click="Close_Click">
+            <TextBox x:Name="tbxUserPasswordLogin" Grid.Column="1" HorizontalAlignment="Left" Height="34" Margin="9,10,0,0" Grid.Row="2" TextWrapping="Wrap"  VerticalAlignment="Top" Width="245"  Visibility="Collapsed" FontSize="23" FontFamily="Global Serif" >
+                <TextBox.BorderBrush>
+                    <SolidColorBrush Color="#FFF3F4F7" Opacity="0.3"/>
+                </TextBox.BorderBrush>
+                <TextBox.Background>
+                    <SolidColorBrush Color="White" Opacity="0.3"/>
+                </TextBox.Background>
+            </TextBox>
+            <CheckBox Content="密码显示" HorizontalAlignment="Left" Margin="30,14,0,0" Grid.Row="3" VerticalAlignment="Top" Height="16" Width="79"  RenderTransformOrigin="0.5,0.5" FontSize="14" Foreground="#FFF9F7F7" Grid.Column="1" Checked="loginShowPassword_Check" Unchecked="loginHiddenPassword_Check" />
+            <Button Content="X" Grid.Column="2" HorizontalAlignment="Left" Margin="106,-2,0,0" VerticalAlignment="Top" Width="30" Height="30" Foreground="#FFF5E8E8" RenderTransformOrigin="0.733,0.233" FontSize="18" Click="Close_Click">
                 <Button.BorderBrush>
                     <SolidColorBrush Color="#FF707070" Opacity="0"/>
                 </Button.BorderBrush>
@@ -56,7 +59,7 @@
                     <SolidColorBrush Color="#FFDDDDDD" Opacity="0"/>
                 </Button.Background>
             </Button>
-            <Button Content="—" Grid.Column="2" HorizontalAlignment="Left" Margin="73,-2,0,0" VerticalAlignment="Top" Width="30" Height="30" Foreground="#FFF5E8E8" RenderTransformOrigin="0.733,0.233" FontSize="16" Click="Min_Click"  >
+            <Button Content="—" Grid.Column="2" HorizontalAlignment="Left" Margin="75,-2,0,0" VerticalAlignment="Top" Width="30" Height="30" Foreground="#FFF5E8E8" RenderTransformOrigin="0.733,0.233" FontSize="16" Click="Min_Click"  >
                 <Button.BorderBrush>
                     <SolidColorBrush Color="#FF707070" Opacity="0"/>
                 </Button.BorderBrush>
@@ -64,7 +67,7 @@
                     <SolidColorBrush Color="#FFDDDDDD" Opacity="0"/>
                 </Button.Background>
             </Button>
-            <Button x:Name="btnLogin"    Content="登陆" Grid.Column="1" HorizontalAlignment="Left" Margin="8,19,0,0" Grid.Row="3" VerticalAlignment="Top" Width="244" Height="32" BorderBrush="#FF40444F" FontSize="16" FontWeight="Bold" Foreground="#FFF3E7E7" Click="Login_Click">
+            <Button x:Name="btnLogin"    Content="登陆" Grid.Column="1" HorizontalAlignment="Left" Margin="8,42,0,0" Grid.Row="3" VerticalAlignment="Top" Width="244" Height="32" BorderBrush="#FF40444F" FontSize="16" FontWeight="Bold" Foreground="#FFF3E7E7" Click="Login_Click">
                 <Button.Background>
                     <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
                         <GradientStop Color="#FF1E2D5D" Offset="0.726"/>
@@ -72,7 +75,7 @@
                     </LinearGradientBrush>
                 </Button.Background>
             </Button>
-            <Button  Grid.Column="2" HorizontalAlignment="Left" Margin="14,16,0,0" Grid.Row="1" VerticalAlignment="Top" Width="67" Height="29" FontSize="16" Foreground="#FFF5EDED" Click="loginRegister_Click" >
+            <Button  Grid.Column="2" HorizontalAlignment="Left" Margin="14,12,0,0" Grid.Row="1" VerticalAlignment="Top" Width="67" Height="29" FontSize="16" Foreground="#FFF5EDED" Click="loginRegister_Click" >
                 <Button.BorderBrush>
                     <SolidColorBrush Color="#FF707070" Opacity="0"/>
                 </Button.BorderBrush>
@@ -83,7 +86,7 @@
                     <Run Text="注册账号"/>
                 </Underline>
             </Button>
-            <Button  Grid.Column="2" HorizontalAlignment="Left" Margin="14,14,0,0" Grid.Row="2" VerticalAlignment="Top" Width="67" Height="29" FontSize="16" Foreground="#FFF5EDED"  Click="loginChangePwd_Click">
+            <Button  Grid.Column="2" HorizontalAlignment="Left" Margin="14,13,0,0" Grid.Row="2" VerticalAlignment="Top" Width="67" Height="29" FontSize="16" Foreground="#FFF5EDED"  Click="loginChangePwd_Click">
                 <Button.BorderBrush>
                     <SolidColorBrush Color="#FF707070" Opacity="0"/>
                 </Button.BorderBrush>
@@ -110,35 +113,41 @@
 
         <!--注册账号界面-->
 
-        <Grid Margin="0,0,-2,-2"  Name="RegisterWindow" Grid.RowSpan="2" Visibility="Collapsed" >
+        <Grid Margin="0,0,0,0"  Name="RegisterWindow" Visibility="Collapsed">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="184*"/>
+                <ColumnDefinition Width="161*"/>
                 <ColumnDefinition Width="309*"/>
-
                 <ColumnDefinition Width="161*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="47*"/>
-                <RowDefinition Height="42*"/>
-                <RowDefinition Height="42*"/>
-                <RowDefinition Height="39*"/>
-                <RowDefinition Height="43*"/>
-                <RowDefinition Height="39*"/>
-                <RowDefinition Height="61*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+
             </Grid.RowDefinitions>
 
-            <Image Source="image/xk.jpg"  Grid.RowSpan="7" Margin="-20,-6,-17,-7" Grid.ColumnSpan="3"   />
-            <Label Content="账号：" HorizontalAlignment="Left" Margin="90,0,0,0" VerticalAlignment="Top" Width="54" Height="31" Foreground="#FFF9F1F1" FontSize="18" FontWeight="Bold" Grid.Row="1"/>
-            <Label Content="密码：" HorizontalAlignment="Left" Margin="90,0,0,0" Grid.Row="2" VerticalAlignment="Top" Width="54" Height="31" Foreground="#FFF9F1F1" FontSize="18" FontWeight="Bold" RenderTransformOrigin="0.463,0.516"/>
-            <TextBox x:Name="tbxUserAccount_register" Grid.Column="1" HorizontalAlignment="Left" Height="34" Margin="9,0,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="245" FontSize="14" Grid.Row="1" >
+            <Image Source="image/e2.jpg"  Grid.RowSpan="11" Margin="-44,-66,-65,-48" Grid.ColumnSpan="3"   />
+
+            <Label Content="账号：" HorizontalAlignment="Left" Margin="90,0,0,0" VerticalAlignment="Top" Width="54" Height="31" Foreground="#FF111111" FontSize="18" FontWeight="Bold" Grid.Row="1" Background="#00000000"/>
+            <TextBox x:Name="tbxUserAccountRegister" Grid.Column="1" HorizontalAlignment="Left" Height="34" Margin="9,0,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="245" FontSize="23" FontFamily="Global Serif" Grid.Row="1" Grid.ColumnSpan="2"   >
                 <TextBox.BorderBrush>
                     <SolidColorBrush Color="#FFF3F4F7" Opacity="0.3"/>
                 </TextBox.BorderBrush>
                 <TextBox.Background>
-                    <SolidColorBrush Color="White" Opacity="0.3"/>
+                    <SolidColorBrush Color="White" Opacity="0.35"/>
                 </TextBox.Background>
             </TextBox>
-            <PasswordBox x:Name="pbxUserPassword_register" Grid.Column="1" HorizontalAlignment="Left" Margin="9,0,0,0" Grid.Row="2" VerticalAlignment="Top" Width="245" Height="34">
+
+            <Label Content="密码：" HorizontalAlignment="Left" Margin="90,0,0,0" Grid.Row="2" VerticalAlignment="Top" Width="54" Height="31" Foreground="#FF0F0F0F" FontSize="16" FontWeight="Bold" RenderTransformOrigin="0.463,0.516"/>
+            <PasswordBox x:Name="pbxUserPasswordRegister" Grid.Column="1" HorizontalAlignment="Left" Margin="9,0,0,0" Grid.Row="2" VerticalAlignment="Top" Width="245" Height="34" Grid.ColumnSpan="2" FontSize="23" FontFamily="Global Serif">
                 <PasswordBox.BorderBrush>
                     <SolidColorBrush Color="#FFF9FAFF" Opacity="0.3"/>
                 </PasswordBox.BorderBrush>
@@ -146,40 +155,10 @@
                     <SolidColorBrush Color="White" Opacity="0.35"/>
                 </PasswordBox.Background>
             </PasswordBox>
-            <Button Content="X" Grid.Column="2" HorizontalAlignment="Left" Margin="103,-2,0,0" VerticalAlignment="Top" Width="30" Height="30" Foreground="#FFF5E8E8" RenderTransformOrigin="0.733,0.233" FontSize="18" Click="Close_Click">
-                <Button.BorderBrush>
-                    <SolidColorBrush Color="#FF707070" Opacity="0"/>
-                </Button.BorderBrush>
-                <Button.Background>
-                    <SolidColorBrush Color="#FFDDDDDD" Opacity="0"/>
-                </Button.Background>
-            </Button>
-            <Button Content="—" Grid.Column="2" HorizontalAlignment="Left" Margin="73,-2,0,0" VerticalAlignment="Top" Width="30" Height="30" Foreground="#FFF5E8E8" RenderTransformOrigin="0.733,0.233" FontSize="16" Click="Min_Click"  >
-                <Button.BorderBrush>
-                    <SolidColorBrush Color="#FF707070" Opacity="0"/>
-                </Button.BorderBrush>
-                <Button.Background>
-                    <SolidColorBrush Color="#FFDDDDDD" Opacity="0"/>
-                </Button.Background>
-            </Button>
-            <Button x:Name="btnRegistering"    Content="注册" Grid.Column="1" HorizontalAlignment="Left" Margin="0,10,0,0" Grid.Row="6" VerticalAlignment="Top" Width="116" Height="32" BorderBrush="#FF40444F" FontSize="16" FontWeight="Bold" Foreground="#FFF3E7E7" Click="Registering_Click">
-                <Button.Background>
-                    <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                        <GradientStop Color="#FF1E2D5D" Offset="0.726"/>
-                        <GradientStop Color="#FF5573DC" Offset="0.261"/>
-                    </LinearGradientBrush>
-                </Button.Background>
-            </Button>
-            <Button x:Name="btnBack_register"    Content="返回" Grid.Column="1" HorizontalAlignment="Left" Margin="138,10,0,0" Grid.Row="6" VerticalAlignment="Top" Width="116" Height="32" BorderBrush="#FF40444F" FontSize="16" FontWeight="Bold" Foreground="#FFF3E7E7" Click="registerBack_Click">
-                <Button.Background>
-                    <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                        <GradientStop Color="#FF1E2D5D" Offset="0.726"/>
-                        <GradientStop Color="#FF5573DC" Offset="0.261"/>
-                    </LinearGradientBrush>
-                </Button.Background>
-            </Button>
-            <Label Content="确认密码：" HorizontalAlignment="Left" Margin="54,0,0,0" Grid.Row="3" VerticalAlignment="Top" Width="90" Height="31" Foreground="#FFF9F1F1" FontSize="18" FontWeight="Bold" RenderTransformOrigin="0.463,0.516"/>
-            <PasswordBox Name="pbxSurePassword_register" Grid.Column="1" HorizontalAlignment="Left" Margin="9,0,0,0" Grid.Row="3" VerticalAlignment="Top" Width="245" Height="34">
+
+
+            <Label Content="确认密码：" HorizontalAlignment="Left" Margin="54,0,0,0" Grid.Row="3" VerticalAlignment="Top" Width="90" Height="31" Foreground="#FF080808" FontSize="18" FontWeight="Bold" RenderTransformOrigin="0.463,0.516"/>
+            <PasswordBox Name="pbxSurePasswordRegister" Grid.Column="1" HorizontalAlignment="Left" Margin="9,0,0,0" Grid.Row="3" VerticalAlignment="Top" Width="245" Height="34" Grid.ColumnSpan="2" FontSize="23" FontFamily="Global Serif">
                 <PasswordBox.BorderBrush>
                     <SolidColorBrush Color="#FFF9FAFF" Opacity="0.3"/>
                 </PasswordBox.BorderBrush>
@@ -187,9 +166,11 @@
                     <SolidColorBrush Color="White" Opacity="0.35"/>
                 </PasswordBox.Background>
             </PasswordBox>
-            <Label Content="密码拾回问题：  你最喜欢的颜色是？" HorizontalAlignment="Left" Margin="19,6,0,0" Grid.Row="4" VerticalAlignment="Top" Width="349" Height="31" Foreground="#FFF9F1F1" FontSize="18" FontWeight="Bold" RenderTransformOrigin="0.463,0.516" Grid.ColumnSpan="2"/>
-            <Label Content="您的答案：" HorizontalAlignment="Left" Margin="54,0,0,0" Grid.Row="5" VerticalAlignment="Top" Width="90" Height="31" Foreground="#FFF9F1F1" FontSize="18" FontWeight="Bold" RenderTransformOrigin="0.463,0.516"/>
-            <TextBox x:Name="tbxUserAnswer_register" Grid.Column="1" HorizontalAlignment="Left" Height="34" Margin="9,0,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="245" FontSize="14" Grid.Row="5" >
+
+
+            <Label Content="密码拾回问题，请选择一个或多个问题进行回答" HorizontalAlignment="Left" Margin="80,0,0,0" Grid.Row="4" VerticalAlignment="Top" Width="403" Height="34" Foreground="#FF1D1C1C" FontSize="18" FontWeight="Bold" RenderTransformOrigin="0.463,0.516" Grid.ColumnSpan="3"/>
+            <Label Content="问题1：你最喜欢的颜色是？" HorizontalAlignment="Left" Margin="80,0,0,0" Grid.Row="5" VerticalAlignment="Top" Width="257" Height="34" Foreground="#FF1D1C1C" FontSize="18" FontWeight="Bold" RenderTransformOrigin="0.463,0.516" Grid.ColumnSpan="2"/>
+            <TextBox x:Name="tbxUserAnswer1Register" Grid.Column="1" HorizontalAlignment="Left" Height="34" Margin="189,0,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="173" FontSize="23" FontFamily="Global Serif" Grid.Row="5" Grid.ColumnSpan="2" >
                 <TextBox.BorderBrush>
                     <SolidColorBrush Color="#FFF3F4F7" Opacity="0.3"/>
                 </TextBox.BorderBrush>
@@ -197,13 +178,82 @@
                     <SolidColorBrush Color="White" Opacity="0.3"/>
                 </TextBox.Background>
             </TextBox>
+            <Label Content="问题2：你的生日是？" HorizontalAlignment="Left" Margin="80,0,0,0" Grid.Row="6" VerticalAlignment="Top" Width="257" Height="34" Foreground="#FF1D1C1C" FontSize="18" FontWeight="Bold" RenderTransformOrigin="0.463,0.516" Grid.ColumnSpan="2"/>
+            <TextBox x:Name="tbxUserAnswer2Register" Grid.Column="1" HorizontalAlignment="Left" Height="34" Margin="189,0,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="173" FontSize="23" FontFamily="Global Serif" Grid.Row="6" Grid.ColumnSpan="2" >
+                <TextBox.BorderBrush>
+                    <SolidColorBrush Color="#FFF3F4F7" Opacity="0.3"/>
+                </TextBox.BorderBrush>
+                <TextBox.Background>
+                    <SolidColorBrush Color="White" Opacity="0.3"/>
+                </TextBox.Background>
+            </TextBox>
+            <Label Content="问题3：你的父亲叫什么名字？" HorizontalAlignment="Left" Margin="80,0,0,0" Grid.Row="7" VerticalAlignment="Top" Width="257" Height="34" Foreground="#FF1D1C1C" FontSize="18" FontWeight="Bold" RenderTransformOrigin="0.463,0.516" Grid.ColumnSpan="2"/>
+            <TextBox x:Name="tbxUserAnswer3Register" Grid.Column="1" HorizontalAlignment="Left" Height="34" Margin="189,0,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="173" FontSize="23" FontFamily="Global Serif" Grid.Row="7" Grid.ColumnSpan="2" >
+                <TextBox.BorderBrush>
+                    <SolidColorBrush Color="#FFF3F4F7" Opacity="0.3"/>
+                </TextBox.BorderBrush>
+                <TextBox.Background>
+                    <SolidColorBrush Color="White" Opacity="0.3"/>
+                </TextBox.Background>
+            </TextBox>
+            <Label Content="问题4：你最喜欢做什么？" HorizontalAlignment="Left" Margin="80,0,0,0" Grid.Row="8" VerticalAlignment="Top" Width="257" Height="34" Foreground="#FF1D1C1C" FontSize="18" FontWeight="Bold" RenderTransformOrigin="0.463,0.516" Grid.ColumnSpan="2"/>
+            <TextBox x:Name="tbxUserAnswer4Register" Grid.Column="1" HorizontalAlignment="Left" Height="34" Margin="189,0,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="173" FontSize="23" FontFamily="Global Serif" Grid.Row="8" Grid.ColumnSpan="2" >
+                <TextBox.BorderBrush>
+                    <SolidColorBrush Color="#FFF3F4F7" Opacity="0.3"/>
+                </TextBox.BorderBrush>
+                <TextBox.Background>
+                    <SolidColorBrush Color="White" Opacity="0.3"/>
+                </TextBox.Background>
+            </TextBox>
+            <Label Content="问题5：你的梦想是？" HorizontalAlignment="Left" Margin="80,0,0,0" Grid.Row="9" VerticalAlignment="Top" Width="257" Height="34" Foreground="#FF1D1C1C" FontSize="18" FontWeight="Bold" RenderTransformOrigin="0.463,0.516" Grid.ColumnSpan="2"/>
+            <TextBox x:Name="tbxUserAnswer5Register" Grid.Column="1" HorizontalAlignment="Left" Height="34" Margin="189,0,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="173" FontSize="23" FontFamily="Global Serif" Grid.Row="9" Grid.ColumnSpan="2" >
+                <TextBox.BorderBrush>
+                    <SolidColorBrush Color="#FFF3F4F7" Opacity="0.3"/>
+                </TextBox.BorderBrush>
+                <TextBox.Background>
+                    <SolidColorBrush Color="White" Opacity="0.3"/>
+                </TextBox.Background>
+            </TextBox>
+
+
+            <Button Content="X" Grid.Column="2" HorizontalAlignment="Left" Margin="107,-2,0,0" VerticalAlignment="Top" Width="30" Height="30" Foreground="#FFF5E8E8" RenderTransformOrigin="0.733,0.233" FontSize="18" Click="Close_Click">
+                <Button.BorderBrush>
+                    <SolidColorBrush Color="#FF707070" Opacity="0"/>
+                </Button.BorderBrush>
+                <Button.Background>
+                    <SolidColorBrush Color="#FFDDDDDD" Opacity="0"/>
+                </Button.Background>
+            </Button>
+            <Button Content="—" Grid.Column="2" HorizontalAlignment="Left" Margin="75,-2,0,0" VerticalAlignment="Top" Width="30" Height="30" Foreground="#FFF5E8E8" RenderTransformOrigin="0.733,0.233" FontSize="16" Click="Min_Click"  >
+                <Button.BorderBrush>
+                    <SolidColorBrush Color="#FF707070" Opacity="0"/>
+                </Button.BorderBrush>
+                <Button.Background>
+                    <SolidColorBrush Color="#FFDDDDDD" Opacity="0"/>
+                </Button.Background>
+            </Button>
+            <Button x:Name="btnRegistering"    Content="注册" Grid.Column="1" HorizontalAlignment="Left" Margin="0,3,0,0" Grid.Row="10" VerticalAlignment="Top" Width="116" Height="32" BorderBrush="#FF40444F" FontSize="16" FontWeight="Bold" Foreground="#FFF3E7E7" Click="Registering_Click">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                        <GradientStop Color="#FF1E2D5D" Offset="0.726"/>
+                        <GradientStop Color="#FF5573DC" Offset="0.261"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+            <Button x:Name="btnBack_register"    Content="返回" Grid.Column="1" HorizontalAlignment="Left" Margin="138,3,0,0" Grid.Row="10" VerticalAlignment="Top" Width="116" Height="32" BorderBrush="#FF40444F" FontSize="16" FontWeight="Bold" Foreground="#FFF3E7E7" Click="registerBack_Click">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                        <GradientStop Color="#FF1E2D5D" Offset="0.726"/>
+                        <GradientStop Color="#FF5573DC" Offset="0.261"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
         </Grid>
 
 
         <!--修改密码界面-->
 
-
-        <Grid Margin="0,0,-2,-2"  Name="ChangePwdWindow" Visibility="Collapsed" Grid.RowSpan="2">
+        <Grid Margin="0,0,-2,-2"  Name="ChangePasswordWindow" Visibility="Collapsed" Grid.RowSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="184*"/>
                 <ColumnDefinition Width="309*"/>
@@ -220,7 +270,7 @@
             <Image Source="image/xk.jpg"  Grid.RowSpan="4" Margin="-20,-6,-17,-7" Grid.ColumnSpan="3"   />
             <Label Content="账号：" HorizontalAlignment="Left" Margin="88,31,0,0" VerticalAlignment="Top" Width="54" Height="31" Foreground="#FFF9F1F1" FontSize="18" FontWeight="Bold"/>
             <Label Content="新密码：" HorizontalAlignment="Left" Margin="70,25,0,0" Grid.Row="1" VerticalAlignment="Top" Width="71" Height="31" Foreground="#FFF9F1F1" FontSize="18" FontWeight="Bold" RenderTransformOrigin="0.463,0.516" Grid.RowSpan="2"/>
-            <TextBox x:Name="tbxUserAccount_changePwd" Grid.Column="1" HorizontalAlignment="Left" Height="34" Margin="10,31,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="245" FontSize="14" Grid.ColumnSpan="2" >
+            <TextBox x:Name="tbxUserAccountChangePwd" Grid.Column="1" HorizontalAlignment="Left" Height="34" Margin="10,31,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="245" FontSize="23" FontFamily="Global Serif" Grid.ColumnSpan="2" >
                 <TextBox.BorderBrush>
                     <SolidColorBrush Color="#FFF3F4F7" Opacity="0.3"/>
                 </TextBox.BorderBrush>
@@ -228,7 +278,7 @@
                     <SolidColorBrush Color="White" Opacity="0.3"/>
                 </TextBox.Background>
             </TextBox>
-            <PasswordBox x:Name="pbxPassword_changePwd" Grid.Column="1" HorizontalAlignment="Left" Margin="9,29,0,0" Grid.Row="1" VerticalAlignment="Top" Width="245" Height="34" Grid.RowSpan="2">
+            <PasswordBox x:Name="pbxUserPasswordChangePwd" Grid.Column="1" HorizontalAlignment="Left" Margin="9,29,0,0" Grid.Row="1" VerticalAlignment="Top" Width="245" Height="34" Grid.RowSpan="2" FontSize="23" FontFamily="Global Serif">
                 <PasswordBox.BorderBrush>
                     <SolidColorBrush Color="#FFF9FAFF" Opacity="0.3"/>
                 </PasswordBox.BorderBrush>
@@ -260,7 +310,7 @@
                     </LinearGradientBrush>
                 </Button.Background>
             </Button>
-            <Button x:Name="btnBack_changePwd"    Content="返回" Grid.Column="1" HorizontalAlignment="Left" Margin="138,31,0,0" Grid.Row="3" VerticalAlignment="Top" Width="116" Height="32" BorderBrush="#FF40444F" FontSize="16" FontWeight="Bold" Foreground="#FFF3E7E7" Click="changePwdBack_Click">
+            <Button x:Name="btnBackChangePwd"    Content="返回" Grid.Column="1" HorizontalAlignment="Left" Margin="138,31,0,0" Grid.Row="3" VerticalAlignment="Top" Width="116" Height="32" BorderBrush="#FF40444F" FontSize="16" FontWeight="Bold" Foreground="#FFF3E7E7" Click="changePwdBack_click">
                 <Button.Background>
                     <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
                         <GradientStop Color="#FF1E2D5D" Offset="0.726"/>
@@ -269,7 +319,7 @@
                 </Button.Background>
             </Button>
             <Label Content="确认密码：" HorizontalAlignment="Left" Margin="51,29,0,0" Grid.Row="2" VerticalAlignment="Top" Width="90" Height="31" Foreground="#FFF9F1F1" FontSize="18" FontWeight="Bold" RenderTransformOrigin="0.463,0.516" Grid.RowSpan="2"/>
-            <PasswordBox x:Name="pbxSurePassword_changePwd" Grid.Column="1" HorizontalAlignment="Left" Margin="9,29,0,0" Grid.Row="2" VerticalAlignment="Top" Width="245" Height="34" Grid.RowSpan="2">
+            <PasswordBox x:Name="pbxSurePasswordChangePwd" Grid.Column="1" HorizontalAlignment="Left" Margin="9,29,0,0" Grid.Row="2" VerticalAlignment="Top" Width="245" Height="34" Grid.RowSpan="2" FontSize="23" FontFamily="Global Serif">
                 <PasswordBox.BorderBrush>
                     <SolidColorBrush Color="#FFF9FAFF" Opacity="0.3"/>
                 </PasswordBox.BorderBrush>
@@ -278,7 +328,7 @@
                 </PasswordBox.Background>
             </PasswordBox>
             <Label Content="原密码：" HorizontalAlignment="Left" Margin="71,80,0,0" VerticalAlignment="Top" Width="71" Height="31" Foreground="#FFF9F1F1" FontSize="18" FontWeight="Bold" RenderTransformOrigin="0.463,0.516" Grid.RowSpan="2"/>
-            <PasswordBox x:Name="pbxOldPassword_changePwd" Grid.Column="1" HorizontalAlignment="Left" Margin="10,80,0,37" Width="244" Grid.RowSpan="2">
+            <PasswordBox x:Name="pbxOldPasswordChangePwd" Grid.Column="1" HorizontalAlignment="Left" Margin="10,80,0,37" Width="244" Grid.RowSpan="2" FontSize="23" FontFamily="Global Serif">
                 <PasswordBox.BorderBrush>
                     <SolidColorBrush Color="#FFF9FAFF" Opacity="0.3"/>
                 </PasswordBox.BorderBrush>
@@ -292,27 +342,39 @@
         <!--拾回密码界面-->
 
 
-        <Grid Margin="0,0,-2,-2"  Name="RetrievePasswordWindow" Grid.RowSpan="2"  Visibility="Collapsed">
+        <Grid Margin="0,0,0,0"  Name="RetrievePasswordWindow" Visibility="Collapsed" >
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="184*"/>
+                <ColumnDefinition Width="161*"/>
                 <ColumnDefinition Width="309*"/>
-
                 <ColumnDefinition Width="161*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="40*"/>
-                <RowDefinition Height="38*"/>
-                <RowDefinition Height="44*"/>
-                <RowDefinition Height="48"/>
-                <RowDefinition Height="43*"/>
-                <RowDefinition Height="39*"/>
-                <RowDefinition Height="61*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+
             </Grid.RowDefinitions>
 
-            <Image Source="image/xk.jpg"  Grid.RowSpan="7" Margin="-20,-6,-17,-7" Grid.ColumnSpan="3"   />
-            <Label Content="账号：" HorizontalAlignment="Left" Margin="90,0,0,0" VerticalAlignment="Top" Width="54" Height="31" Foreground="#FFF9F1F1" FontSize="18" FontWeight="Bold" Grid.Row="1"/>
-            <Label Content="新密码：" HorizontalAlignment="Left" Margin="70,0,0,0" Grid.Row="4" VerticalAlignment="Top" Width="74" Height="31" Foreground="#FFF9F1F1" FontSize="18" FontWeight="Bold" RenderTransformOrigin="0.463,0.516"/>
-            <TextBox x:Name="tbxUserAccount_etrievePwd" Grid.Column="1" HorizontalAlignment="Left" Height="34" Margin="9,0,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="245" FontSize="14" Grid.Row="1" >
+            <Image Source="image/927_gtx03.jpg"  Grid.RowSpan="9" Margin="-44,-66,-98,-67" Grid.ColumnSpan="3"   />
+
+            <Label Content="账号：" HorizontalAlignment="Left" Margin="90,0,0,0" VerticalAlignment="Top" Width="54" Height="31" Foreground="#FFF7F2F2" FontSize="18" FontWeight="Bold" Grid.Row="1" Background="#00000000"/>
+            <TextBox x:Name="tbxUserAccountEtrievePwd" Grid.Column="1" HorizontalAlignment="Left" Height="34" Margin="9,0,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="245" FontSize="23" FontFamily="Global Serif" Grid.Row="1" Grid.ColumnSpan="2"   >
+                <TextBox.BorderBrush>
+                    <SolidColorBrush Color="#FFF3F4F7" Opacity="0.3"/>
+                </TextBox.BorderBrush>
+                <TextBox.Background>
+                    <SolidColorBrush Color="White" Opacity="0.35"/>
+                </TextBox.Background>
+            </TextBox>
+            <Label Content="密码拾回问题，请选择一个或多个问题进行回答" HorizontalAlignment="Left" Margin="80,2,0,0" Grid.Row="2" VerticalAlignment="Top" Width="403" Height="34" Foreground="#FFF7F2F2" FontSize="18" FontWeight="Bold" RenderTransformOrigin="0.463,0.516" Grid.ColumnSpan="3"/>
+            <Label Content="问题1：你最喜欢的颜色是？" HorizontalAlignment="Left" Margin="80,0,0,0" Grid.Row="3" VerticalAlignment="Top" Width="257" Height="34" Foreground="#FFFBF8F8" FontSize="18" FontWeight="Bold" RenderTransformOrigin="0.463,0.516" Grid.ColumnSpan="2"/>
+            <TextBox x:Name="tbxUserAnswer1EtrievePwd" Grid.Column="1" HorizontalAlignment="Left" Height="34" Margin="190,0.333,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="173"  Grid.Row="3" Grid.ColumnSpan="2" FontSize="23" FontFamily="Global Serif">
                 <TextBox.BorderBrush>
                     <SolidColorBrush Color="#FFF3F4F7" Opacity="0.3"/>
                 </TextBox.BorderBrush>
@@ -320,7 +382,102 @@
                     <SolidColorBrush Color="White" Opacity="0.3"/>
                 </TextBox.Background>
             </TextBox>
-            <PasswordBox x:Name="pbxUserPassword_etrievePwd" Grid.Column="1" HorizontalAlignment="Left" Margin="8,0,0,0" Grid.Row="4" VerticalAlignment="Top" Width="245" Height="34">
+            <Label Content="问题2：你的生日是？" HorizontalAlignment="Left" Margin="80,0,0,0" Grid.Row="4" VerticalAlignment="Top" Width="257" Height="34" Foreground="#FFF1EAEA" FontSize="18" FontWeight="Bold" RenderTransformOrigin="0.463,0.516" Grid.ColumnSpan="2"/>
+            <TextBox x:Name="tbxUserAnswer2EtrievePwd" Grid.Column="1" HorizontalAlignment="Left" Height="34" Margin="190,0,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="173" FontSize="23" FontFamily="Global Serif" Grid.Row="4" Grid.ColumnSpan="2" >
+                <TextBox.BorderBrush>
+                    <SolidColorBrush Color="#FFF3F4F7" Opacity="0.3"/>
+                </TextBox.BorderBrush>
+                <TextBox.Background>
+                    <SolidColorBrush Color="White" Opacity="0.3"/>
+                </TextBox.Background>
+            </TextBox>
+            <Label Content="问题3：你的父亲叫什么名字？" HorizontalAlignment="Left" Margin="80,0,0,0" Grid.Row="5" VerticalAlignment="Top" Width="257" Height="34" Foreground="#FFF5F1F1" FontSize="18" FontWeight="Bold" RenderTransformOrigin="0.463,0.516" Grid.ColumnSpan="2"/>
+            <TextBox x:Name="tbxUserAnswer3EtrievePwd" Grid.Column="1" HorizontalAlignment="Left" Height="34" Margin="190,0,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="173" FontSize="23" FontFamily="Global Serif" Grid.Row="5" Grid.ColumnSpan="2" >
+                <TextBox.BorderBrush>
+                    <SolidColorBrush Color="#FFF3F4F7" Opacity="0.3"/>
+                </TextBox.BorderBrush>
+                <TextBox.Background>
+                    <SolidColorBrush Color="White" Opacity="0.3"/>
+                </TextBox.Background>
+            </TextBox>
+            <Label Content="问题4：你最喜欢做什么？" HorizontalAlignment="Left" Margin="80,0,0,0" Grid.Row="6" VerticalAlignment="Top" Width="257" Height="34" Foreground="#FFF7F1F1" FontSize="18" FontWeight="Bold" RenderTransformOrigin="0.463,0.516" Grid.ColumnSpan="2"/>
+            <TextBox x:Name="tbxUserAnswer4EtrievePwd" Grid.Column="1" HorizontalAlignment="Left" Height="34" Margin="190,0,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="173" FontSize="23" FontFamily="Global Serif" Grid.Row="6" Grid.ColumnSpan="2" >
+                <TextBox.BorderBrush>
+                    <SolidColorBrush Color="#FFF3F4F7" Opacity="0.3"/>
+                </TextBox.BorderBrush>
+                <TextBox.Background>
+                    <SolidColorBrush Color="White" Opacity="0.3"/>
+                </TextBox.Background>
+            </TextBox>
+            <Label Content="问题5：你的梦想是？" HorizontalAlignment="Left" Margin="80,0,0,0" Grid.Row="7" VerticalAlignment="Top" Width="257" Height="34" Foreground="#FFFDF7F7" FontSize="18" FontWeight="Bold" RenderTransformOrigin="0.463,0.516" Grid.ColumnSpan="2"/>
+            <TextBox x:Name="tbxUserAnswer5EtrievePwd" Grid.Column="1" HorizontalAlignment="Left" Height="34" Margin="190,0,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="173" FontSize="23" FontFamily="Global Serif" Grid.Row="7" Grid.ColumnSpan="2" Grid.RowSpan="2" >
+                <TextBox.BorderBrush>
+                    <SolidColorBrush Color="#FFF3F4F7" Opacity="0.3"/>
+                </TextBox.BorderBrush>
+                <TextBox.Background>
+                    <SolidColorBrush Color="White" Opacity="0.3"/>
+                </TextBox.Background>
+            </TextBox>
+
+
+            <Button Content="X" Grid.Column="2" HorizontalAlignment="Left" Margin="107,-2,0,0" VerticalAlignment="Top" Width="30" Height="30" Foreground="#FFF5E8E8" RenderTransformOrigin="0.733,0.233" FontSize="18" Click="Close_Click">
+                <Button.BorderBrush>
+                    <SolidColorBrush Color="#FF707070" Opacity="0"/>
+                </Button.BorderBrush>
+                <Button.Background>
+                    <SolidColorBrush Color="#FFDDDDDD" Opacity="0"/>
+                </Button.Background>
+            </Button>
+            <Button Content="—" Grid.Column="2" HorizontalAlignment="Left" Margin="75,-2,0,0" VerticalAlignment="Top" Width="30" Height="30" Foreground="#FFF5E8E8" RenderTransformOrigin="0.733,0.233" FontSize="16" Click="Min_Click"  >
+                <Button.BorderBrush>
+                    <SolidColorBrush Color="#FF707070" Opacity="0"/>
+                </Button.BorderBrush>
+                <Button.Background>
+                    <SolidColorBrush Color="#FFDDDDDD" Opacity="0"/>
+                </Button.Background>
+            </Button>
+            <Button x:Name="btnEtrievePwd"    Content="重置密码" Grid.Column="1" HorizontalAlignment="Left" Margin="0,3,0,0" Grid.Row="10" VerticalAlignment="Top" Width="116" Height="32" BorderBrush="#FF40444F" FontSize="16" FontWeight="Bold" Foreground="#FFF3E7E7" Click="EtrievePwd_Click">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                        <GradientStop Color="#FF474649" Offset="0.864"/>
+                        <GradientStop Color="#FF838287" Offset="0.121"/>
+                        <GradientStop Color="#FF646366" Offset="0.353"/>
+                        <GradientStop Color="#FF616064" Offset="0.542"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+            <Button x:Name="btnBackEtrievePwd"    Content="返回" Grid.Column="1" HorizontalAlignment="Left" Margin="138,3,0,0" Grid.Row="10" VerticalAlignment="Top" Width="116" Height="32" BorderBrush="#FF40444F" FontSize="16" FontWeight="Bold" Foreground="#FFF3E7E7" Click="etrievePwdBack_Click">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                        <GradientStop Color="#FF474649" Offset="0.864"/>
+                        <GradientStop Color="#FF838287" Offset="0.121"/>
+                        <GradientStop Color="#FF646366" Offset="0.353"/>
+                        <GradientStop Color="#FF616064" Offset="0.542"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+        </Grid>
+
+
+        <!--重置密码界面-->
+
+        <Grid Margin="0,0,-2,-2"  Name="ResetPasswordWindow"  Grid.RowSpan="2" Visibility="Collapsed">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="184*"/>
+                <ColumnDefinition Width="309*"/>
+
+                <ColumnDefinition Width="161*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="108*"/>
+                <RowDefinition Height="50*"/>
+                <RowDefinition Height="50*"/>
+                <RowDefinition Height="120*"/>
+            </Grid.RowDefinitions>
+
+            <Image Source="image/927_gtx03.jpg"  Grid.RowSpan="4" Margin="-20,-6,-37,-6.713" Grid.ColumnSpan="3"   />
+            <Label Content="新密码：" HorizontalAlignment="Left" Margin="70,0,0,0" VerticalAlignment="Top" Width="71" Height="31" Foreground="#FFF9F1F1" FontSize="18" FontWeight="Bold" RenderTransformOrigin="0.463,0.516" Grid.Row="1"/>
+            <PasswordBox x:Name="pbxUserPasswordResetPwd" Grid.Column="1" HorizontalAlignment="Left" Margin="9,0,0,0" Grid.Row="1" VerticalAlignment="Top" Width="245" Height="34" FontSize="23" FontFamily="Global Serif">
                 <PasswordBox.BorderBrush>
                     <SolidColorBrush Color="#FFF9FAFF" Opacity="0.3"/>
                 </PasswordBox.BorderBrush>
@@ -344,7 +501,7 @@
                     <SolidColorBrush Color="#FFDDDDDD" Opacity="0"/>
                 </Button.Background>
             </Button>
-            <Button x:Name="btnEtrievePwd"    Content="找回密码" Grid.Column="1" HorizontalAlignment="Left" Margin="0,10,0,0" Grid.Row="6" VerticalAlignment="Top" Width="116" Height="32" BorderBrush="#FF40444F" FontSize="16" FontWeight="Bold" Foreground="#FFF3E7E7" Click="EtrievePwd_Click">
+            <Button x:Name="btnResetPwd"    Content="重置" Grid.Column="1" HorizontalAlignment="Left" Margin="9,31,0,0" Grid.Row="3" VerticalAlignment="Top" Width="116" Height="32" BorderBrush="#FF40444F" FontSize="16" FontWeight="Bold" Foreground="#FFF3E7E7" Click="resetPwd_Click">
                 <Button.Background>
                     <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
                         <GradientStop Color="#FF1E2D5D" Offset="0.726"/>
@@ -352,7 +509,7 @@
                     </LinearGradientBrush>
                 </Button.Background>
             </Button>
-            <Button x:Name="btnBack_etrievePwd"    Content="返回" Grid.Column="1" HorizontalAlignment="Left" Margin="138,10,0,0" Grid.Row="6" VerticalAlignment="Top" Width="116" Height="32" BorderBrush="#FF40444F" FontSize="16" FontWeight="Bold" Foreground="#FFF3E7E7" Click="etrievePwdBack_Click">
+            <Button x:Name="btnBacResetPwd"    Content="返回" Grid.Column="1" HorizontalAlignment="Left" Margin="138,31,0,0" Grid.Row="3" VerticalAlignment="Top" Width="116" Height="32" BorderBrush="#FF40444F" FontSize="16" FontWeight="Bold" Foreground="#FFF3E7E7" Click="resetPwdBack_Click">
                 <Button.Background>
                     <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
                         <GradientStop Color="#FF1E2D5D" Offset="0.726"/>
@@ -360,8 +517,8 @@
                     </LinearGradientBrush>
                 </Button.Background>
             </Button>
-            <Label Content="确认密码：" HorizontalAlignment="Left" Margin="53,0,0,0" Grid.Row="5" VerticalAlignment="Top" Width="90" Height="31" Foreground="#FFF9F1F1" FontSize="18" FontWeight="Bold" RenderTransformOrigin="0.463,0.516"/>
-            <PasswordBox Name="pbxSurePassword_etrievePwd" HorizontalAlignment="Left" Grid.Row="5" VerticalAlignment="Top" Width="245" Height="34" Grid.Column="1" Margin="8,0,0,0">
+            <Label Content="确认密码：" HorizontalAlignment="Left" Margin="51,0,0,0" Grid.Row="2" VerticalAlignment="Top" Width="90" Height="31" Foreground="#FFF9F1F1" FontSize="18" FontWeight="Bold" RenderTransformOrigin="0.463,0.516" Grid.RowSpan="2"/>
+            <PasswordBox x:Name="pbxSurePasswordResetPwd" Grid.Column="1" HorizontalAlignment="Left" Margin="9,0,0,0" Grid.Row="2" VerticalAlignment="Top" Width="245" Height="34" FontSize="23" FontFamily="Global Serif">
                 <PasswordBox.BorderBrush>
                     <SolidColorBrush Color="#FFF9FAFF" Opacity="0.3"/>
                 </PasswordBox.BorderBrush>
@@ -369,18 +526,8 @@
                     <SolidColorBrush Color="White" Opacity="0.35"/>
                 </PasswordBox.Background>
             </PasswordBox>
-            <Label Content="密码拾回问题：  你最喜欢的颜色是？" HorizontalAlignment="Left" Margin="18,4,0,0" Grid.Row="2" VerticalAlignment="Top" Width="360" Height="31" Foreground="#FFF9F1F1" FontSize="18" FontWeight="Bold" RenderTransformOrigin="0.463,0.516" Grid.ColumnSpan="2"/>
-            <Label Content="您的回答：" HorizontalAlignment="Left" Margin="53,2,0,0" Grid.Row="3" VerticalAlignment="Top" Width="90" Height="31" Foreground="#FFF9F1F1" FontSize="18" FontWeight="Bold" RenderTransformOrigin="0.463,0.516"/>
-            <TextBox x:Name="tbxUserAnswer_etrievePwd" HorizontalAlignment="Left" Height="34" Margin="9,2,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="245" FontSize="14" Grid.Row="3" Grid.Column="1" >
-                <TextBox.BorderBrush>
-                    <SolidColorBrush Color="#FFF3F4F7" Opacity="0.3"/>
-                </TextBox.BorderBrush>
-                <TextBox.Background>
-                    <SolidColorBrush Color="White" Opacity="0.3"/>
-                </TextBox.Background>
-            </TextBox>
-        </Grid>
 
+        </Grid>
 
     </Grid>
 
