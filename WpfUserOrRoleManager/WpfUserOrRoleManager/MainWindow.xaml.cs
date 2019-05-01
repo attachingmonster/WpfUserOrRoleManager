@@ -23,19 +23,17 @@ namespace WpfUserOrRoleManager
     /// </summary>
     public partial class MainWindow : Window
     {
+        #region 成员定义
+        AccountContext db = new AccountContext();//数据库上下文实例
+        UnitOfWork unitOfWork = new UnitOfWork();//单元工厂实例
+        #endregion
         public MainWindow()
         {
             InitializeComponent();
             var user = unitOfWork.SysUserRepository.Get();
         }
 
-        AccountContext db = new AccountContext();
-        UnitOfWork unitOfWork = new UnitOfWork();
-
-
-        /// <summary>
-        /// 公用界面事件
-        /// </summary>
+        #region 公用界面事件
 
         private void Min_Click(object sender, RoutedEventArgs e)  //缩小窗口
         {
@@ -51,12 +49,8 @@ namespace WpfUserOrRoleManager
         {
             this.DragMove();
         }
-
-
-        /// <summary>
-        /// 登陆界面事件
-        /// </summary>
-
+        #endregion
+        #region 登陆界面事件
         private void Login_Click(object sender, RoutedEventArgs e)   //登陆事件
         {
             try
@@ -65,8 +59,8 @@ namespace WpfUserOrRoleManager
                 {
                     pbxUserPasswordLogin.Password = tbxUserPasswordLogin.Text;
                 }
-                var u = unitOfWork.SysUserRepository.Get().Where(s => s.UserAccount.Equals(tbxUserAccountLogin.Text) && s.UserPassword.Equals(CreateMD5.EncryptWithMD5(pbxUserPasswordLogin.Password))).FirstOrDefault();//判断数据库中是否存在账号密码
-                if (u != null)
+                var sysUser = unitOfWork.SysUserRepository.Get().Where(s => s.UserAccount.Equals(tbxUserAccountLogin.Text) && s.UserPassword.Equals(CreateMD5.EncryptWithMD5(pbxUserPasswordLogin.Password))).FirstOrDefault();//判断数据库中是否存在账号密码
+                if (sysUser != null)
                 {
                     MessageBox.Show("登陆成功！");
                 }
@@ -94,7 +88,8 @@ namespace WpfUserOrRoleManager
             tbxUserPasswordLogin.Visibility = Visibility.Collapsed;
             pbxUserPasswordLogin.Password = tbxUserPasswordLogin.Text;
         }
-
+        #endregion
+        #region 注册账号界面事件
 
         /// <summary>
         /// 注册账号界面事件
@@ -220,11 +215,8 @@ namespace WpfUserOrRoleManager
             pbxSurePasswordRegister.Password = tbxSurePasswordRegister.Text;
         }
 
-
-        /// <summary>
-        /// 密码拾回界面事件
-        /// </summary>
-
+        #endregion
+        #region 密码拾回界面事件
         private void loginetrievePwd_Click(object sender, RoutedEventArgs e)  //切换界面事件
         {
             LoginWindow.Visibility = Visibility.Collapsed;
@@ -274,10 +266,8 @@ namespace WpfUserOrRoleManager
             Height = 311;
         }
 
-
-        /// <summary>
-        /// 密码重置界面事件
-        /// </summary>
+        #endregion
+        #region 密码重置界面事件
         private void resetPwd_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -333,10 +323,8 @@ namespace WpfUserOrRoleManager
             ResetPasswordWindow.Visibility = Visibility.Collapsed;
             LoginWindow.Visibility = Visibility.Visible;
         }
-
-        /// <summary>
-        /// 修改密码界面事件
-        /// </summary>
+        #endregion
+        #region 修改密码界面事件
 
         private void loginChangePwd_Click(object sender, RoutedEventArgs e)   //切换界面事件
         {
@@ -415,8 +403,7 @@ namespace WpfUserOrRoleManager
             LoginWindow.Visibility = Visibility.Visible;
             ChangePasswordWindow.Visibility = Visibility.Collapsed;
         }
-
-    
+        #endregion
     }
 }
 
