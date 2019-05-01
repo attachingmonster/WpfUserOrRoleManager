@@ -50,7 +50,7 @@ namespace WpfUserOrRoleManager
             this.DragMove();
         }
         #endregion
-        #region 登陆界面事件
+        #region 登陆界面
         private void Login_Click(object sender, RoutedEventArgs e)   //登陆事件
         {
             try
@@ -89,7 +89,7 @@ namespace WpfUserOrRoleManager
             pbxUserPasswordLogin.Password = tbxUserPasswordLogin.Text;
         }
         #endregion
-        #region 注册账号界面事件
+        #region 注册账号界面
 
         /// <summary>
         /// 注册账号界面事件
@@ -216,7 +216,7 @@ namespace WpfUserOrRoleManager
         }
 
         #endregion
-        #region 密码拾回界面事件
+        #region 密码拾回界面
         private void loginetrievePwd_Click(object sender, RoutedEventArgs e)  //切换界面事件
         {
             LoginWindow.Visibility = Visibility.Collapsed;
@@ -267,7 +267,7 @@ namespace WpfUserOrRoleManager
         }
 
         #endregion
-        #region 密码重置界面事件
+        #region 密码重置界面
         private void resetPwd_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -324,7 +324,7 @@ namespace WpfUserOrRoleManager
             LoginWindow.Visibility = Visibility.Visible;
         }
         #endregion
-        #region 修改密码界面事件
+        #region 修改密码界面
 
         private void loginChangePwd_Click(object sender, RoutedEventArgs e)   //切换界面事件
         {
