@@ -14,70 +14,76 @@
     </Window.Resources>
     <Grid>
         <Grid Name="login" HorizontalAlignment="Left" Height="518" VerticalAlignment="Top" Width="848" Margin="0,0,-8,0">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="757*"/>
-            <ColumnDefinition Width="91*"/>
-        </Grid.ColumnDefinitions>
-        <Image HorizontalAlignment="Left" Height="518" VerticalAlignment="Top" Width="848" Source="10.jpg" Stretch="Fill" Grid.ColumnSpan="2"/>
-        <Rectangle HorizontalAlignment="Left" Height="393" Margin="424,81,0,0" VerticalAlignment="Top" Width="356" RadiusX="51" RadiusY="50" StrokeThickness="7" Opacity="0.9" OpacityMask="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" Grid.ColumnSpan="2">
-            <Rectangle.Stroke>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="Black" Offset="0"/>
-                    <GradientStop Color="#FF2B62C3" Offset="0.505"/>
-                </LinearGradientBrush>
-            </Rectangle.Stroke>
-            <Rectangle.Fill>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="Black" Offset="0"/>
-                    <GradientStop Color="#00328BE4" Offset="1"/>
-                </LinearGradientBrush>
-            </Rectangle.Fill>
-        </Rectangle>
-        <Label Content="用户登录" HorizontalAlignment="Left" Margin="500,107,0,0" VerticalAlignment="Top" Height="77" Width="218" FontSize="48" FontWeight="Bold" FontFamily="STCaiyun" Opacity="1.5">
-            <Label.Foreground>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FF41C198" Offset="0.079"/>
-                    <GradientStop Color="#FF919AF5" Offset="0.33"/>
-                </LinearGradientBrush>
-            </Label.Foreground>
-        </Label>
-        <Label Content="用户" HorizontalAlignment="Left" Margin="440,189,0,0" VerticalAlignment="Top" Height="45" Width="76" FontSize="32" Foreground="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}" FontFamily="STCaiyun" FontWeight="Bold"/>
-        <ComboBox Name="tbxUserName" HorizontalAlignment="Left" Height="35" Margin="530,193,0,0"  Text="" VerticalAlignment="Top" Width="220" BorderThickness="2" FontSize="24" Foreground="#FF1A2FB4" FontFamily="Perpetua Titling MT" FontWeight="Bold" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}" RenderTransformOrigin="0,0" Opacity="0.4" IsEditable="True">
-               <ComboBox.Background>
-                <SolidColorBrush Color="#FF9AB1C0" Opacity="0.5"/>
-            </ComboBox.Background>
-        </ComboBox>
-        <Label Content="密码" HorizontalAlignment="Left" Margin="440,233,0,0" VerticalAlignment="Top" FontSize="32" FontFamily="STCaiyun" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
-        <PasswordBox Name="pbxPassword" HorizontalAlignment="Left" Height="35" Margin="530,241,0,0" VerticalAlignment="Top" Width="220" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}" BorderThickness="2" FontSize="24" FontFamily="Perpetua Titling MT" FontWeight="Bold" Foreground="#FF1A2FB4">
-            <PasswordBox.Background>
-                <SolidColorBrush Color="#FF9AB1C0" Opacity="0.5"/>
-            </PasswordBox.Background>
-        </PasswordBox>
-        <CheckBox Content="记住密码" HorizontalAlignment="Left" Margin="622,291,0,0" VerticalAlignment="Top" Height="23" Width="104" FontSize="18" Foreground="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}" ClickMode="Press" FontFamily="STCaiyun" Opacity="0.6"/>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="757*"/>
+                <ColumnDefinition Width="91*"/>
+            </Grid.ColumnDefinitions>
+            <Image HorizontalAlignment="Left" Height="518" VerticalAlignment="Top" Width="848" Source="10.jpg" Stretch="Fill" Grid.ColumnSpan="2"/>
+            <Rectangle HorizontalAlignment="Left" Height="393" Margin="424,81,0,0" VerticalAlignment="Top" Width="356" RadiusX="51" RadiusY="50" StrokeThickness="7" Opacity="0.9" OpacityMask="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" Grid.ColumnSpan="2">
+                <Rectangle.Stroke>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Black" Offset="0"/>
+                        <GradientStop Color="#FF2B62C3" Offset="0.505"/>
+                    </LinearGradientBrush>
+                </Rectangle.Stroke>
+                <Rectangle.Fill>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Black" Offset="0"/>
+                        <GradientStop Color="#00328BE4" Offset="1"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+            <Label Content="用户登录" HorizontalAlignment="Left" Margin="500,107,0,0" VerticalAlignment="Top" Height="77" Width="218" FontSize="48" FontWeight="Bold" FontFamily="STCaiyun" Opacity="1.5">
+                <Label.Foreground>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF41C198" Offset="0.079"/>
+                        <GradientStop Color="#FF919AF5" Offset="0.33"/>
+                    </LinearGradientBrush>
+                </Label.Foreground>
+            </Label>
+            <Label Content="用户" HorizontalAlignment="Left" Margin="440,189,0,0" VerticalAlignment="Top" Height="45" Width="76" FontSize="32" Foreground="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}" FontFamily="STCaiyun" FontWeight="Bold"/>
+            <ComboBox Name="tbxUserName" HorizontalAlignment="Left" Height="35" Margin="530,193,0,0"  Text="" VerticalAlignment="Top" Width="220" BorderThickness="2" FontSize="24" Foreground="#FF1A2FB4" FontFamily="Perpetua Titling MT" FontWeight="Bold" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}" RenderTransformOrigin="0,0" Opacity="0.4" IsEditable="True" SelectionChanged="TbxUserName_SelectionChanged">
+                <ComboBox.Background>
+                    <SolidColorBrush Color="#FF9AB1C0" Opacity="0.5"/>
+                </ComboBox.Background>
+            </ComboBox>
+            <Label Content="密码" HorizontalAlignment="Left" Margin="440,233,0,0" VerticalAlignment="Top" FontSize="32" FontFamily="STCaiyun" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+            <PasswordBox Name="pbxPassword" HorizontalAlignment="Left" Height="35" Margin="530,241,0,0" VerticalAlignment="Top" Width="220" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}" BorderThickness="2" FontSize="24" FontFamily="Perpetua Titling MT" FontWeight="Bold" Foreground="#FF1A2FB4">
+                <PasswordBox.Background>
+                    <SolidColorBrush Color="#FF9AB1C0" Opacity="0.5"/>
+                </PasswordBox.Background>
+            </PasswordBox>
+            <TextBox Name="tbxPassword" HorizontalAlignment="Left" Height="35" Margin="530,241,0,0" VerticalAlignment="Top" Width="220" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}" BorderThickness="2" FontSize="24" FontFamily="Perpetua Titling MT" FontWeight="Bold" Foreground="#FF1A2FB4" Visibility="Collapsed">
+                <TextBox.Background>
+                    <SolidColorBrush Color="#FF9AB1C0" Opacity="0.5"/>
+                </TextBox.Background>
+            </TextBox>
+            <CheckBox Name="rememberpwd" Content="记住密码" HorizontalAlignment="Left" Margin="656,291,0,0" VerticalAlignment="Top" Height="23" Width="104" FontSize="18" Foreground="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}" ClickMode="Press" FontFamily="STCaiyun" Opacity="0.6" Grid.ColumnSpan="2"/>
+            <CheckBox Name="SeepwdLogin" Content="显示密码" HorizontalAlignment="Left" Margin="559,291,0,0" VerticalAlignment="Top" Height="23" Width="104" FontSize="18" Foreground="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}" ClickMode="Press" FontFamily="STCaiyun" Opacity="0.6" Checked="Seepwd_Checked" Unchecked="Seepwd_Unchecked"/>
             <Button Content="安 全 登 录" HorizontalAlignment="Left" Margin="500,333,0,0" VerticalAlignment="Top" Width="218" Height="49" Padding="2" FontSize="30" Opacity="0.9" FontFamily="STCaiyun" FontWeight="Bold" Foreground="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}" Click="Login_Click" Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}"/>
-        <CheckBox Content="自动登录" HorizontalAlignment="Left" Margin="492,291,0,0" VerticalAlignment="Top" FontSize="18" FontFamily="STCaiyun" Foreground="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}" ClickMode="Press" Opacity="0.6"/>
+            <CheckBox Content="自动登录" HorizontalAlignment="Left" Margin="456,291,0,0" VerticalAlignment="Top" FontSize="18" FontFamily="STCaiyun" Foreground="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}" ClickMode="Press" Opacity="0.6"/>
             <Button Content="注册账号" HorizontalAlignment="Left" Margin="446,407,0,0" VerticalAlignment="Top" Width="88" Foreground="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}" FontFamily="STCaiyun" Height="27" FontSize="16" Opacity="0.7" Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" Click="loginRegister_Click"/>
             <Button Content="修改密码" HorizontalAlignment="Left" Margin="564,407,0,0" VerticalAlignment="Top" Width="88" Foreground="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}" FontSize="16" FontFamily="STCaiyun" Height="27" Opacity="0.7" Click="Change_password" Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}"/>
             <Button  Content="找回密码" HorizontalAlignment="Left" Margin="676,407,0,0" VerticalAlignment="Top" Width="88" FontSize="16" FontFamily="STCaiyun" Height="27" Opacity="0.7" Grid.ColumnSpan="2" Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" Click="loginetrievePwd_Click"/>
-        <Label Content="用户登录系统" HorizontalAlignment="Left" Margin="10,1,0,0" VerticalAlignment="Top" Height="61" Width="340" FontSize="48" FontFamily="STCaiyun" FontStyle="Italic">
-            <Label.Foreground>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="Black" Offset="0"/>
-                    <GradientStop Color="{DynamicResource Color2}" Offset="0.552"/>
-                </LinearGradientBrush>
-            </Label.Foreground>
-        </Label>
-        <Label Content="User Login System" HorizontalAlignment="Left" Margin="14,51,0,0" VerticalAlignment="Top" Height="59" Width="318" FontSize="36" FontFamily="STCaiyun" FontStyle="Italic">
-            <Label.Foreground>
-                <SolidColorBrush Color="{DynamicResource Color2}"/>
-            </Label.Foreground>
-        </Label>
-        <Button Content="—" Margin="724,4,64,0" VerticalAlignment="Top" Height="50" Background="#FF321366" Foreground="{DynamicResource {x:Static SystemColors.AppWorkspaceBrushKey}}" FontSize="20" BorderBrush="{DynamicResource {x:Static SystemColors.GradientActiveCaptionBrushKey}}" Grid.ColumnSpan="2" Click="Min_Click" Opacity="0.5"/>
-        <Button Content="X" Grid.Column="1" HorizontalAlignment="Left" Margin="29,4,0,0" VerticalAlignment="Top" Width="60" Height="50" Background="#FF321366" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" FontSize="20" BorderBrush="{DynamicResource {x:Static SystemColors.AppWorkspaceBrushKey}}" Click="Close_Click" Opacity="0.5"/>
-         </Grid>
-        
-<!--修改密码界面-->
-        <Grid Name="changepassword" Margin="0,0,0,-2" Visibility="Hidden">
+            <Label Content="用户登录系统" HorizontalAlignment="Left" Margin="10,1,0,0" VerticalAlignment="Top" Height="61" Width="340" FontSize="48" FontFamily="STCaiyun" FontStyle="Italic">
+                <Label.Foreground>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Black" Offset="0"/>
+                        <GradientStop Color="{DynamicResource Color2}" Offset="0.552"/>
+                    </LinearGradientBrush>
+                </Label.Foreground>
+            </Label>
+            <Label Content="User Login System" HorizontalAlignment="Left" Margin="14,51,0,0" VerticalAlignment="Top" Height="59" Width="318" FontSize="36" FontFamily="STCaiyun" FontStyle="Italic">
+                <Label.Foreground>
+                    <SolidColorBrush Color="{DynamicResource Color2}"/>
+                </Label.Foreground>
+            </Label>
+            <Button Content="—" Margin="724,4,64,0" VerticalAlignment="Top" Height="50" Background="#FF321366" Foreground="{DynamicResource {x:Static SystemColors.AppWorkspaceBrushKey}}" FontSize="20" BorderBrush="{DynamicResource {x:Static SystemColors.GradientActiveCaptionBrushKey}}" Grid.ColumnSpan="2" Click="Min_Click" Opacity="0.5"/>
+            <Button Content="X" Grid.Column="1" HorizontalAlignment="Left" Margin="29,4,0,0" VerticalAlignment="Top" Width="60" Height="50" Background="#FF321366" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" FontSize="20" BorderBrush="{DynamicResource {x:Static SystemColors.AppWorkspaceBrushKey}}" Click="Close_Click" Opacity="0.5"/>
+        </Grid>
+
+        <!--修改密码界面-->
+        <Grid Name="changepassword" Margin="0,0,0,-2" Visibility="Collapsed">
             <Image Height="450" VerticalAlignment="Top" Source="12.jpg" Stretch="Fill"/>
             <Rectangle HorizontalAlignment="Left" Height="404" Margin="30,36,0,0" VerticalAlignment="Top" Width="360" Opacity="0.9" RadiusX="50" RadiusY="50" StrokeThickness="6" Stroke="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}" Fill="#00000000"/>
             <Button Content="一" HorizontalAlignment="Left" Margin="355,0,0,0" VerticalAlignment="Top" Width="35" Height="30" Background="#FF321366" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Click="changepwdMin_Click"/>
@@ -95,28 +101,31 @@
             <Button Content="返回" HorizontalAlignment="Left" Margin="222,346,0,0" VerticalAlignment="Top" Width="154" Height="50" FontSize="28" FontFamily="Yu Gothic UI Semibold" FontWeight="Bold" Opacity="0.7" Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" Click="changepwdreturn"/>
         </Grid>
 
- <!--注册账号界面-->
-        <Grid Visibility="Hidden" Name="RegisterWindow">
+        <!--注册账号界面-->
+        <Grid Name="RegisterWindow" Visibility="Collapsed">
             <Image HorizontalAlignment="Left" Height="448" VerticalAlignment="Top" Width="425" Source="12.jpg" Stretch="Fill"/>
             <Rectangle HorizontalAlignment="Left" Height="404" Margin="34,34,0,0" VerticalAlignment="Top" Width="360" Opacity="0.9" RadiusX="50" RadiusY="50" StrokeThickness="6" Stroke="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}" Fill="#00000000"/>
-            <Label Content="注册账号" HorizontalAlignment="Left" Margin="128,54,0,0" VerticalAlignment="Top" Height="52" Width="211" FontSize="43" FontFamily="Tw Cen MT Condensed Extra Bold" FontWeight="Bold" Foreground="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}"/>
-            <Label Content="用户" HorizontalAlignment="Left" Margin="66,120,0,0" VerticalAlignment="Top" Height="45" Width="76" FontSize="28" Foreground="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}" FontFamily="STKaiti" FontWeight="Bold" BorderBrush="{DynamicResource {x:Static SystemColors.DesktopBrushKey}}"/>
-            <TextBox Name="Account_register" HorizontalAlignment="Left" Height="31" Margin="164,132,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="220" FontSize="20" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Foreground="{DynamicResource {x:Static SystemColors.AppWorkspaceBrushKey}}" Opacity="0.8" MaxLength="10"/>
-            <Label Content="密码" HorizontalAlignment="Left" Margin="64,164,0,0" VerticalAlignment="Top" FontFamily="STKaiti" Height="54" Width="114" Foreground="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}" FontWeight="Bold" FontSize="28"/>
-            <PasswordBox Name="Password_register" HorizontalAlignment="Left" Margin="165,174,0,0" VerticalAlignment="Top" Height="31" Width="220" FontSize="20" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Opacity="0.8"/>
-            <Label Content="确认密码" HorizontalAlignment="Left" Margin="34,210,0,0" VerticalAlignment="Top" FontFamily="STKaiti" FontSize="28" Foreground="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}" FontWeight="Bold"/>
-            <PasswordBox Name="SurePassword_register" HorizontalAlignment="Left" Margin="164,218,0,0" VerticalAlignment="Top" Width="220" Height="31" FontSize="20" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Opacity="0.8"/>
-            <Label Content="密保： 您的爱好是什么？" HorizontalAlignment="Left" Margin="63,260,0,0" VerticalAlignment="Top" FontFamily="STKaiti" FontSize="28" Foreground="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}" FontWeight="Bold" RenderTransformOrigin="1.779,1.274"/>
-            <Label Content="答案" HorizontalAlignment="Left" Margin="63,307,0,0" VerticalAlignment="Top" FontFamily="STKaiti" FontSize="28" Foreground="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}" FontWeight="Bold"/>
-            <TextBox Name="QuestionAnswer_register" HorizontalAlignment="Left" Height="31" Margin="163,313,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="220" FontSize="20" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Foreground="{DynamicResource {x:Static SystemColors.AppWorkspaceBrushKey}}" Opacity="0.8"/>
-            <Button Content="确认" HorizontalAlignment="Left" Margin="59,362,0,0" VerticalAlignment="Top" Width="140" Height="42" FontSize="28" FontFamily="Yu Gothic UI Semibold" FontWeight="Bold" Opacity="0.7" Click="Registering_Click"/>
-            <Button Content="返回" HorizontalAlignment="Left" Margin="222,362,0,0" VerticalAlignment="Top" Width="140" Height="42" FontSize="28" FontFamily="Yu Gothic UI Semibold" FontWeight="Bold" Opacity="0.7" Click="RegisterReturn_Click"/>
+            <Label Content="注册账号" HorizontalAlignment="Left" Margin="128,62,0,0" VerticalAlignment="Top" Height="52" Width="211" FontSize="43" FontFamily="Tw Cen MT Condensed Extra Bold" FontWeight="Bold" Foreground="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}"/>
+            <Label Content="用户" HorizontalAlignment="Left" Margin="64,124,0,0" VerticalAlignment="Top" Height="45" Width="76" FontSize="28" Foreground="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}" FontFamily="STKaiti" FontWeight="Bold" BorderBrush="{DynamicResource {x:Static SystemColors.DesktopBrushKey}}"/>
+            <TextBox Name="Account_register" HorizontalAlignment="Left" Height="31" Margin="164,136,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="220" FontSize="20" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Foreground="{DynamicResource {x:Static SystemColors.AppWorkspaceBrushKey}}" Opacity="0.8" MaxLength="10"/>
+            <Label Content="密码" HorizontalAlignment="Left" Margin="64,166,0,0" VerticalAlignment="Top" FontFamily="STKaiti" Height="54" Width="114" Foreground="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}" FontWeight="Bold" FontSize="28"/>
+            <PasswordBox Name="Password_register" HorizontalAlignment="Left" Margin="163,174,0,0" VerticalAlignment="Top" Height="31" Width="220" FontSize="20" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Opacity="0.8"/>
+            <TextBox Name="textPassword_register" HorizontalAlignment="Left" Margin="163,174,0,0" VerticalAlignment="Top" Height="31" Width="220" FontSize="20" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Opacity="0.8" Visibility="Collapsed"/>
+            <Label Content="确认密码" HorizontalAlignment="Left" Margin="34,202,0,0" VerticalAlignment="Top" FontFamily="STKaiti" FontSize="28" Foreground="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}" FontWeight="Bold"/>
+            <PasswordBox Name="SurePassword_register" HorizontalAlignment="Left" Margin="164,210,0,0" VerticalAlignment="Top" Width="220" Height="31" FontSize="20" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Opacity="0.8"/>
+            <TextBox Name="textSurePassword_register" HorizontalAlignment="Left" Margin="164,210,0,0" VerticalAlignment="Top" Width="220" Height="31" FontSize="20" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Opacity="0.8" Visibility="Collapsed"/>
+            <CheckBox Name="SeepwdRegister" Content="显示密码" HorizontalAlignment="Left" Margin="165,249,0,0" VerticalAlignment="Top" Height="23" Width="104" FontSize="18" Foreground="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}" ClickMode="Press" FontFamily="STCaiyun" Opacity="0.6" Checked="SeepwdRegister_Checked" Unchecked="SeepwdRegister_Unchecked"/>
+            <Label Content="密保： 您的爱好是什么？" HorizontalAlignment="Left" Margin="63,264,0,0" VerticalAlignment="Top" FontFamily="STKaiti" FontSize="28" Foreground="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}" FontWeight="Bold" RenderTransformOrigin="1.779,1.274"/>
+            <Label Content="答案" HorizontalAlignment="Left" Margin="63,301,0,0" VerticalAlignment="Top" FontFamily="STKaiti" FontSize="28" Foreground="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}" FontWeight="Bold"/>
+            <TextBox Name="QuestionAnswer_register" HorizontalAlignment="Left" Height="31" Margin="163,311,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="220" FontSize="20" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Foreground="{DynamicResource {x:Static SystemColors.AppWorkspaceBrushKey}}" Opacity="0.8"/>
+            <Button Content="确认" HorizontalAlignment="Left" Margin="57,366,0,0" VerticalAlignment="Top" Width="140" Height="42" FontSize="28" FontFamily="Yu Gothic UI Semibold" FontWeight="Bold" Opacity="0.7" Click="Registering_Click"/>
+            <Button Content="返回" HorizontalAlignment="Left" Margin="222,366,0,0" VerticalAlignment="Top" Width="140" Height="42" FontSize="28" FontFamily="Yu Gothic UI Semibold" FontWeight="Bold" Opacity="0.7" Click="RegisterReturn_Click"/>
             <Button Content="一" HorizontalAlignment="Left" Margin="355,0,0,0" VerticalAlignment="Top" Width="35" Height="30" Background="#FF321366" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Click="RegisterMin_Click"/>
             <Button Content="X" HorizontalAlignment="Left" Margin="390,1,0,0" VerticalAlignment="Top" Width="35" Height="30" Background="#FF321366" Foreground="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" Click="RegisterClose_Click"/>
         </Grid>
 
- <!--找回密码界面-->
-        <Grid Visibility="Hidden" Name="RetrievePasswordWindow">
+        <!--找回密码界面-->
+        <Grid Visibility="Collapsed" Name="RetrievePasswordWindow">
             <Image HorizontalAlignment="Left" Height="448" VerticalAlignment="Top" Width="425" Source="12.jpg" Stretch="Fill"/>
             <Button Content="一" HorizontalAlignment="Left" Margin="355,0,0,0" VerticalAlignment="Top" Width="35" Height="30" Background="#FF321366" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Click="loginetrieveMin_Click"/>
             <Button Content="X" HorizontalAlignment="Left" Margin="390,1,0,0" VerticalAlignment="Top" Width="35" Height="30" Background="#FF321366" Foreground="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" Click="loginetrieveClose_Click"/>
