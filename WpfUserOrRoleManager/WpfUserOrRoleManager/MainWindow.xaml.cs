@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -31,8 +33,21 @@ namespace WpfUserOrRoleManager
         {
             InitializeComponent();
             var user = unitOfWork.SysUserRepository.Get();
-        }
+            cbxUserAccountLogin.ItemsSource = user.ToList();       //combobox数据源连接数据库
+            cbxUserAccountLogin.DisplayMemberPath = "UserAccount";  //combobox下拉显示的值
+            cbxUserAccountLogin.SelectedValuePath = "UserAccount";  //combobox选中项显示的值
 
+            cbxUserAccountLogin.SelectedIndex = 0;               //登陆界面 combobox初始显示第一项
+            var u = user.Where(s => s.UserAccount.Equals(cbxUserAccountLogin.Text)).FirstOrDefault();//通过在数据库中搜寻combobox第一项的值返回一个以combobox第一项的值为UserAccount的对象
+            if (u != null)
+            {
+                if (u.RememberPassword == "isChecked")              //判断该对象的 记住密码 是否为 已选
+                {
+                    pbxUserPasswordLogin.Password = CreateMD5.EncryptWithMD5(u.UserPassword);//给passwordbox一串固定密码
+                    cbxRememberPwdLogin.IsChecked = true;     //让记住密码选择框显示选中
+                }
+            }
+        }
         #region 公用界面事件
 
         private void Min_Click(object sender, RoutedEventArgs e)  //缩小窗口
@@ -55,18 +70,56 @@ namespace WpfUserOrRoleManager
         {
             try
             {
-                if (tbxUserPasswordLogin.Visibility != Visibility.Collapsed)//如果显示密码事件开始，则让显示密码值赋值给隐藏密码的值
-                {
-                    pbxUserPasswordLogin.Password = tbxUserPasswordLogin.Text;
-                }
-                var sysUser = unitOfWork.SysUserRepository.Get().Where(s => s.UserAccount.Equals(tbxUserAccountLogin.Text) && s.UserPassword.Equals(CreateMD5.EncryptWithMD5(pbxUserPasswordLogin.Password))).FirstOrDefault();//判断数据库中是否存在账号密码
+                var sysUser = unitOfWork.SysUserRepository.Get().Where(s => s.UserAccount.Equals(cbxUserAccountLogin.Text)).FirstOrDefault();//判断数据库中是否存在账号 ，如果纯在则返回对象不存在返回null
                 if (sysUser != null)
                 {
-                    MessageBox.Show("登陆成功！");
+                    if (sysUser.RememberPassword != "isChecked")  //判断该对象如果该对象的“记住密码”是否为“已选”
+                    {
+                        if (sysUser.UserPassword.Equals(CreateMD5.EncryptWithMD5(pbxUserPasswordLogin.Password))) //如果该对象的“记住密码”为“没选”则判断密码登陆
+                        {
+                            MessageBox.Show("登陆成功！");
+                            if (cbxRememberPwdLogin.IsChecked == true)  //未选择记住密码的登陆，判断是否选择记住密码
+                            {
+                                sysUser.RememberPassword = "isChecked";
+                                unitOfWork.SysUserRepository.Update(sysUser);
+                                unitOfWork.Save();
+                            }
+                        }
+                        else
+                        {
+                            throw new Exception("密码错误！");
+                        }
+                    }
+                    else                              //如果该对象的“记住密码”为“已选”则直接登陆
+                    {
+                        
+                        
+                        if (pbxUserPasswordLogin.Password == CreateMD5.EncryptWithMD5(sysUser.UserPassword))
+                        {
+                            MessageBox.Show("登陆成功！");
+                            
+                        }
+                        else if (sysUser.UserPassword.Equals(CreateMD5.EncryptWithMD5(pbxUserPasswordLogin.Password))) //如果该对象的“记住密码”为“没选”则判断密码登陆
+                        {
+                            MessageBox.Show("登陆成功！");
+                        }
+                        else
+                        {
+                            pbxUserPasswordLogin.Password = "";
+                            throw new Exception("密码错误！");
+                        }
+                        if (cbxRememberPwdLogin.IsChecked == false)//选择记住密码的登陆，判断是否未选择记住密码
+                        {
+                            sysUser.RememberPassword = "unChecked";
+                            unitOfWork.SysUserRepository.Update(sysUser);
+                            unitOfWork.Save();
+                            pbxUserPasswordLogin.Password = "";
+                        }
+                    }
                 }
                 else
                 {
-                    throw new Exception("账号不存在或密码错误！");
+                    throw new Exception("账号不存在！");
                 }
             }
             catch (Exception ex)
@@ -74,26 +127,36 @@ namespace WpfUserOrRoleManager
                 MessageBox.Show("登陆失败！错误信息：\n" + ex.Message);
             }
         }
+        private void UserAccount_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {      
+            var users = unitOfWork.SysUserRepository.Get();           
+            String str = cbxUserAccountLogin.SelectedValue.ToString();  //获取combobox选择的值
+            if (str != null)
+            {
+                var u = users.Where(s => s.UserAccount.Equals(str)).FirstOrDefault(); //通过在数据库中搜寻combobox选择的值返回一个以combobox选择的值为UserAccount的对象
+                if (u.RememberPassword == "isChecked")
+                {
+                    pbxUserPasswordLogin.Password = CreateMD5.EncryptWithMD5(u.UserPassword);
+                    cbxRememberPwdLogin.IsChecked = true;
+                }
+                else
+                {
+                    pbxUserPasswordLogin.Password = "";
+                    cbxRememberPwdLogin.IsChecked = false;
+                }
+            }
 
-        private void loginShowPassword_Check(object sender, RoutedEventArgs e)//登陆界面中显示密码事件
-        {
-            tbxUserPasswordLogin.Visibility = Visibility.Visible;
-            pbxUserPasswordLogin.Visibility = Visibility.Collapsed;
-            tbxUserPasswordLogin.Text = pbxUserPasswordLogin.Password;
-        }
 
-        private void loginHiddenPassword_Check(object sender, RoutedEventArgs e)//登陆界面中隐藏密码事件
-        {
-            pbxUserPasswordLogin.Visibility = Visibility.Visible;
-            tbxUserPasswordLogin.Visibility = Visibility.Collapsed;
-            pbxUserPasswordLogin.Password = tbxUserPasswordLogin.Text;
+
         }
+        
+
+     
+
         #endregion
         #region 注册账号界面
 
-        /// <summary>
-        /// 注册账号界面事件
-        /// </summary>
+
 
         private void loginRegister_Click(object sender, RoutedEventArgs e) //切换界面事件
         {
@@ -153,6 +216,7 @@ namespace WpfUserOrRoleManager
                                     CurrentUser.UserAccount = tbxUserAccountRegister.Text;
                                     CurrentUser.UserPassword = CreateMD5.EncryptWithMD5(pbxUserPasswordRegister.Password);
                                     CurrentUser.UserAnswer = CreateMD5.EncryptWithMD5(UserAnswer);
+                                    CurrentUser.RememberPassword = "unChecked";
                                     unitOfWork.SysUserRepository.Insert(CurrentUser);    //增加新User
                                     unitOfWork.Save();
                                     MessageBox.Show("注册成功");
@@ -403,7 +467,14 @@ namespace WpfUserOrRoleManager
             LoginWindow.Visibility = Visibility.Visible;
             ChangePasswordWindow.Visibility = Visibility.Collapsed;
         }
+
+
+
+
+
         #endregion
+
+       
     }
 }
 

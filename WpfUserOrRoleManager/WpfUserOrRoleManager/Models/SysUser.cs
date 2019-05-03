@@ -24,5 +24,9 @@ namespace WpfUserOrRoleManager.Models
         /// 回答拾回问题答案
         /// </summary>
         public string UserAnswer{ get; set; }
+        /// <summary>
+        /// 记住密码的选择
+        /// </summary>
+        public string RememberPassword { get; set; }
     }
 }
