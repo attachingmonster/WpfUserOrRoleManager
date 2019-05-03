@@ -33,6 +33,11 @@ namespace WpfUserOrRoleManager
         {
             InitializeComponent();
             var user = unitOfWork.SysUserRepository.Get();
+           
+        }
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            var user = unitOfWork.SysUserRepository.Get();
             cbxUserAccountLogin.ItemsSource = user.ToList();       //combobox数据源连接数据库
             cbxUserAccountLogin.DisplayMemberPath = "UserAccount";  //combobox下拉显示的值
             cbxUserAccountLogin.SelectedValuePath = "UserAccount";  //combobox选中项显示的值
@@ -43,7 +48,7 @@ namespace WpfUserOrRoleManager
             {
                 if (u.RememberPassword == "isChecked")              //判断该对象的 记住密码 是否为 已选
                 {
-                    pbxUserPasswordLogin.Password = CreateMD5.EncryptWithMD5(u.UserPassword);//给passwordbox一串固定密码
+                    pbxUserPasswordLogin.Password = u.UserPassword;//给passwordbox一串固定密码
                     cbxRememberPwdLogin.IsChecked = true;     //让记住密码选择框显示选中
                 }
             }
@@ -73,14 +78,14 @@ namespace WpfUserOrRoleManager
                 var sysUser = unitOfWork.SysUserRepository.Get().Where(s => s.UserAccount.Equals(cbxUserAccountLogin.Text)).FirstOrDefault();//判断数据库中是否存在账号 ，如果纯在则返回对象不存在返回null
                 if (sysUser != null)
                 {
-                    if (sysUser.RememberPassword != "isChecked")  //判断该对象如果该对象的“记住密码”是否为“已选”
+                    if (sysUser.RememberPassword != "1")  //判断该对象如果该对象的“记住密码”是否为“已选”
                     {
                         if (sysUser.UserPassword.Equals(CreateMD5.EncryptWithMD5(pbxUserPasswordLogin.Password))) //如果该对象的“记住密码”为“没选”则判断密码登陆
                         {
                             MessageBox.Show("登陆成功！");
                             if (cbxRememberPwdLogin.IsChecked == true)  //未选择记住密码的登陆，判断是否选择记住密码
                             {
-                                sysUser.RememberPassword = "isChecked";
+                                sysUser.RememberPassword = "1";
                                 unitOfWork.SysUserRepository.Update(sysUser);
                                 unitOfWork.Save();
                             }
@@ -94,7 +99,7 @@ namespace WpfUserOrRoleManager
                     {
                         
                         
-                        if (pbxUserPasswordLogin.Password == CreateMD5.EncryptWithMD5(sysUser.UserPassword))
+                        if (pbxUserPasswordLogin.Password == sysUser.UserPassword)
                         {
                             MessageBox.Show("登陆成功！");
                             
@@ -110,7 +115,7 @@ namespace WpfUserOrRoleManager
                         }
                         if (cbxRememberPwdLogin.IsChecked == false)//选择记住密码的登陆，判断是否未选择记住密码
                         {
-                            sysUser.RememberPassword = "unChecked";
+                            sysUser.RememberPassword = "0";
                             unitOfWork.SysUserRepository.Update(sysUser);
                             unitOfWork.Save();
                             pbxUserPasswordLogin.Password = "";
@@ -134,9 +139,9 @@ namespace WpfUserOrRoleManager
             if (str != null)
             {
                 var u = users.Where(s => s.UserAccount.Equals(str)).FirstOrDefault(); //通过在数据库中搜寻combobox选择的值返回一个以combobox选择的值为UserAccount的对象
-                if (u.RememberPassword == "isChecked")
+                if (u.RememberPassword == "1")
                 {
-                    pbxUserPasswordLogin.Password = CreateMD5.EncryptWithMD5(u.UserPassword);
+                    pbxUserPasswordLogin.Password = u.UserPassword;
                     cbxRememberPwdLogin.IsChecked = true;
                 }
                 else
@@ -472,9 +477,10 @@ namespace WpfUserOrRoleManager
 
 
 
+
         #endregion
 
-       
+        
     }
 }
 

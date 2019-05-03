@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfUserOrRoleManager"
         mc:Ignorable="d"
-        Title="MainWindow" Height="311" Width="536" WindowStyle="None" VerticalAlignment="Center"   WindowStartupLocation="CenterScreen" ResizeMode="NoResize" MouseDown="Move_window" Background="#00F0E7E7" >
+        Title="MainWindow" Height="311" Width="536" WindowStyle="None" VerticalAlignment="Center"   WindowStartupLocation="CenterScreen" ResizeMode="NoResize" MouseDown="Move_window" Background="#00F0E7E7" Loaded="Window_Loaded" >
     <Grid>
 
 

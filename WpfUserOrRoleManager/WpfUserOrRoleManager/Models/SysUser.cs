@@ -25,7 +25,7 @@ namespace WpfUserOrRoleManager.Models
         /// </summary>
         public string UserAnswer{ get; set; }
         /// <summary>
-        /// 记住密码的选择
+        /// 记住密码的选择，1表示记忆，0表示不记忆
         /// </summary>
         public string RememberPassword { get; set; }
     }
