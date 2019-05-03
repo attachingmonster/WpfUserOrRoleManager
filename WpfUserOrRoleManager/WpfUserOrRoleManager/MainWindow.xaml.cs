@@ -240,6 +240,36 @@ namespace WpfUserOrRoleManager
                 MessageBox.Show("修改密码失败！错误原因：用户名不存在或原密码输入错误！");
             }
         }
+
+        private void ChangeSeepwd_Checked(object sender, RoutedEventArgs e)//修改密码界面中显示密码事件
+        {
+            tbxoldpbxPassword.Visibility = Visibility.Visible;
+            oldpbxPassword.Visibility = Visibility.Collapsed;
+            tbxoldpbxPassword.Text = oldpbxPassword.Password;
+
+            tbxnewpbxPassword.Visibility = Visibility.Visible;
+            newpbxPassword.Visibility = Visibility.Collapsed;
+            tbxnewpbxPassword.Text = newpbxPassword.Password;
+
+            tbxconfirmpbxPassword.Visibility = Visibility.Visible;
+            confirmpbxPassword.Visibility = Visibility.Collapsed;
+            tbxconfirmpbxPassword.Text = confirmpbxPassword.Password;
+        }
+
+        private void ChangeSeepwd_Unchecked(object sender, RoutedEventArgs e)//修改密码界面中隐藏密码事件
+        {
+            tbxoldpbxPassword.Visibility = Visibility.Collapsed;
+            oldpbxPassword.Visibility = Visibility.Visible;
+            oldpbxPassword.Password = tbxoldpbxPassword.Text;
+
+            tbxnewpbxPassword.Visibility = Visibility.Collapsed;
+            newpbxPassword.Visibility = Visibility.Visible;
+            newpbxPassword.Password = tbxnewpbxPassword.Text;
+
+            tbxconfirmpbxPassword.Visibility = Visibility.Collapsed;
+            confirmpbxPassword.Visibility = Visibility.Visible;
+            confirmpbxPassword.Password = tbxconfirmpbxPassword.Text;
+        }
         #endregion
         #region 注册账号界面
         private void loginRegister_Click(object sender, RoutedEventArgs e)//点击登录界面的注册账号按钮时发生的事件
@@ -446,6 +476,28 @@ namespace WpfUserOrRoleManager
                 MessageBox.Show("找回密码失败！错误信息：\n" + ex.Message);
             }
         }
+
+        private void RetrieveSeepwd_Checked(object sender, RoutedEventArgs e)//找回密码界面中显示密码事件
+        {
+            tbxNewPassword_etrievePwd.Visibility = Visibility.Visible;
+            NewPassword_etrievePwd.Visibility = Visibility.Collapsed;
+            tbxNewPassword_etrievePwd.Text = NewPassword_etrievePwd.Password;
+
+            tbxSurePassword_etrievePwd.Visibility = Visibility.Visible;
+            SurePassword_etrievePwd.Visibility = Visibility.Collapsed;
+            tbxSurePassword_etrievePwd.Text = SurePassword_etrievePwd.Password;
+        }
+
+        private void RetrieveSeepwd_Unchecked(object sender, RoutedEventArgs e)//找回密码界面中隐藏密码事件
+        {
+            tbxNewPassword_etrievePwd.Visibility = Visibility.Collapsed;
+            NewPassword_etrievePwd.Visibility = Visibility.Visible;
+            NewPassword_etrievePwd.Password = tbxNewPassword_etrievePwd.Text;
+
+            tbxSurePassword_etrievePwd.Visibility = Visibility.Collapsed;
+            SurePassword_etrievePwd.Visibility = Visibility.Visible;
+            SurePassword_etrievePwd.Password = tbxSurePassword_etrievePwd.Text;
+        }
         #endregion
         #region 初始化数据
         private void Loginsystem_Loaded(object sender, RoutedEventArgs e)//运行界面的初始化数据
@@ -504,7 +556,7 @@ namespace WpfUserOrRoleManager
 
         }
 
-
+      
     }
  }
 
