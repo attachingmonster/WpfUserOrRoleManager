@@ -13,11 +13,13 @@ namespace WpfUserOrRoleManager.DAL
     {
         protected override void Seed(AccountContext context)
         {
-            //var sysUsers = new List<SysUser>
-            //{
-            //    new SysUser{ID=1,UserAccount="123",UserPassword="abc" }
-            //};
-            //sysUsers.ForEach(s=>context.SysUsers.Add(s));
+            var sysRole = new List<SysRole>
+            {
+                new SysRole {RoleName ="管理员",RoleDec ="administrtors have full authorization to perform systea administration."},
+               new SysRole {RoleName ="普通用户",RoleDec ="general users an access the shared data they are suthorized for."}
+            };
+            sysRole.ForEach(s => context.SysRoles.Add(s));
+            context.SaveChanges();
         }
     }
 }

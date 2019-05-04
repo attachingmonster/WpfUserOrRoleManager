@@ -13,7 +13,9 @@ namespace WpfUserOrRoleManager.DAL
         private AccountContext context = new AccountContext();
 
         private GenericRepository<SysUser> sysUserRepository;
-       
+        private GenericRepository<SysRole> sysRoleRepository;
+        private GenericRepository<SysUserRole> sysUserRoleRepository;
+        
         public GenericRepository<SysUser> SysUserRepository
         {
             get
@@ -25,7 +27,31 @@ namespace WpfUserOrRoleManager.DAL
                 return sysUserRepository;
             }
         }
+        public GenericRepository<SysRole> SysRoleRepository
+        {
+            get
+            {
+                if (this.sysRoleRepository == null)
+                {
+                    this.sysRoleRepository = new GenericRepository<SysRole>(context);
+                }
+                return sysRoleRepository;
+            }
+        }
+        public GenericRepository<SysUserRole> SysUserRoleRepository
+        {
+            get
+            {
+                if (this.sysUserRoleRepository == null)
+                {
+                    this.sysUserRoleRepository = new GenericRepository<SysUserRole>(context);
+                }
+                return sysUserRoleRepository;
+            }
+        }
        
+
+
         #region Save & Dispose
         public void Save()
         {
