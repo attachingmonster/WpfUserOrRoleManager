@@ -35,6 +35,7 @@ namespace WpfUserOrRoleManager
             var user = unitOfWork.SysUserRepository.Get();
            
         }
+        
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             var user = unitOfWork.SysUserRepository.Get();
@@ -75,110 +76,46 @@ namespace WpfUserOrRoleManager
         {
             try
             {
-                var sysUser = unitOfWork.SysUserRepository.Get().Where(s => s.UserAccount.Equals(cbxUserAccountLogin.Text)).FirstOrDefault();    //判断数据库中是否存在账号 ，如果存在则返回对象，否则返回null
-
+                var sysUser = unitOfWork.SysUserRepository.Get().Where(s => s.UserAccount.Equals(cbxUserAccountLogin.Text) && (s.UserPassword.Equals(CreateMD5.EncryptWithMD5(pbxUserPasswordLogin.Password)) || (s.RememberPassword.Equals("1") && s.UserPassword.Equals(pbxUserPasswordLogin.Password)))).FirstOrDefault();    //判断数据库中的(是否存在账号and(输入密码正确or(已记住密码and给定密码正确))逻辑是否存在 ，如果存在则返回对象，否则返回null
                 if (sysUser != null)
                 {
-                    var sysUserRole = unitOfWork.SysUserRoleRepository.Get().Where(s => s.SysUserID.Equals(sysUser.ID.ToString())).FirstOrDefault();    //寻找用户在表里的实例，返回对象
-                    if (sysUser.RememberPassword =="0")    //判断该对象的“记住密码”是否为记忆
+                    MessageBox.Show("登陆成功！");
+
+                    //判断登陆成功时是否记住密码
+                    if (cbxRememberPwdLogin.IsChecked == true)   
                     {
-                        #region 如果该对象的“记住密码”为未记忆，则通过判断密码进行登陆
-                        if (sysUser.UserPassword.Equals(CreateMD5.EncryptWithMD5(pbxUserPasswordLogin.Password)))    //如果该对象的“记住密码”为未记忆，则通过判断密码进行登陆
-                        {
-                            MessageBox.Show("登陆成功！");
-                            if (cbxRememberPwdLogin.IsChecked == true)    //未选择记住密码的登陆，判断是否选择记住密码
-                            {
-                                sysUser.RememberPassword = "1";
-                                unitOfWork.SysUserRepository.Update(sysUser);
-                                unitOfWork.Save();
-                            }
-
-                            LoginWindow.Visibility = Visibility.Collapsed;    //登陆成功的界面转换
-                            ListViewWindow.Visibility = Visibility.Visible;
-                            Height = 421;
-                            Width = 656;
-
-                            var users = unitOfWork.SysUserRepository.Get();    //listview的数据源绑定数据库
-                            ListView.ItemsSource = users.ToList();
-                            if (sysUserRole.SysRoleID == "1")    //判断用户的角色
-                            {
-                                LabTextListView.Content = sysUser.UserAccount + "用户为管理员";
-                                btnDeleteListView.Visibility = Visibility.Visible;                            
-                            }
-                            else
-                            {
-                                LabTextListView.Content = sysUser.UserAccount + "用户为普通用户";
-                            }
-
-                        }
-                        else
-                        {
-                            throw new Exception("密码错误！");
-                        }
-                        #endregion
+                        sysUser.RememberPassword = "1";
+                        unitOfWork.SysUserRepository.Update(sysUser);
+                        unitOfWork.Save();
                     }
-                    else                              //如果该对象的“记住密码”为“已选”则直接登陆
+                    else
                     {
-                        #region 如果该对象的“记住密码”为记忆，且给定密码未被用户改变，则直接登陆
-                        if (pbxUserPasswordLogin.Password == sysUser.UserPassword)
-                        {
-                            MessageBox.Show("登陆成功！");
-
-                            LoginWindow.Visibility = Visibility.Collapsed;
-                            ListViewWindow.Visibility = Visibility.Visible;
-                            Height = 421;
-                            Width = 656;
-                            var users = unitOfWork.SysUserRepository.Get();
-                            ListView.ItemsSource = users.ToList();
-                            if (sysUserRole.SysRoleID == "1")
-                            {
-                                LabTextListView.Content = sysUser.UserAccount + "用户为管理员";
-                                btnDeleteListView.Visibility = Visibility.Visible;                               
-                            }
-                            else
-                            {
-                                LabTextListView.Content = sysUser.UserAccount + "用户为普通用户";
-                            }
-                        }
-                        #endregion
-                        #region 如果该对象的“记住密码”为记忆，且给定被用户改变，但改变的值为原密码，通过登陆
-                        else if (sysUser.UserPassword.Equals(CreateMD5.EncryptWithMD5(pbxUserPasswordLogin.Password))) //如果该对象的“记住密码”为“没选”则判断密码登陆
-                        {
-                            MessageBox.Show("登陆成功！");
-                            LoginWindow.Visibility = Visibility.Collapsed;
-                            ListViewWindow.Visibility = Visibility.Visible;
-                            Height = 421;
-                            Width = 656;
-                            var users = unitOfWork.SysUserRepository.Get();
-                            ListView.ItemsSource = users.ToList();
-                            if (sysUserRole.SysRoleID == "1")
-                            {
-                                LabTextListView.Content = sysUser.UserAccount + "用户为管理员";
-                                btnDeleteListView.Visibility = Visibility.Visible;
-                            }
-                            else
-                            {
-                                LabTextListView.Content = sysUser.UserAccount + "用户为普通用户";
-                            }
-                        }
-                        #endregion
-                        else
-                        {
-                            pbxUserPasswordLogin.Password = "";
-                            throw new Exception("密码错误！");
-                        }
-                        if (cbxRememberPwdLogin.IsChecked == false)//选择记住密码的登陆，判断是否未选择记住密码
-                        {
-                            sysUser.RememberPassword = "0";
-                            unitOfWork.SysUserRepository.Update(sysUser);
-                            unitOfWork.Save();
-                            pbxUserPasswordLogin.Password = "";
-                        }
+                        sysUser.RememberPassword = "0";
+                        unitOfWork.SysUserRepository.Update(sysUser);
+                        unitOfWork.Save();
                     }
+                    //登陆成功的界面转换
+                    LoginWindow.Visibility = Visibility.Collapsed;    
+                    ListViewWindow.Visibility = Visibility.Visible;
+                    Height = 421;
+                    Width = 656;
+
+                    var users = unitOfWork.SysUserRepository.Get();    //listview的数据源绑定数据库
+                    ListView.ItemsSource = users.ToList();
+                    var sysUserRole = unitOfWork.SysUserRoleRepository.Get().Where(s => s.SysUserID.Equals(sysUser.ID.ToString())).FirstOrDefault();    //寻找用户在表里的实例，返回对象                 
+                    if (sysUserRole.SysRoleID == "1")    //判断用户的角色
+                    {
+                        LabTextListView.Content = sysUser.UserAccount + "用户为管理员";
+                        btnDeleteListView.Visibility = Visibility.Visible;                            
+                    }
+                    else
+                    {
+                        LabTextListView.Content = sysUser.UserAccount + "用户为普通用户";
+                    }                 
                 }
                 else
                 {
-                    throw new Exception("账号不存在！");
+                    throw new Exception("账号不存在或密码错误！");
                 }
             }
             catch (Exception ex)
@@ -249,6 +186,7 @@ namespace WpfUserOrRoleManager
             cbxUserAccountLogin.ItemsSource = user.ToList();       //combobox数据源连接数据库
             cbxUserAccountLogin.DisplayMemberPath = "UserAccount";  //combobox下拉显示的值
             cbxUserAccountLogin.SelectedValuePath = "UserAccount";  //combobox选中项显示的值
+            cbxUserAccountLogin.SelectedIndex = 0;               //登陆界面 combobox初始显示第一项
         }
 
 
@@ -338,6 +276,7 @@ namespace WpfUserOrRoleManager
                                         cbxUserAccountLogin.ItemsSource = user.ToList();       //combobox数据源连接数据库
                                         cbxUserAccountLogin.DisplayMemberPath = "UserAccount";  //combobox下拉显示的值
                                         cbxUserAccountLogin.SelectedValuePath = "UserAccount";  //combobox选中项显示的值
+                                        cbxUserAccountLogin.SelectedIndex = 0;               //登陆界面 combobox初始显示第一项
                                     }
                                 }
                                 else
@@ -635,4 +574,19 @@ namespace WpfUserOrRoleManager
        
     }
 }
+/*LoginWindow.Visibility = Visibility.Collapsed;
+                            ListViewWindow.Visibility = Visibility.Visible;
+                            Height = 421;
+                            Width = 656;
+                            var users = unitOfWork.SysUserRepository.Get();
+                            ListView.ItemsSource = users.ToList();
+                            if (sysUserRole.SysRoleID == "1")
+                            {
+                                LabTextListView.Content = sysUser.UserAccount + "用户为管理员";
+                                btnDeleteListView.Visibility = Visibility.Visible;                               
+                            }
+                            else
+                            {
+                                LabTextListView.Content = sysUser.UserAccount + "用户为普通用户";
+                            }*/
 
