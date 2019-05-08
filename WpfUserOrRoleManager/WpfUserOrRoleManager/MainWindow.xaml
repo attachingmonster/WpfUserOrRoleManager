@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfUserOrRoleManager"
         mc:Ignorable="d"
-        Title="MainWindow" Height="311" Width="536" WindowStyle="None" VerticalAlignment="Center"   WindowStartupLocation="CenterScreen" ResizeMode="NoResize" MouseDown="Move_window"  Loaded="Window_Loaded" >
+        Title="MainWindow" Height="310" Width="536" WindowStyle="None" VerticalAlignment="Center"   WindowStartupLocation="Manual" ResizeMode="NoResize" MouseDown="Move_window"  Loaded="Window_Loaded" Top="385" Left="692">
     <Grid Margin="0,0,0,1">
 
 
-        <!--登陆界面-->
+        <!--登录界面-->
 
         <Grid Name="LoginWindow" Margin="0,0,-2,-2"  Grid.RowSpan="2" Visibility="Visible" >
             <Grid.ColumnDefinitions>
@@ -59,7 +59,7 @@
                     <SolidColorBrush Color="#FFDDDDDD" Opacity="0"/>
                 </Button.Background>
             </Button>
-            <Button x:Name="btnLogin"    Content="登陆" Grid.Column="1" HorizontalAlignment="Left" Margin="8,42,0,0" Grid.Row="3" VerticalAlignment="Top" Width="244" Height="32" BorderBrush="#FF40444F" FontSize="16" FontWeight="Bold" Foreground="#FFF3E7E7" Click="Login_Click">
+            <Button x:Name="btnLogin"    Content="登录" Grid.Column="1" HorizontalAlignment="Left" Margin="8,42,0,0" Grid.Row="3" VerticalAlignment="Top" Width="244" Height="32" BorderBrush="#FF40444F" FontSize="16" FontWeight="Bold" Foreground="#FFF3E7E7" Click="Login_Click">
                 <Button.Background>
                     <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
                         <GradientStop Color="#FF1E2D5D" Offset="0.726"/>
@@ -100,7 +100,8 @@
                     <Run Text="找回密码"/>
                 </Underline>
             </Button>
-            <CheckBox Name="cbxRememberPwdLogin" Content="记住密码" HorizontalAlignment="Left" Margin="143,14,0,0" Grid.Row="3" VerticalAlignment="Top" Height="16" Width="79"  RenderTransformOrigin="0.5,0.5" FontSize="14" Foreground="#FFF9F7F7" Grid.Column="1"  />
+            <CheckBox Name="cheRememberPwdLogin" Content="记住密码" HorizontalAlignment="Left" Margin="143,14,0,0" Grid.Row="3" VerticalAlignment="Top" Height="16" Width="79"  RenderTransformOrigin="0.5,0.5" FontSize="14" Foreground="#FFF9F7F7" Grid.Column="1"  />
+            <Grid Grid.Column="1" HorizontalAlignment="Left" Height="100" Margin="17,44,0,0" Grid.Row="1" Grid.RowSpan="3" VerticalAlignment="Top" Width="100"/>
         </Grid>
 
 
@@ -139,9 +140,11 @@
                 </TextBox.Background>
             </TextBox>
             <ComboBox Name="cbxUserRoleRegister" Grid.Column="2" HorizontalAlignment="Left" Margin="4,5,0,0" Grid.Row="1" VerticalAlignment="Top" Width="79" Background="{x:Null}" BorderBrush="{x:Null}" SelectedIndex="0" >
-                <ComboBoxItem FontSize="13">普通用户
+                <ComboBoxItem FontSize="12">学生
                 </ComboBoxItem>
-                <ComboBoxItem FontSize="13">管理员
+                <ComboBoxItem FontSize="12">教师
+                </ComboBoxItem>
+                <ComboBoxItem FontSize="12">admin
                 </ComboBoxItem>
             </ComboBox>
 
@@ -259,7 +262,8 @@
                     </LinearGradientBrush>
                 </Button.Background>
             </Button>
-            <Button x:Name="btnBack_register"    Content="返回" Grid.Column="1" HorizontalAlignment="Left" Margin="138,3,0,0" Grid.Row="10" VerticalAlignment="Top" Width="116" Height="32" BorderBrush="#FF40444F" FontSize="16" FontWeight="Bold" Foreground="#FFF3E7E7" Click="registerBack_Click">
+
+            <Button x:Name="btnBack1_register"    Content="返回" Grid.Column="1" HorizontalAlignment="Left" Margin="138,3,0,0" Grid.Row="10" VerticalAlignment="Top" Width="116" Height="32" BorderBrush="#FF40444F" FontSize="16" FontWeight="Bold" Foreground="#FFF3E7E7" Click="registerBack1_Click">
                 <Button.Background>
                     <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
                         <GradientStop Color="#FF1E2D5D" Offset="0.726"/>
@@ -267,6 +271,15 @@
                     </LinearGradientBrush>
                 </Button.Background>
             </Button>
+            <Button x:Name="btnBack2_register"    Content="返回" Grid.Column="1" HorizontalAlignment="Left" Margin="138,3,0,-6" Grid.Row="10" VerticalAlignment="Top" Width="116" Height="32" BorderBrush="#FF40444F" FontSize="16" FontWeight="Bold" Foreground="#FFF3E7E7" Click="registerBack2_Click" Visibility="Collapsed">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                        <GradientStop Color="#FF1E2D5D" Offset="0.726"/>
+                        <GradientStop Color="#FF5573DC" Offset="0.261"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+
 
 
 
@@ -553,7 +566,7 @@
 
 
         <!--用户管理界面-->
-        <Grid Name="ListViewWindow"  Margin="0,0,0,0"   Visibility="Collapsed" >
+        <Grid Name="ListViewWindow"  Margin="0,0,0,0"   Visibility="Collapsed" Height="402" VerticalAlignment="Top" >
             <Grid.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="#FFE0EAF3" Offset="0"/>
@@ -566,18 +579,21 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <ListView Name="ListView" SelectionMode="Single"  Grid.Row="1" Background="White" BorderBrush="{x:Null}" Foreground="#FF161617" FontSize="16"   >
+            <ListView Name="ListView" Height="321"  SelectionMode="Single" Background="White" BorderBrush="{x:Null}" Foreground="#FF161617" FontSize="16" Margin="100,0,0,0" Grid.Row="1" >
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="ID" Width="100"  DisplayMemberBinding="{Binding Path=ID}"/>
                         <GridViewColumn Header="账号" Width="150" DisplayMemberBinding="{Binding Path=UserAccount}"/>
                         <GridViewColumn Header="密码" Width="200"  DisplayMemberBinding="{Binding Path=UserPassword}"/>
-                        <GridViewColumn Header="问题答案" Width="201"  DisplayMemberBinding="{Binding Path=UserAnswer}"/>
-
-
+                        <GridViewColumn Header="问题答案" Width="200"  DisplayMemberBinding="{Binding Path=UserAnswer}"/>
                     </GridView>
                 </ListView.View>
-
+            </ListView>
+            <ListView Name="ListViewRole" HorizontalAlignment="Left" Height="321" Margin="0,0,0,0" Grid.Row="1" VerticalAlignment="Top" Width="100" BorderBrush="{x:Null}" FontSize="16">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="角色" Width="99" DisplayMemberBinding="{Binding Path=RoleName}"/>
+                    </GridView>
+                </ListView.View>
             </ListView>
             <Button Content="X" HorizontalAlignment="Left" Margin="625,0,0,0" VerticalAlignment="Top" Width="30" Height="30" Foreground="#FF111111" RenderTransformOrigin="0.733,0.233" Click="Close_Click" FontSize="16" Grid.RowSpan="2">
                 <Button.BorderBrush>
@@ -597,7 +613,7 @@
             </Button>
             <Label Name="LabTextListView" Content="" HorizontalAlignment="Left" Margin="30,0,0,0" VerticalAlignment="Top" Height="27" Width="187" FontSize="14"/>
 
-            <Button x:Name="btnDeleteListView"    Content="删除" HorizontalAlignment="Left" Margin="498,17,0,0" Grid.Row="2" VerticalAlignment="Top" Width="107" Height="26" BorderBrush="#FFA3A7B4" FontSize="16" FontWeight="Bold" Foreground="#FF151515" Click="ListViewDelet_Click" Visibility="Collapsed">
+            <Button x:Name="btnDeleteListView"    Content="删除" Margin="415,17,134,0" Grid.Row="2" VerticalAlignment="Top" Height="26" BorderBrush="#FFA3A7B4" FontSize="16" FontWeight="Bold" Foreground="#FF151515" Click="ListViewDelet_Click" Width="107">
                 <Button.Background>
                     <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
                         <GradientStop Color="#FFA8A6AC" Offset="0.855"/>
@@ -607,7 +623,7 @@
                     </LinearGradientBrush>
                 </Button.Background>
             </Button>
-            <Button x:Name="btnBackListView"    Content="返回" HorizontalAlignment="Left" Margin="372,17,0,0" Grid.Row="2" VerticalAlignment="Top" Width="107" Height="26" BorderBrush="#FFA3A7B4" FontSize="16" FontWeight="Bold" Foreground="#FF151515" Click="ListViewBack_Click">
+            <Button x:Name="btnBackListView"    Content="返回" HorizontalAlignment="Left" Margin="535,17,0,0" Grid.Row="2" VerticalAlignment="Top" Width="107" Height="26" BorderBrush="#FFA3A7B4" FontSize="16" FontWeight="Bold" Foreground="#FF151515" Click="ListViewBack_Click">
                 <Button.Background>
                     <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
                         <GradientStop Color="#FFA8A6AC" Offset="0.855"/>
@@ -615,6 +631,103 @@
                         <GradientStop Color="#FFC6C3CD" Offset="0.353"/>
                         <GradientStop Color="#FFD4D2DA" Offset="0.542"/>
                     </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+            <Button x:Name="btnAddListView"  Width="107"  Content="增加" Margin="295,17,254,0" Grid.Row="2" VerticalAlignment="Top" Height="26" BorderBrush="#FFA3A7B4" FontSize="16" FontWeight="Bold" Foreground="#FF151515" Click="ListViewAdd_Click" >
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                        <GradientStop Color="#FFA8A6AC" Offset="0.855"/>
+                        <GradientStop Color="#FFBCBAC3" Offset="0.104"/>
+                        <GradientStop Color="#FFC6C3CD" Offset="0.353"/>
+                        <GradientStop Color="#FFD4D2DA" Offset="0.542"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+            <Button x:Name="btnChangeRoleListView"  Width="107"  Content="修改角色" Margin="175,17,374,0" Grid.Row="2" VerticalAlignment="Top" Height="26" BorderBrush="#FFA3A7B4" FontSize="16" FontWeight="Bold" Foreground="#FF151515" Click="ListViewChangeRole_Click" >
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                        <GradientStop Color="#FFA8A6AC" Offset="0.855"/>
+                        <GradientStop Color="#FFBCBAC3" Offset="0.104"/>
+                        <GradientStop Color="#FFC6C3CD" Offset="0.353"/>
+                        <GradientStop Color="#FFD4D2DA" Offset="0.542"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+
+        </Grid>
+
+
+
+
+        <Grid Name="TeacherWindow" Visibility="Collapsed" Margin="0,0,0,0">
+            <Image Source="image/teacher.jpg"     />
+            <Label Content="欢迎登录教师窗口" HorizontalAlignment="Left" Margin="-442,-260,0,0" VerticalAlignment="Top" Height="45" Width="243" FontSize="20" FontFamily="Segoe UI Black" Foreground="#FFFBF9F9"/>
+            <Button Content="X" Grid.Column="2" HorizontalAlignment="Left" Margin="1890,-2,0,0" VerticalAlignment="Top" Width="30" Height="30" Foreground="#FFF5E8E8" RenderTransformOrigin="0.733,0.233" FontSize="18" Click="Close_Click">
+                <Button.BorderBrush>
+                    <SolidColorBrush Color="#FF707070" Opacity="0"/>
+                </Button.BorderBrush>
+                <Button.Background>
+                    <SolidColorBrush Color="#FFDDDDDD" Opacity="0"/>
+                </Button.Background>
+            </Button>
+            <Button Content="—" Grid.Column="2" HorizontalAlignment="Left" Margin="1860,-2,0,0" VerticalAlignment="Top" Width="30" Height="30" Foreground="#FFF5E8E8" RenderTransformOrigin="0.733,0.233" FontSize="16" Click="Min_Click"  >
+                <Button.BorderBrush>
+                    <SolidColorBrush Color="#FF707070" Opacity="0"/>
+                </Button.BorderBrush>
+                <Button.Background>
+                    <SolidColorBrush Color="#FFDDDDDD" Opacity="0"/>
+                </Button.Background>
+            </Button>
+        </Grid>
+        <Grid Name="StudentWindow" Visibility="Collapsed">
+            <Image Source="image/student.jpg"    />
+            <Label Content="欢迎登录学生窗口" HorizontalAlignment="Left" Margin="-442,-260,0,0" VerticalAlignment="Top" Height="45" Width="243" FontSize="20" FontFamily="Segoe UI Black" Foreground="#FFFBF9F9"/>
+            <Button Content="X" Grid.Column="2" HorizontalAlignment="Left" Margin="1890,-2,0,0" VerticalAlignment="Top" Width="30" Height="30" Foreground="#FFF5E8E8" RenderTransformOrigin="0.733,0.233" FontSize="18" Click="Close_Click" d:IsHidden="True">
+                <Button.BorderBrush>
+                    <SolidColorBrush Color="#FF707070" Opacity="0"/>
+                </Button.BorderBrush>
+                <Button.Background>
+                    <SolidColorBrush Color="#FFDDDDDD" Opacity="0"/>
+                </Button.Background>
+            </Button>
+            <Button Content="—" Grid.Column="2" HorizontalAlignment="Left" Margin="1860,-2,0,0" VerticalAlignment="Top" Width="30" Height="30" Foreground="#FFF5E8E8" RenderTransformOrigin="0.733,0.233" FontSize="16" Click="Min_Click"  >
+                <Button.BorderBrush>
+                    <SolidColorBrush Color="#FF707070" Opacity="0"/>
+                </Button.BorderBrush>
+                <Button.Background>
+                    <SolidColorBrush Color="#FFDDDDDD" Opacity="0"/>
+                </Button.Background>
+            </Button>
+        </Grid>
+        <Grid Name="ChangeRoleWindow"  Visibility="Collapsed" Margin="0,0,-229,0">
+            <Grid.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFA7C7DA" Offset="0.096"/>
+                    <GradientStop Color="#FFD5E4EC" Offset="0.948"/>
+                    <GradientStop Color="#FFC5DAE6" Offset="0.387"/>
+                    <GradientStop Color="#FFE6EFF4" Offset="0.5"/>
+                </LinearGradientBrush>
+            </Grid.Background>
+            <CheckBox Name="cheStudentChangeRole" Content="学生"     Height="16"  RenderTransformOrigin="0.5,0.5" FontSize="14" Margin="100,80,354,213"  />
+            <CheckBox Name="cheAdminChangeRole" Content="admin"    Height="16"  RenderTransformOrigin="0.5,0.5" FontSize="14" Margin="100,180,349,113"  />
+
+            <CheckBox Name="cheTeacherChangeRole" Content="教师"     Height="16"  RenderTransformOrigin="0.5,0.5" FontSize="14" Margin="100,130,354,163"  />
+            <Label Name="LabTextChangeRole" Content="更改。。用户角色" HorizontalAlignment="Left" Margin="90,24,0,256" Width="206" FontSize="14" FontWeight="Bold"/>
+            <Button Content="修改" HorizontalAlignment="Left" Margin="86,244,0,0" VerticalAlignment="Top" Width="135" Height="28" FontSize="18" FontFamily="Palatino Linotype" FontWeight="Bold" Background="#FFF5EDED" BorderBrush="{x:Null}" Click="ChangeRole_Click"/>
+            <Button Content="X" HorizontalAlignment="Left" Margin="249,1,0,0" VerticalAlignment="Top" Width="30" Height="30" Foreground="#FFF5E8E8" RenderTransformOrigin="0.733,0.233" FontSize="18" Click="ChangeRoleBack_Click">
+                <Button.BorderBrush>
+                    <SolidColorBrush Color="#FF707070" Opacity="0"/>
+                </Button.BorderBrush>
+                <Button.Background>
+                    <SolidColorBrush Color="#FFDDDDDD" Opacity="0"/>
+                </Button.Background>
+            </Button>
+            <Button Content="—" HorizontalAlignment="Left" Margin="218,0,0,0" VerticalAlignment="Top" Width="30" Height="30" Foreground="#FFF5E8E8" RenderTransformOrigin="0.733,0.233" FontSize="16" Click="Min_Click"  >
+                <Button.BorderBrush>
+                    <SolidColorBrush Color="#FF707070" Opacity="0"/>
+                </Button.BorderBrush>
+                <Button.Background>
+                    <SolidColorBrush Color="#FFDDDDDD" Opacity="0"/>
                 </Button.Background>
             </Button>
         </Grid>

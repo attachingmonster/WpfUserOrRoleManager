@@ -11,5 +11,6 @@ namespace WpfUserOrRoleManager.Models
         public int ID { get; set; }
         public string RoleName { get; set; }
         public string RoleDec { get; set; }
+       
     }
 }

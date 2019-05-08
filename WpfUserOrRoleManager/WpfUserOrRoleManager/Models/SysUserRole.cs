@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace WpfUserOrRoleManager.Models
 {
-    public class SysUserRole
+    public class SysUserRoles
     {
         public int ID { get; set; }
-        public string SysUserID { get; set; }
-        public string SysRoleID { get; set; }
+        public int  SysUserID { get; set; }
+        public int  SysRoleID { get; set; }
+        
+
     }
 }

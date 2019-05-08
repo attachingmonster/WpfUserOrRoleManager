@@ -14,7 +14,7 @@ namespace WpfUserOrRoleManager.DAL
 
         private GenericRepository<SysUser> sysUserRepository;
         private GenericRepository<SysRole> sysRoleRepository;
-        private GenericRepository<SysUserRole> sysUserRoleRepository;
+        private GenericRepository<SysUserRoles> sysUserRoleRepository;
         
         public GenericRepository<SysUser> SysUserRepository
         {
@@ -38,13 +38,13 @@ namespace WpfUserOrRoleManager.DAL
                 return sysRoleRepository;
             }
         }
-        public GenericRepository<SysUserRole> SysUserRoleRepository
+        public GenericRepository<SysUserRoles> SysUserRoleRepository
         {
             get
             {
                 if (this.sysUserRoleRepository == null)
                 {
-                    this.sysUserRoleRepository = new GenericRepository<SysUserRole>(context);
+                    this.sysUserRoleRepository = new GenericRepository<SysUserRoles>(context);
                 }
                 return sysUserRoleRepository;
             }

@@ -15,8 +15,9 @@ namespace WpfUserOrRoleManager.DAL
         {
             var sysRole = new List<SysRole>
             {
-                new SysRole {RoleName ="管理员",RoleDec ="administrtors have full authorization to perform systea administration."},
-               new SysRole {RoleName ="普通用户",RoleDec ="general users an access the shared data they are suthorized for."}
+                new SysRole {RoleName ="学生",RoleDec ="登录学生窗口"},
+               new SysRole {RoleName ="教师",RoleDec ="登录教师窗口"},
+               new SysRole{RoleName="admin",RoleDec="admin登录用户管理界面" }
             };
             sysRole.ForEach(s => context.SysRoles.Add(s));
             context.SaveChanges();
