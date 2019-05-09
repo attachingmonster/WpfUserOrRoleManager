@@ -96,29 +96,19 @@ namespace WpfUserOrRoleManager
                         unitOfWork.Save();
                     }
                     //登录成功的界面转换
-                   
 
-                    
-
-
-                 /* var UserRole = from tbSysUser in db.SysUsers
-                                             join tbSysUserRole in db.SysUserRoles on tbSysUser.ID
-                                       equals tbSysUserRole.SysUserID
-                                             join tbSysRole in db.SysRoles on tbSysUserRole.SysRoleID
-                                       == tbSysRole.ID
-                                             where tbSysUser.UserAccount.Equals(cbxUserAccountLogin.Text)
-                                             select  
-                                             
-                                                 tbSysRole
-                                             ;*/
-
-
-
-                    var sysUserRole = unitOfWork.SysUserRoleRepository.Get().Where(s => s.SysUserID==sysUser.ID).FirstOrDefault();    //寻找用户在表里的实例，返回对象                 
-                    var sysRole = unitOfWork.SysRoleRepository.Get().Where(s => s.ID==sysUserRole.ID).FirstOrDefault();
+                    //linq 多表查询得到选择的用户的角色，暂时一个账号只有一个角色
+                    var UserRole = (from u in unitOfWork.SysUserRepository.Get()
+                                   join ur in unitOfWork.SysUserRoleRepository.Get() on u.ID equals ur.SysUserID
+                                   join r in unitOfWork.SysRoleRepository.Get() on ur.SysRoleID equals r.ID
+                                   where u.UserAccount.Equals(cbxUserAccountLogin.Text)
+                                   select new { UserAccount=u.UserAccount , RoleName=r.RoleName  })
+                                   .FirstOrDefault();
+                    //var sysUserRole = unitOfWork.SysUserRoleRepository.Get().Where(s => s.SysUserID==sysUser.ID).FirstOrDefault();    //寻找用户在表里的实例，返回对象                 
+                    //var sysRole = unitOfWork.SysRoleRepository.Get().Where(s => s.ID==sysUserRole.ID).FirstOrDefault();
                     
                     # region 不同角色进入不同窗口
-                    if (sysRole.RoleName.Equals("admin"))    //判断用户的角色
+                    if (UserRole.RoleName.Equals("admin"))    //判断用户的角色
                     {
                         LabTextListView.Content = sysUser.UserAccount + "用户为管理员";
                         LoginWindow.Visibility = Visibility.Collapsed;
@@ -131,7 +121,7 @@ namespace WpfUserOrRoleManager
                         ListViewRole.ItemsSource = Roles.ToList();
                         ListView.SelectedIndex = 0;
                     }
-                    else if (sysRole.RoleName.Equals("教师"))
+                    else if (UserRole.RoleName.Equals("教师"))
                     {
                         ListViewWindow.Visibility = Visibility.Collapsed;
                        TeacherWindow.Visibility = Visibility.Visible;
