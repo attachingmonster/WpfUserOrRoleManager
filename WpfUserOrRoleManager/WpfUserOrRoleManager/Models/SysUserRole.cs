@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WpfUserOrRoleManager.Models
 {
-    public class SysUserRoles
+    public class SysUserRole
     {
         public int ID { get; set; }
         public int  SysUserID { get; set; }

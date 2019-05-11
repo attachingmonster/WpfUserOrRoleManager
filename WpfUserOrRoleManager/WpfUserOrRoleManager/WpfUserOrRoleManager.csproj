@@ -66,6 +66,7 @@
     <Compile Include="Method\CreateMD5.cs" />
     <Compile Include="Models\SysRole.cs" />
     <Compile Include="Models\SysUserRole.cs" />
+    <Compile Include="Models\ViewModel.cs" />
     <Compile Include="Repositories\GenericRepository.cs" />
     <Compile Include="Repositories\IGenericRepository.cs" />
     <Page Include="MainWindow.xaml">

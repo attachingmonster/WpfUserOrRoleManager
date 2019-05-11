@@ -566,7 +566,7 @@
 
 
         <!--用户管理界面-->
-        <Grid Name="ListViewWindow"  Margin="0,0,0,0"   Visibility="Collapsed" Height="402" VerticalAlignment="Top" >
+        <Grid Name="ListViewWindow"  Margin="0,0,0,0"   Visibility="Collapsed"  Height="402" VerticalAlignment="Top" >
             <Grid.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="#FFE0EAF3" Offset="0"/>
@@ -579,22 +579,17 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <ListView Name="ListView" Height="321"  SelectionMode="Single" Background="White" BorderBrush="{x:Null}" Foreground="#FF161617" FontSize="16" Margin="100,0,0,0" Grid.Row="1" >
+            <ListView Name="ListView"  SelectionMode="Single" Background="White" BorderBrush="{x:Null}" Foreground="#FF161617" FontSize="16"  Grid.Row="1" >
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="账号" Width="150" DisplayMemberBinding="{Binding Path=UserAccount}"/>
-                        <GridViewColumn Header="密码" Width="200"  DisplayMemberBinding="{Binding Path=UserPassword}"/>
-                        <GridViewColumn Header="问题答案" Width="200"  DisplayMemberBinding="{Binding Path=UserAnswer}"/>
+                        <GridViewColumn Header="账号" Width="150" DisplayMemberBinding="{Binding Path=ViewUserAccount}"/>
+                        <GridViewColumn Header="ID" Width="100"  DisplayMemberBinding="{Binding Path=ViewUserID}"/>
+                        <GridViewColumn Header="角色" Width="100"  DisplayMemberBinding="{Binding Path=ViewRoleName}"/>
+                        <GridViewColumn Header="角色权限" Width="300"  DisplayMemberBinding="{Binding Path=ViewRoleDec}"/>
                     </GridView>
                 </ListView.View>
             </ListView>
-            <ListView Name="ListViewRole" HorizontalAlignment="Left" Height="321" Margin="0,0,0,0" Grid.Row="1" VerticalAlignment="Top" Width="100" BorderBrush="{x:Null}" FontSize="16">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="角色" Width="99" DisplayMemberBinding="{Binding Path=RoleName}"/>
-                    </GridView>
-                </ListView.View>
-            </ListView>
+            
             <Button Content="X" HorizontalAlignment="Left" Margin="625,0,0,0" VerticalAlignment="Top" Width="30" Height="30" Foreground="#FF111111" RenderTransformOrigin="0.733,0.233" Click="Close_Click" FontSize="16" Grid.RowSpan="2">
                 <Button.BorderBrush>
                     <SolidColorBrush Color="#FF707070" Opacity="0"/>
@@ -613,7 +608,7 @@
             </Button>
             <Label Name="LabTextListView" Content="" HorizontalAlignment="Left" Margin="30,0,0,0" VerticalAlignment="Top" Height="27" Width="187" FontSize="14"/>
 
-            <Button x:Name="btnDeleteListView"    Content="删除" Margin="415,17,134,0" Grid.Row="2" VerticalAlignment="Top" Height="26" BorderBrush="#FFA3A7B4" FontSize="16" FontWeight="Bold" Foreground="#FF151515" Click="ListViewDelet_Click" Width="107">
+            <Button x:Name="btnDeleteListView"    Content="删除" Margin="415,17,134,0" Grid.Row="2" VerticalAlignment="Top" Height="26" BorderBrush="#FFA3A7B4" FontSize="16" FontWeight="Bold" Foreground="#FF151515" Click="ListViewDelete_Click" Width="107">
                 <Button.Background>
                     <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
                         <GradientStop Color="#FFA8A6AC" Offset="0.855"/>

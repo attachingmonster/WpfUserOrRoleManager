@@ -14,8 +14,9 @@ namespace WpfUserOrRoleManager.DAL
 
         private GenericRepository<SysUser> sysUserRepository;
         private GenericRepository<SysRole> sysRoleRepository;
-        private GenericRepository<SysUserRoles> sysUserRoleRepository;
-        
+        private GenericRepository<SysUserRole> sysUserRoleRepository;
+        private GenericRepository<ViewModel> viewModelRepository;
+
         public GenericRepository<SysUser> SysUserRepository
         {
             get
@@ -38,18 +39,29 @@ namespace WpfUserOrRoleManager.DAL
                 return sysRoleRepository;
             }
         }
-        public GenericRepository<SysUserRoles> SysUserRoleRepository
+        public GenericRepository<SysUserRole> SysUserRoleRepository
         {
             get
             {
                 if (this.sysUserRoleRepository == null)
                 {
-                    this.sysUserRoleRepository = new GenericRepository<SysUserRoles>(context);
+                    this.sysUserRoleRepository = new GenericRepository<SysUserRole>(context);
                 }
                 return sysUserRoleRepository;
             }
         }
-       
+        public GenericRepository<ViewModel> ViewModelRepository
+        {
+            get
+            {
+                if (this.viewModelRepository == null)
+                {
+                    this.viewModelRepository = new GenericRepository<ViewModel>(context);
+                }
+                return viewModelRepository;
+            }
+        }
+
 
 
         #region Save & Dispose
