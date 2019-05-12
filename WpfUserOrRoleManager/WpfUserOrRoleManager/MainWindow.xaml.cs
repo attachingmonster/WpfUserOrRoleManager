@@ -32,6 +32,7 @@ namespace WpfUserOrRoleManager
         AccountContext db = new AccountContext();
         UnitOfWork unitOfWork = new UnitOfWork();
         #endregion
+
         #region 公用界面事件
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)//点击鼠标实现窗口拖动
         {
@@ -49,65 +50,133 @@ namespace WpfUserOrRoleManager
         }
 
         #endregion
+
         #region 登陆界面
         private void Login_Click(object sender, RoutedEventArgs e)//登陆事件
         {
             try
             {
-                var user = unitOfWork.SysUserRepository.Get().Where(s => s.Account.Equals(tbxUserName.Text)).FirstOrDefault();//判断数据库中是否存在账号 ，如果纯在则返回对象不存在返回null
-                if (user != null)
+                //判断数据库中的(是否存在账号and(输入密码正确or(已记住密码and给定密码正确))逻辑是否存在 ，如果存在则返回对象，否则返回null
+                var sysUser = unitOfWork.SysUserRepository.Get().Where(s => s.Account.Equals(tbxUserName.Text) && (s.Password.Equals(CreateMD5.EncryptWithMD5(pbxPassword.Password)) || (s.LoginOrnot.Equals("1") && s.Password.Equals(pbxPassword.Password)))).FirstOrDefault();
+                if (sysUser != null)
                 {
-                    if (user.LoginOrnot != "1")  //如果该对象的“记住密码”没打勾
+                    //判断登录成功时是否记住密码
+                    if (rememberpwd.IsChecked == true)
                     {
-                        if (user.Password.Equals(CreateMD5.EncryptWithMD5(pbxPassword.Password))) //判断密码框里填的密码是否正确
-                        {
-                            MessageBox.Show("登陆成功！");
-                            if (rememberpwd.IsChecked == true)  //登录成功后再次判断是否选择了“记住密码”
-                            {
-                                user.LoginOrnot = "1";
-                                unitOfWork.SysUserRepository.Update(user);
-                                unitOfWork.Save();
-                            }
-                        }
-                        else
-                        {
-                            throw new Exception("密码错误！");
-                        }
+                        sysUser.LoginOrnot = "1";
+                        unitOfWork.SysUserRepository.Update(sysUser);
+                        unitOfWork.Save();
                     }
-                    else  //如果该对象的“记住密码”打勾了则直接登录
+                    else
                     {
-                        if (pbxPassword.Password == user.Password)
-                        {
-                            MessageBox.Show("登陆成功！");
+                        sysUser.LoginOrnot = "0";
+                        unitOfWork.SysUserRepository.Update(sysUser);
+                        unitOfWork.Save();
+                    }
 
-                        }
-                        else if (user.Password.Equals(CreateMD5.EncryptWithMD5(pbxPassword.Password))) //如果该对象的“记住密码”为“没选”则判断密码登陆
-                        {
-                            MessageBox.Show("登陆成功！");
-                        }
-                        else
-                        {
-                            pbxPassword.Password = "";
-                            throw new Exception("密码错误！");
-                        }
-                        if (rememberpwd.IsChecked == false)//选择记住密码的登陆，判断是否未选择记住密码
-                        {
-                            user.LoginOrnot = "0";
-                            unitOfWork.SysUserRepository.Update(user);
-                            unitOfWork.Save();
-                            pbxPassword.Password = "";
-                        }
+                    MessageBox.Show("登录成功！");
+                    //linq 多表查询得到选择的用户的角色，暂时一个账号只有一个角色
+                    var UserRole = (from u in unitOfWork.SysUserRepository.Get()
+                                    join ur in unitOfWork.SysUserRoleRepository.Get() on u.ID equals ur.SysUserID
+                                    join r in unitOfWork.SysRoleRepository.Get() on ur.SysRoleID equals r.ID
+                                    where u.Account.Equals(tbxUserName.Text)
+                                    select new { UserAccount = u.Account, RoleName = r.RoleName })
+                                     .FirstOrDefault();
+
+                    if (UserRole.RoleName.Equals("admin"))    //判断用户的角色
+                    {
+                        login.Visibility = Visibility.Collapsed;
+                        UserManagementWindow.Visibility = Visibility.Visible;
+                        Height = 427.406;
+                        Width = 641.841;
+                        var views = unitOfWork.ViewModelRepository.Get();    //listview的数据源绑定数据库                       
+                        ListView.ItemsSource = views.ToList();
+                        ListView.SelectedIndex = 0;
+                    }
+                    else if (UserRole.RoleName.Equals("教师"))
+                    {
+                        login.Visibility = Visibility.Collapsed;
+                        TeacherWindow.Visibility = Visibility.Visible;
+                        Height = 354.131;
+                        Width = 350.841;
+                    }
+                    else
+                    {
+                        StudentWindow.Visibility = Visibility.Visible;
+                        login.Visibility = Visibility.Collapsed;
+                        Height = 354.131;
+                        Width = 350.841;
                     }
                 }
                 else
                 {
-                    throw new Exception("账号不存在！");
+                    throw new Exception("账号不存在或密码错误！");
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show("登陆失败！错误信息：\n" + ex.Message);
             }
+
+
+            /*
+            var user = unitOfWork.SysUserRepository.Get().Where(s => s.Account.Equals(tbxUserName.Text)).FirstOrDefault();//判断数据库中是否存在账号 ，如果纯在则返回对象不存在返回null
+            if (user != null)
+            {
+                if (user.LoginOrnot != "1")  //如果该对象的“记住密码”没打勾
+                {
+                    if (user.Password.Equals(CreateMD5.EncryptWithMD5(pbxPassword.Password))) //判断密码框里填的密码是否正确
+                    {
+                        MessageBox.Show("登陆成功！");
+                        if (rememberpwd.IsChecked == true)  //登录成功后再次判断是否选择了“记住密码”
+                        {
+                            user.LoginOrnot = "1";
+                            unitOfWork.SysUserRepository.Update(user);
+                            unitOfWork.Save();
+                        }
+
+                    }
+                    else
+                    {
+                        throw new Exception("密码错误！");
+                    }
+                }
+                else  //如果该对象的“记住密码”打勾了则直接登录
+                {
+                    if (pbxPassword.Password == user.Password)
+                    {
+                        MessageBox.Show("登陆成功！");
+
+
+                    }
+                    else if (user.Password.Equals(CreateMD5.EncryptWithMD5(pbxPassword.Password))) //如果该对象的“记住密码”为“没选”则判断密码登陆
+                    {
+                        MessageBox.Show("登陆成功！");
+                    }
+                    else
+                    {
+                        pbxPassword.Password = "";
+                        throw new Exception("密码错误！");
+                    }
+                    if (rememberpwd.IsChecked == false)//选择记住密码的登陆，判断是否未选择记住密码
+                    {
+                        user.LoginOrnot = "0";
+                        unitOfWork.SysUserRepository.Update(user);
+                        unitOfWork.Save();
+                        pbxPassword.Password = "";
+                    }                     
+                }
+            }
+            else
+            {
+                throw new Exception("账号不存在！");
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show("登陆失败！错误信息：\n" + ex.Message);
+        }
+        */
             /*
             if (tbxUserName.Text == "" || pbxPassword.Password == "")
             {
@@ -158,6 +227,7 @@ namespace WpfUserOrRoleManager
             */
 
         }
+
         private void Seepwd_Checked(object sender, RoutedEventArgs e)//登陆界面中显示密码事件
         {
             tbxPassword.Visibility = Visibility.Visible;
@@ -172,6 +242,7 @@ namespace WpfUserOrRoleManager
             pbxPassword.Password = tbxPassword.Text;
         }
         #endregion
+
         #region 修改密码界面
         private void Change_password(object sender, RoutedEventArgs e)//在登录界面点击修改密码按钮时发生的事件
         {
@@ -271,6 +342,7 @@ namespace WpfUserOrRoleManager
             confirmpbxPassword.Password = tbxconfirmpbxPassword.Text;
         }
         #endregion
+
         #region 注册账号界面
         private void loginRegister_Click(object sender, RoutedEventArgs e)//点击登录界面的注册账号按钮时发生的事件
         {
@@ -296,6 +368,32 @@ namespace WpfUserOrRoleManager
             login.Visibility = Visibility.Visible;
             loginsystem.Height = 514.089;
             loginsystem.Width = 848.5;
+            Account_register.Text = "";
+            Password_register.Password = "";
+            textPassword_register.Text = "";
+            SurePassword_register.Password = "";
+            textSurePassword_register.Text = "";
+            QuestionAnswer_register.Text = "";
+        }
+
+        private void RegisterReturn2_Click(object sender, RoutedEventArgs e)//在用户管理界面点击“增加”按钮时出现的注册账号界面的“返回”按钮事件
+        {
+            var view = unitOfWork.ViewModelRepository.Get().ToList();
+            ListView.ItemsSource = view;
+            //var view = unitOfWork.ViewModelRepository.Get();    //listview的数据源绑定数据库                       
+            // ListView.ItemsSource = view.ToList();
+            ListView.SelectedIndex = 0;
+            ListView.Items.Refresh();
+            RegisterWindow.Visibility = Visibility.Collapsed;
+            ListView.Visibility = Visibility.Visible;
+            Height = 427.406;
+            Width = 641.841;
+            Account_register.Text = "";
+            Password_register.Password = "";
+            textPassword_register.Text = "";
+            SurePassword_register.Password = "";
+            textSurePassword_register.Text = "";
+            QuestionAnswer_register.Text = "";
         }
 
         private void Registering_Click(object sender, RoutedEventArgs e)//实现注册账号功能
@@ -318,17 +416,56 @@ namespace WpfUserOrRoleManager
                                     {
                                         if (QuestionAnswer_register.Text != "")
                                         {
-                                            var CurrentUser = new SysUser();
-                                            CurrentUser.Account = Account_register.Text;
-                                            CurrentUser.Password = CreateMD5.EncryptWithMD5(Password_register.Password);
-                                            CurrentUser.QuestionAnswer = CreateMD5.EncryptWithMD5(QuestionAnswer_register.Text);
-                                            unitOfWork.SysUserRepository.Insert(CurrentUser);    //增加新User
-                                            unitOfWork.Save();
-                                            MessageBox.Show("注册成功");
-                                            RegisterWindow.Visibility = Visibility.Collapsed;
-                                            login.Visibility = Visibility.Visible;
-                                            loginsystem.Height = 514.089;
-                                            loginsystem.Width = 848.5;
+                                            var sysRole = unitOfWork.SysRoleRepository.Get().Where(s => s.RoleName.Equals(cbxUserRoleRegister.Text)).FirstOrDefault();    //寻找用户所选择角色在UserRole里的实例，返回对象
+                                            if (sysRole != null)
+                                            {
+                                                var CurrentUser = new SysUser();
+                                                CurrentUser.Account = Account_register.Text;
+                                                CurrentUser.Password = CreateMD5.EncryptWithMD5(Password_register.Password);
+                                                CurrentUser.QuestionAnswer = CreateMD5.EncryptWithMD5(QuestionAnswer_register.Text);
+                                                CurrentUser.LoginOrnot = "0";
+                                                unitOfWork.SysUserRepository.Insert(CurrentUser);    //增加新SysUser
+                                                unitOfWork.Save();
+
+
+                                                var CurrentUserRole = new SysUserRole();
+                                                CurrentUserRole.SysUserID = CurrentUser.ID;
+                                                CurrentUserRole.SysRoleID = sysRole.ID;
+                                                unitOfWork.SysUserRoleRepository.Insert(CurrentUserRole);    //增加新SysUserRole
+                                                unitOfWork.Save();
+
+
+                                                var CurrentViewModel = new ViewModel();
+                                                CurrentViewModel.ViewUserAccount = CurrentUser.Account;
+                                                CurrentViewModel.ViewUserID = CurrentUser.ID;
+                                                CurrentViewModel.ViewRoleName = sysRole.RoleName;
+                                                CurrentViewModel.ViewRoleDec = sysRole.RoleDec;
+                                                unitOfWork.ViewModelRepository.Insert(CurrentViewModel);    //增加新ViewModel
+                                                unitOfWork.Save(); 
+
+
+
+                                                MessageBox.Show("注册成功");
+                                                var user = unitOfWork.SysUserRepository.Get();         //combobox的更新
+                                                tbxUserName.ItemsSource = user.ToList();       //combobox数据源连接数据库
+                                                tbxUserName.DisplayMemberPath = "Account";  //combobox下拉显示的值
+                                                tbxUserName.SelectedValuePath = "Account";  //combobox选中项显示的值
+                                                tbxUserName.SelectedIndex = 0;              //登陆界面 combobox初始显示第一项
+
+
+
+                                                RegisterWindow.Visibility = Visibility.Collapsed;
+                                                login.Visibility = Visibility.Visible;
+                                                loginsystem.Height = 514.089;
+                                                loginsystem.Width = 848.5;
+
+                                                Account_register.Text = "";
+                                                Password_register.Password = "";
+                                                textPassword_register.Text = "";
+                                                SurePassword_register.Password = "";
+                                                textSurePassword_register.Text = "";
+                                                QuestionAnswer_register.Text = "";
+                                            }
                                         }
                                         else
                                         {
@@ -393,6 +530,7 @@ namespace WpfUserOrRoleManager
             SurePassword_register.Password = textSurePassword_register.Text;
         }
         #endregion
+
         #region 找回密码界面
         private void loginetrievePwd_Click(object sender, RoutedEventArgs e)//登录界面上点击找回密码按钮发生的事件
         {
@@ -499,6 +637,7 @@ namespace WpfUserOrRoleManager
             SurePassword_etrievePwd.Password = tbxSurePassword_etrievePwd.Text;
         }
         #endregion
+
         #region 初始化数据
         private void Loginsystem_Loaded(object sender, RoutedEventArgs e)//运行界面的初始化数据
         {
@@ -519,6 +658,174 @@ namespace WpfUserOrRoleManager
             }
         }
         #endregion
+      
+        #region 用户管理界面
+
+        private void UserManagementWindowMin_Click(object sender, RoutedEventArgs e)//缩小用户管理界面
+        {
+            SystemCommands.MinimizeWindow(this);
+        }
+
+        private void UserManagementWindowClose_Click(object sender, RoutedEventArgs e)//关闭用户管理界面
+        {
+            SystemCommands.CloseWindow(this);
+        }
+
+        private void UserManagementWindowReturn_Click(object sender, RoutedEventArgs e)//用户管理界面的返回事件
+        {
+            UserManagementWindow.Visibility = Visibility.Collapsed;
+            login.Visibility = Visibility.Visible;
+            loginsystem.Height = 514.089;
+            loginsystem.Width = 848.5;
+        }
+
+        private void UserManagementWindowAdd_Click(object sender, RoutedEventArgs e)//用户管理界面的“增加”按钮事件
+        {
+            RegisterReturn2.Visibility = Visibility.Visible;
+            RegisterReturn.Visibility = Visibility.Collapsed;
+            ListView.Visibility = Visibility.Collapsed;
+            RegisterWindow.Visibility = Visibility.Visible;
+            loginsystem.Height = 447.739;
+            loginsystem.Width = 424.623;
+            unitOfWork.Save();
+            //刷新列表
+            var view = unitOfWork.ViewModelRepository.Get().ToList();
+            ListView.ItemsSource = view;
+            ListView.SelectedIndex = 0;
+            ListView.Items.Refresh();
+            //combobox的刷新
+            var user = unitOfWork.SysUserRepository.Get();
+            tbxUserName.ItemsSource = user.ToList();       //combobox数据源连接数据库
+            tbxUserName.DisplayMemberPath = "Account";  //combobox下拉显示的值
+            tbxUserName.SelectedValuePath = "Account";  //combobox选中项显示的值
+            tbxUserName.SelectedIndex = 0;               //登陆界面 combobox初始显示第一项
+        }
+
+        private void UserManagementWindowDelete_Click(object sender, RoutedEventArgs e)//用户管理界面的“删除”按钮事件
+        {
+            var viewModel = (ViewModel)ListView.SelectedItem;
+            //找到选中用户ID在SysUser表里的实例
+            var sysUser = unitOfWork.SysUserRepository.Get().Where(s => s.ID == viewModel.ViewUserID).FirstOrDefault();
+            //找到选中用户ID在SysUserRole表里的实例
+            var sysUserRole = unitOfWork.SysUserRoleRepository.Get().Where(s => s.SysUserID == viewModel.ViewUserID).FirstOrDefault();
+            //删除数据库中SysUser表相应的值
+            unitOfWork.SysUserRepository.Delete(sysUser);
+            unitOfWork.Save();
+            //删除数据库中SysUserRole表相应的值
+            unitOfWork.SysUserRoleRepository.Delete(sysUserRole);
+            unitOfWork.Save();
+            //删除数据库中ViewModel表相应的值
+            unitOfWork.ViewModelRepository.Delete(viewModel);
+            unitOfWork.Save();
+
+            //刷新列表
+            var view = unitOfWork.ViewModelRepository.Get().ToList();
+            ListView.ItemsSource = view;
+            ListView.SelectedIndex = 0;
+            ListView.Items.Refresh();
+            //combobox的刷新
+            var user = unitOfWork.SysUserRepository.Get();
+            tbxUserName.ItemsSource = user.ToList();       //combobox数据源连接数据库
+            tbxUserName.DisplayMemberPath = "Account";  //combobox下拉显示的值
+            tbxUserName.SelectedValuePath = "Account";  //combobox选中项显示的值
+            tbxUserName.SelectedIndex = 0;               //登陆界面 combobox初始显示第一项
+        }
+
+        private void UserManagementWindowChangeRole_Click(object sender, RoutedEventArgs e)//用户管理界面的“修改角色”按钮事件
+        {
+            ChangeRoleWindow.Visibility = Visibility.Visible;
+            UserManagementWindow.Visibility = Visibility.Collapsed;
+            loginsystem.Height = 354.131;
+            loginsystem.Width = 350.841;
+            var viewModel = (ViewModel)ListView.SelectedItem;
+            LabTextChangeRole.Content = "更改" + viewModel.ViewUserAccount + "用户的角色";
+
+        }
+
+
+
+        #endregion
+
+        #region 修改用户角色界面
+
+        private void ManagementWindowChangeRole_Click(object sender, RoutedEventArgs e)//修改用户角色界面的“修改”按钮事件
+        {
+            try
+            {
+                if (cheStudentChangeRole.IsChecked == false && cheTeacherChangeRole.IsChecked == false && cheAdminChangeRole.IsChecked == false)
+                {
+                    throw new Exception("请选择角色！");
+                }
+                else if (cheTeacherChangeRole.IsChecked == false && cheAdminChangeRole.IsChecked == true && cheStudentChangeRole.IsChecked == false || cheTeacherChangeRole.IsChecked == true && cheAdminChangeRole.IsChecked == false && cheStudentChangeRole.IsChecked == false || cheTeacherChangeRole.IsChecked == false && cheAdminChangeRole.IsChecked == false && cheStudentChangeRole.IsChecked == true)
+                {
+                    MessageBox.Show("修改成功！");
+                    //更改角色
+                    var viewModel = (ViewModel)ListView.SelectedItem;
+                    var sysUserRole = unitOfWork.SysUserRoleRepository.Get().Where(s => s.SysUserID == viewModel.ViewUserID).FirstOrDefault();    //寻找用户在表里的实例，返回对象                 
+
+                    if (cheTeacherChangeRole.IsChecked == true)
+                    {
+                        viewModel.ViewRoleName = "教师";//更改viewModel表里的角色名
+                        unitOfWork.Save();
+                        var sysRole = unitOfWork.SysRoleRepository.Get().Where(s => s.RoleName.Equals("教师")).FirstOrDefault();//更改sysUserRole表的对应关系
+                        sysUserRole.SysRoleID = sysRole.ID;
+                        unitOfWork.Save();
+                    }
+                    else if (cheStudentChangeRole.IsChecked == true)
+                    {
+                        viewModel.ViewRoleName = "学生";//更改viewModel表里的角色名
+                        unitOfWork.Save();
+                        var sysRole = unitOfWork.SysRoleRepository.Get().Where(s => s.RoleName.Equals("学生")).FirstOrDefault();//更改sysUserRole表的对应关系
+                        sysUserRole.SysRoleID = sysRole.ID;
+                        unitOfWork.Save();
+                    }
+                    else
+                    {
+                        viewModel.ViewRoleName = "admin";//更改viewModel表里的角色名
+                        unitOfWork.Save();
+                        var sysRole = unitOfWork.SysRoleRepository.Get().Where(s => s.RoleName.Equals("admin")).FirstOrDefault();//更改sysUserRole表的对应关系
+                        sysUserRole.SysRoleID = sysRole.ID;
+                        unitOfWork.Save();
+                    }
+                    //刷新列表
+                    var view = unitOfWork.ViewModelRepository.Get().ToList();
+                    ListView.ItemsSource = view;
+                    ListView.SelectedIndex = 0;
+                    ListView.Items.Refresh();
+                    //自动返回ListView界面
+                    ChangeRoleWindow.Visibility = Visibility.Collapsed;
+                    UserManagementWindow.Visibility = Visibility.Visible;
+                    loginsystem.Height = 427.406;
+                    loginsystem.Width = 641.841;
+                    //combobox的刷新
+                    var user = unitOfWork.SysUserRepository.Get();
+                    tbxUserName.ItemsSource = user.ToList();       //combobox数据源连接数据库
+                    tbxUserName.DisplayMemberPath = "Account";  //combobox下拉显示的值
+                    tbxUserName.SelectedValuePath = "Account";  //combobox选中项显示的值
+                    tbxUserName.SelectedIndex = 0;               //登陆界面 combobox初始显示第一项
+
+                }
+                else
+                {
+                    throw new Exception("只能选择一位角色，请重新选择！");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("修改失败！错误信息：\n" + ex.Message);
+            }
+        }
+
+        private void ChangeRoleWindowReturn_Click(object sender, RoutedEventArgs e)//修改用户角色界面的“返回”按钮事件
+        {
+            ChangeRoleWindow.Visibility = Visibility.Collapsed;
+            UserManagementWindow.Visibility = Visibility.Visible;
+            loginsystem.Height = 427.406;
+            loginsystem.Width = 641.841;
+        }
+
+        #endregion
+
         private void TbxUserName_SelectionChanged(object sender, SelectionChangedEventArgs e)//对于改变combobox的菜单事件，如果改变后的账号仍是有记住密码的，则passwordbox里继续有乱密码，否则里面为空
         {
             var users = unitOfWork.SysUserRepository.Get();
@@ -556,7 +863,21 @@ namespace WpfUserOrRoleManager
 
         }
 
-      
+        private void StudentWindowReturn_Click(object sender, RoutedEventArgs e)
+        {
+            StudentWindow.Visibility = Visibility.Collapsed;
+            login.Visibility = Visibility.Visible;
+            Height = 514.089;
+            Width = 848.5;
+        }//学生窗口返回事件
+
+        private void TeacherWindowReturn_Click(object sender, RoutedEventArgs e)
+        {
+            TeacherWindow.Visibility = Visibility.Collapsed;
+            login.Visibility = Visibility.Visible;
+            Height = 514.089;
+            Width = 848.5;
+        }//教师窗口返回事件
     }
- }
+}
 

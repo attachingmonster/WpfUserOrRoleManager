@@ -58,10 +58,9 @@
                     <SolidColorBrush Color="#FF9AB1C0" Opacity="0.5"/>
                 </TextBox.Background>
             </TextBox>
-            <CheckBox Name="rememberpwd" Content="记住密码" HorizontalAlignment="Left" Margin="656,291,0,0" VerticalAlignment="Top" Height="23" Width="104" FontSize="18" Foreground="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}" ClickMode="Press" FontFamily="STCaiyun" Opacity="0.6" Grid.ColumnSpan="2"/>
-            <CheckBox Name="SeepwdLogin" Content="显示密码" HorizontalAlignment="Left" Margin="559,291,0,0" VerticalAlignment="Top" Height="23" Width="104" FontSize="18" Foreground="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}" ClickMode="Press" FontFamily="STCaiyun" Opacity="0.6" Checked="Seepwd_Checked" Unchecked="Seepwd_Unchecked"/>
+            <CheckBox Name="rememberpwd" Content="记住密码" HorizontalAlignment="Left" Margin="628,291,0,0" VerticalAlignment="Top" Height="23" Width="104" FontSize="18" Foreground="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}" ClickMode="Press" FontFamily="STCaiyun" Opacity="0.6"/>
+            <CheckBox Name="SeepwdLogin" Content="显示密码" HorizontalAlignment="Left" Margin="499,291,0,0" VerticalAlignment="Top" Height="23" Width="104" FontSize="18" Foreground="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}" ClickMode="Press" FontFamily="STCaiyun" Opacity="0.6" Checked="Seepwd_Checked" Unchecked="Seepwd_Unchecked"/>
             <Button Content="安 全 登 录" HorizontalAlignment="Left" Margin="500,333,0,0" VerticalAlignment="Top" Width="218" Height="49" Padding="2" FontSize="30" Opacity="0.9" FontFamily="STCaiyun" FontWeight="Bold" Foreground="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}" Click="Login_Click" Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}"/>
-            <CheckBox Content="自动登录" HorizontalAlignment="Left" Margin="456,291,0,0" VerticalAlignment="Top" FontSize="18" FontFamily="STCaiyun" Foreground="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}" ClickMode="Press" Opacity="0.6"/>
             <Button Content="注册账号" HorizontalAlignment="Left" Margin="446,407,0,0" VerticalAlignment="Top" Width="88" Foreground="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}" FontFamily="STCaiyun" Height="27" FontSize="16" Opacity="0.7" Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" Click="loginRegister_Click"/>
             <Button Content="修改密码" HorizontalAlignment="Left" Margin="564,407,0,0" VerticalAlignment="Top" Width="88" Foreground="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}" FontSize="16" FontFamily="STCaiyun" Height="27" Opacity="0.7" Click="Change_password" Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}"/>
             <Button  Content="找回密码" HorizontalAlignment="Left" Margin="676,407,0,0" VerticalAlignment="Top" Width="88" FontSize="16" FontFamily="STCaiyun" Height="27" Opacity="0.7" Grid.ColumnSpan="2" Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}" Click="loginetrievePwd_Click"/>
@@ -122,7 +121,7 @@
         <Grid Name="RegisterWindow" Visibility="Collapsed">
             <Image HorizontalAlignment="Left" Height="448" VerticalAlignment="Top" Width="425" Source="12.jpg" Stretch="Fill"/>
             <Rectangle HorizontalAlignment="Left" Height="404" Margin="34,34,0,0" VerticalAlignment="Top" Width="360" Opacity="0.9" RadiusX="50" RadiusY="50" StrokeThickness="6" Stroke="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}" Fill="#00000000"/>
-            <Label Content="注册账号" HorizontalAlignment="Left" Margin="128,62,0,0" VerticalAlignment="Top" Height="52" Width="211" FontSize="43" FontFamily="Tw Cen MT Condensed Extra Bold" FontWeight="Bold" Foreground="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}"/>
+            <Label Content="注册账号" HorizontalAlignment="Left" Margin="74,66,0,0" VerticalAlignment="Top" Height="52" Width="211" FontSize="43" FontFamily="Tw Cen MT Condensed Extra Bold" FontWeight="Bold" Foreground="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}"/>
             <Label Content="用户" HorizontalAlignment="Left" Margin="64,124,0,0" VerticalAlignment="Top" Height="45" Width="76" FontSize="28" Foreground="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}" FontFamily="STKaiti" FontWeight="Bold" BorderBrush="{DynamicResource {x:Static SystemColors.DesktopBrushKey}}"/>
             <TextBox Name="Account_register" HorizontalAlignment="Left" Height="31" Margin="164,136,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="220" FontSize="20" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Foreground="{DynamicResource {x:Static SystemColors.AppWorkspaceBrushKey}}" Opacity="0.8" MaxLength="10"/>
             <Label Content="密码" HorizontalAlignment="Left" Margin="64,166,0,0" VerticalAlignment="Top" FontFamily="STKaiti" Height="54" Width="114" Foreground="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}" FontWeight="Bold" FontSize="28"/>
@@ -136,9 +135,18 @@
             <Label Content="答案" HorizontalAlignment="Left" Margin="63,301,0,0" VerticalAlignment="Top" FontFamily="STKaiti" FontSize="28" Foreground="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}" FontWeight="Bold"/>
             <TextBox Name="QuestionAnswer_register" HorizontalAlignment="Left" Height="31" Margin="163,311,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="220" FontSize="20" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Foreground="{DynamicResource {x:Static SystemColors.AppWorkspaceBrushKey}}" Opacity="0.8"/>
             <Button Content="确认" HorizontalAlignment="Left" Margin="57,366,0,0" VerticalAlignment="Top" Width="140" Height="42" FontSize="28" FontFamily="Yu Gothic UI Semibold" FontWeight="Bold" Opacity="0.7" Click="Registering_Click"/>
-            <Button Content="返回" HorizontalAlignment="Left" Margin="222,366,0,0" VerticalAlignment="Top" Width="140" Height="42" FontSize="28" FontFamily="Yu Gothic UI Semibold" FontWeight="Bold" Opacity="0.7" Click="RegisterReturn_Click"/>
+            <Button Content="返回" Name="RegisterReturn" HorizontalAlignment="Left" Margin="222,366,0,0" VerticalAlignment="Top" Width="140" Height="42" FontSize="28" FontFamily="Yu Gothic UI Semibold" FontWeight="Bold" Opacity="0.7" Click="RegisterReturn_Click"/>
+            <Button Content="返回" Name="RegisterReturn2" HorizontalAlignment="Left" Margin="222,366,0,0" VerticalAlignment="Top" Width="140" Height="42" FontSize="28" FontFamily="Yu Gothic UI Semibold" FontWeight="Bold" Opacity="0.7" Click="RegisterReturn2_Click" Visibility="Collapsed"/>
             <Button Content="一" HorizontalAlignment="Left" Margin="355,0,0,0" VerticalAlignment="Top" Width="35" Height="30" Background="#FF321366" Foreground="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Click="RegisterMin_Click"/>
             <Button Content="X" HorizontalAlignment="Left" Margin="390,1,0,0" VerticalAlignment="Top" Width="35" Height="30" Background="#FF321366" Foreground="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" Click="RegisterClose_Click"/>
+            <ComboBox Name="cbxUserRoleRegister" HorizontalAlignment="Left" Margin="263,74,0,0" VerticalAlignment="Top" Width="104" Height="36" SelectedIndex="0" FontSize="18">
+                <ComboBoxItem FontSize="18">学生
+                </ComboBoxItem>
+                <ComboBoxItem FontSize="18">教师
+                </ComboBoxItem>
+                <ComboBoxItem FontSize="18">admin
+                </ComboBoxItem>
+            </ComboBox>
         </Grid>
 
         <!--找回密码界面-->
@@ -171,5 +179,56 @@
             <Button Content="返回" HorizontalAlignment="Left" Margin="222,372,0,0" VerticalAlignment="Top" Width="140" Height="42" FontSize="28" FontFamily="Yu Gothic UI Semibold" FontWeight="Bold" Opacity="0.7" Click="loginetrieveBack_Click"/>
             <CheckBox Name="RetrieveSeepwd" Content="显示密码" HorizontalAlignment="Left" Margin="159,348,0,0" VerticalAlignment="Top" Height="23" Width="104" FontSize="18" Foreground="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}" ClickMode="Press" FontFamily="STCaiyun" Opacity="0.6" Checked="RetrieveSeepwd_Checked" Unchecked="RetrieveSeepwd_Unchecked"/>
         </Grid>
+
+
+        <!--用户管理界面-->
+        <Grid Visibility="Collapsed" Name="UserManagementWindow">
+            <Rectangle Fill="{DynamicResource {x:Static SystemColors.GradientActiveCaptionBrushKey}}" HorizontalAlignment="Left" Height="42" Stroke="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" VerticalAlignment="Top" Width="680" Margin="-17,-2,-21,0"/>
+            <Button Content="一" HorizontalAlignment="Left" Margin="548,-2,0,0" VerticalAlignment="Top" Width="46" Height="42" RenderTransformOrigin="1.183,0.489" FontSize="20" BorderBrush="#FFDDDDDD" Click="UserManagementWindowMin_Click"/>
+            <Button Content="X" Margin="595,-2,-2,0" VerticalAlignment="Top" RenderTransformOrigin="0.482,0.786" Height="42" FontSize="20" BorderBrush="#FFDDDDDD" Click="UserManagementWindowClose_Click"/>
+            <Rectangle Fill="{DynamicResource {x:Static SystemColors.GradientActiveCaptionBrushKey}}" HorizontalAlignment="Left" Height="66" Margin="0,363,-2,-2" Stroke="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" VerticalAlignment="Top" Width="644"/>
+            <Button Content="修改角色" HorizontalAlignment="Left" Margin="49,378,0,0" VerticalAlignment="Top" Width="122" Height="39" FontSize="20" Click="UserManagementWindowChangeRole_Click"/>
+            <Button Content="增加" HorizontalAlignment="Left" Margin="197,378,0,0" VerticalAlignment="Top" Width="122" Height="39" FontSize="20" Click="UserManagementWindowAdd_Click"/>
+            <Button Content="删除" HorizontalAlignment="Left" Margin="343,378,0,0" VerticalAlignment="Top" Width="122" Height="39" FontSize="20" Click="UserManagementWindowDelete_Click" />
+            <Button Content="返回" HorizontalAlignment="Left" Margin="492,378,0,0" VerticalAlignment="Top" Width="122" Height="39" FontSize="20" Click="UserManagementWindowReturn_Click"/>
+            <ListView Name="ListView" HorizontalAlignment="Left" Height="333" Margin="0,40,0,0" VerticalAlignment="Top" Width="642" FontSize="18">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="账号" Width="150" DisplayMemberBinding="{Binding Path=ViewUserAccount}"/>
+                        <GridViewColumn Header="ID" Width="100"  DisplayMemberBinding="{Binding Path=ViewUserID}"/>
+                        <GridViewColumn Header="角色" Width="100"  DisplayMemberBinding="{Binding Path=ViewRoleName}"/>
+                        <GridViewColumn Header="角色权限" Width="300"  DisplayMemberBinding="{Binding Path=ViewRoleDec}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+
+
+        <!--修改角色界面-->
+        <Grid Name="ChangeRoleWindow" HorizontalAlignment="Left" Height="354" VerticalAlignment="Top" Width="351" Visibility="Collapsed">
+            <Rectangle Fill="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" HorizontalAlignment="Left" Height="354" Stroke="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" VerticalAlignment="Top" Width="351"/>
+            <Label Name="LabTextChangeRole" Content="" HorizontalAlignment="Left" Margin="70,26,0,0" VerticalAlignment="Top" Height="41" Width="237" FontSize="20"/>
+            <CheckBox Name="cheStudentChangeRole" Content="学生" HorizontalAlignment="Left" Margin="140,101,0,0" VerticalAlignment="Top" FontSize="20" Height="30" Width="135"/>
+            <CheckBox Name="cheTeacherChangeRole" Content="教师" HorizontalAlignment="Left" Margin="140,165,0,0" VerticalAlignment="Top" FontSize="20" RenderTransformOrigin="0.159,-0.271"/>
+            <CheckBox Name="cheAdminChangeRole" Content="admin" HorizontalAlignment="Left" Margin="140,231,0,0" VerticalAlignment="Top" FontSize="20"/>
+            <Button Content="修改" HorizontalAlignment="Left" Margin="52,290,0,0" VerticalAlignment="Top" Width="105" Height="38" FontSize="20" Click="ManagementWindowChangeRole_Click"/>
+            <Button Content="返回" HorizontalAlignment="Left" Margin="206,290,0,0" VerticalAlignment="Top" Width="105" Height="38" RenderTransformOrigin="0.14,0.461" FontSize="20" Click="ChangeRoleWindowReturn_Click"/>
+        </Grid>
+
+        <!--学生窗口-->
+        <Grid Name="StudentWindow" HorizontalAlignment="Left" Height="354" VerticalAlignment="Top" Width="351" Visibility="Collapsed">
+            <Rectangle Fill="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" HorizontalAlignment="Left" Height="354" Stroke="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" VerticalAlignment="Top" Width="351"/>
+            <Label  Content="欢迎登陆学生窗口" HorizontalAlignment="Left" Margin="90,130,0,0" VerticalAlignment="Top" Height="41" Width="236" FontSize="20"/>
+            <Button Content="返回" HorizontalAlignment="Left" Margin="126,290,0,0" VerticalAlignment="Top" Width="106" Height="38" RenderTransformOrigin="0.14,0.461" FontSize="20" Click="StudentWindowReturn_Click"/>
+        </Grid>
+
+
+        <!--教师窗口-->
+        <Grid Name="TeacherWindow" HorizontalAlignment="Left" Height="354" VerticalAlignment="Top" Width="351" Visibility="Collapsed" >
+            <Rectangle Fill="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" HorizontalAlignment="Left" Height="354" Stroke="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" VerticalAlignment="Top" Width="351"/>
+            <Label  Content="欢迎登陆教师窗口" HorizontalAlignment="Left" Margin="90,130,0,0" VerticalAlignment="Top" Height="41" Width="236" FontSize="20"/>
+            <Button Content="返回" HorizontalAlignment="Left" Margin="126,290,0,0" VerticalAlignment="Top" Width="106" Height="38" RenderTransformOrigin="0.14,0.461" FontSize="20" Click="TeacherWindowReturn_Click"/>
+        </Grid>
+
     </Grid>
 </Window>

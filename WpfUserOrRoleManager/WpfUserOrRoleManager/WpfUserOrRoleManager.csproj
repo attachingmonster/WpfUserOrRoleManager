@@ -63,6 +63,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="DAL\UnitOfWork.cs" />
+    <Compile Include="Models\SysRole.cs" />
+    <Compile Include="Models\SysUserRole.cs" />
+    <Compile Include="Models\ViewModel.cs" />
     <Compile Include="Model\CreateMD5.cs" />
     <Compile Include="Repositories\GenericRepository.cs" />
     <Compile Include="Repositories\IGenericRepository.cs" />
