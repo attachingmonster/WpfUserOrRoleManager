@@ -582,10 +582,10 @@
             <ListView Name="ListView"  SelectionMode="Single" Background="White" BorderBrush="{x:Null}" Foreground="#FF161617" FontSize="16"  Grid.Row="1" >
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="账号" Width="150" DisplayMemberBinding="{Binding Path=ViewUserAccount}"/>
-                        <GridViewColumn Header="ID" Width="100"  DisplayMemberBinding="{Binding Path=ViewUserID}"/>
-                        <GridViewColumn Header="角色" Width="100"  DisplayMemberBinding="{Binding Path=ViewRoleName}"/>
-                        <GridViewColumn Header="角色权限" Width="300"  DisplayMemberBinding="{Binding Path=ViewRoleDec}"/>
+                        <GridViewColumn Header="账号" Width="180" DisplayMemberBinding="{Binding Path=ViewUserAccount}"/>
+                        
+                        <GridViewColumn Header="角色" Width="130"  DisplayMemberBinding="{Binding Path=ViewRoleName}"/>
+                        <GridViewColumn Header="角色权限" Width="340"  DisplayMemberBinding="{Binding Path=ViewRoleDec}"/>
                     </GridView>
                 </ListView.View>
             </ListView>
