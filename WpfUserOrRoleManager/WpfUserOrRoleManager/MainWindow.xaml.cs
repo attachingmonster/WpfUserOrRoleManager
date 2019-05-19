@@ -57,7 +57,7 @@ namespace WpfUserOrRoleManager
         {
             try
             {
-                //判断数据库中的(是否存在账号and(输入密码正确or(已记住密码and给定密码正确))逻辑是否存在 ，如果存在则返回对象，否则返回null
+                //判断数据库中是否存在账号并且密码输入是否正确||该账号是否已经记住密码并且密码框里填的是固定的那串密码
                 var sysUser = unitOfWork.SysUserRepository.Get().Where(s => s.Account.Equals(tbxUserName.Text) && (s.Password.Equals(CreateMD5.EncryptWithMD5(pbxPassword.Password)) || (s.LoginOrnot.Equals("1") && s.Password.Equals(pbxPassword.Password)))).FirstOrDefault();
                 if (sysUser != null)
                 {
@@ -90,9 +90,9 @@ namespace WpfUserOrRoleManager
                         UserManagementWindow.Visibility = Visibility.Visible;
                         Height = 427.406;
                         Width = 641.841;
-                        var views = unitOfWork.ViewModelUserManagerRepository.Get();     //listview的数据源绑定数据库                       
-                        ListView.ItemsSource = views.ToList();
-                        ListView.SelectedIndex = 0;
+                       // var views = unitOfWork.ViewModelUserManagerRepository.Get();     //listview的数据源绑定数据库                       
+                       // ListView.ItemsSource = views.ToList();
+                       // ListView.SelectedIndex = 0;
                     }
                     else if (UserRole.RoleName.Equals("教师"))
                     {
@@ -378,15 +378,16 @@ namespace WpfUserOrRoleManager
         }
 
         private void RegisterReturn2_Click(object sender, RoutedEventArgs e)//在用户管理界面点击“增加”按钮时出现的注册账号界面的“返回”按钮事件
-        {
-            var view = unitOfWork.ViewModelUserManagerRepository.Get().ToList();
-            ListView.ItemsSource = view;
-            //var view = unitOfWork.ViewModelRepository.Get();    //listview的数据源绑定数据库                       
-            // ListView.ItemsSource = view.ToList();
+        {         
+            var viewmodel = (from u in unitOfWork.SysUserRepository.Get()
+                             join ur in unitOfWork.SysUserRoleRepository.Get() on u.ID equals ur.SysUserID
+                             join r in unitOfWork.SysRoleRepository.Get() on ur.SysRoleID equals r.ID
+                             select new ViewModelUserManager { ViewUserAccount = u.Account, ViewRoleName = r.RoleName, ViewRoleDec = r.RoleDec }).ToList();
+            ListView.ItemsSource = viewmodel;
             ListView.SelectedIndex = 0;
             ListView.Items.Refresh();
             RegisterWindow.Visibility = Visibility.Collapsed;
-            ListView.Visibility = Visibility.Visible;
+            UserManagementWindow.Visibility = Visibility.Visible;
             Height = 427.406;
             Width = 641.841;
             Account_register.Text = "";
@@ -417,7 +418,7 @@ namespace WpfUserOrRoleManager
                                     {
                                         if (QuestionAnswer_register.Text != "")
                                         {
-                                            var sysRole = unitOfWork.SysRoleRepository.Get().Where(s => s.RoleName.Equals(cbxUserRoleRegister.Text)).FirstOrDefault();    //寻找用户所选择角色在UserRole里的实例，返回对象
+                                            var sysRole = unitOfWork.SysRoleRepository.Get().Where(s => s.RoleName.Equals(cbxUserRoleRegister.Text)).FirstOrDefault();//寻找用户所选择角色在SysRole里的实例
                                             if (sysRole != null)
                                             {
                                                 var CurrentUser = new SysUser();
@@ -434,16 +435,7 @@ namespace WpfUserOrRoleManager
                                                 CurrentUserRole.SysRoleID = sysRole.ID;
                                                 unitOfWork.SysUserRoleRepository.Insert(CurrentUserRole);    //增加新SysUserRole
                                                 unitOfWork.Save();
-
-
-                                                var CurrentViewModel = new ViewModelUserManager();
-                                                CurrentViewModel.ViewUserAccount = CurrentUser.Account;
-                                                CurrentViewModel.ViewRoleName = sysRole.RoleName;
-                                                CurrentViewModel.ViewRoleDec = sysRole.RoleDec;
-                                                unitOfWork.ViewModelUserManagerRepository.Insert(CurrentViewModel);    //增加新ViewModel
-                                                unitOfWork.Save(); 
-
-
+                                         
 
                                                 MessageBox.Show("注册成功");
                                                 var user = unitOfWork.SysUserRepository.Get();         //combobox的更新
@@ -647,18 +639,30 @@ namespace WpfUserOrRoleManager
             tbxUserName.SelectedValuePath = "Account";
             //this.cbxUser.Items.Add(user.UserName);
             tbxUserName.SelectedIndex = 0;//combobox初始选择第一项
-            var u = users.Where(s => s.Account.Equals(tbxUserName.Text)).FirstOrDefault();//通过在数据库中搜寻combobox第一项的值返回一个以combobox第一项的值为UserAccount的对象
+            var u = users.Where(s => s.Account.Equals(tbxUserName.Text)).FirstOrDefault();//在数据库中找到以combobox第一项的值的SysUser的实例对象
             if (u != null)
             {
                 if (u.LoginOrnot == "1")              //如果该对象的“记住密码”已打勾
                 {
-                    pbxPassword.Password = u.Password;//随便给passwordbox一串密码
+                    pbxPassword.Password = u.Password;//随便给passwordbox一串固定密码
                     rememberpwd.IsChecked = true;     //让记住密码选择框显示选中
                 }
             }
         }
+
+        private void ListView_Loaded(object sender, RoutedEventArgs e)
+        {
+            var viewmodel = (from u in unitOfWork.SysUserRepository.Get()
+                             join ur in unitOfWork.SysUserRoleRepository.Get() on u.ID equals ur.SysUserID
+                             join r in unitOfWork.SysRoleRepository.Get() on ur.SysRoleID equals r.ID
+                             select new ViewModelUserManager { ViewUserAccount = u.Account, ViewRoleName = r.RoleName, ViewRoleDec = r.RoleDec }).ToList();
+            ListView.ItemsSource = viewmodel;
+            ListView.SelectedIndex = 0;
+
+
+        }
         #endregion
-      
+
         #region 用户管理界面
 
         private void UserManagementWindowMin_Click(object sender, RoutedEventArgs e)//缩小用户管理界面
@@ -683,14 +687,17 @@ namespace WpfUserOrRoleManager
         {
             RegisterReturn2.Visibility = Visibility.Visible;
             RegisterReturn.Visibility = Visibility.Collapsed;
-            ListView.Visibility = Visibility.Collapsed;
+            UserManagementWindow.Visibility = Visibility.Collapsed;
             RegisterWindow.Visibility = Visibility.Visible;
-            loginsystem.Height = 447.739;
-            loginsystem.Width = 424.623;
+            Height = 447.739;
+            Width = 424.623;
             unitOfWork.Save();
             //刷新列表
-            var view = unitOfWork.ViewModelUserManagerRepository.Get().ToList();
-            ListView.ItemsSource = view;
+            var viewmodel = (from u in unitOfWork.SysUserRepository.Get()
+                             join ur in unitOfWork.SysUserRoleRepository.Get() on u.ID equals ur.SysUserID
+                             join r in unitOfWork.SysRoleRepository.Get() on ur.SysRoleID equals r.ID
+                             select new ViewModelUserManager { ViewUserAccount = u.Account, ViewRoleName = r.RoleName, ViewRoleDec = r.RoleDec }).ToList();
+            ListView.ItemsSource = viewmodel;
             ListView.SelectedIndex = 0;
             ListView.Items.Refresh();
             //combobox的刷新
@@ -703,26 +710,20 @@ namespace WpfUserOrRoleManager
 
         private void UserManagementWindowDelete_Click(object sender, RoutedEventArgs e)//用户管理界面的“删除”按钮事件
         {
-            var viewModel = (ViewModelUserManager)ListView.SelectedItem;
-            //找到选中用户Account在SysUser表里的实例
-            var sysUser = unitOfWork.SysUserRepository.Get().Where(s => s.Account.Equals(viewModel.ViewUserAccount)).FirstOrDefault();
-            //找到选中用户ID在SysUserRole表里的实例
-            var sysUserRole = unitOfWork.SysUserRoleRepository.Get().Where(s => s.SysUserID == sysUser.ID).FirstOrDefault();
-            //删除数据库中SysUser表相应的值
-            unitOfWork.SysUserRepository.Delete(sysUser);
-            unitOfWork.Save();
-            //删除数据库中SysUserRole表相应的值
-            unitOfWork.SysUserRoleRepository.Delete(sysUserRole);
-            unitOfWork.Save();
-            //删除数据库中ViewModel表相应的值
-            unitOfWork.ViewModelUserManagerRepository.Delete(viewModel);
-            unitOfWork.Save();
-
-            //刷新列表
-            var view = unitOfWork.ViewModelUserManagerRepository.Get().ToList();
-            ListView.ItemsSource = view;
-            ListView.SelectedIndex = 0;
-            ListView.Items.Refresh();
+            var viewModel = (ViewModelUserManager)ListView.SelectedItem;//获取listview选中的那一行
+            var sysUser = unitOfWork.SysUserRepository.Get().Where(s => s.Account.Equals(viewModel.ViewUserAccount)).FirstOrDefault();//找到选中用户在SysUser表里的实例
+            var sysUserRole = unitOfWork.SysUserRoleRepository.Get().Where(s => s.SysUserID == sysUser.ID).FirstOrDefault();//找到选中用户ID在SysUserRole表里的实例
+            unitOfWork.SysUserRepository.Delete(sysUser);//删除数据库中SysUser表相应的值
+            unitOfWork.Save();//保存数据库
+            unitOfWork.SysUserRoleRepository.Delete(sysUserRole);//删除数据库中SysUserRole表相应的值
+            unitOfWork.Save();//保存数据库   
+            //重新绑定listview数据源
+            var viewmodel = (from u in unitOfWork.SysUserRepository.Get()
+                             join ur in unitOfWork.SysUserRoleRepository.Get() on u.ID equals ur.SysUserID
+                             join r in unitOfWork.SysRoleRepository.Get() on ur.SysRoleID equals r.ID
+                             select new ViewModelUserManager { ViewUserAccount = u.Account, ViewRoleName = r.RoleName, ViewRoleDec = r.RoleDec }).ToList();
+            ListView.ItemsSource = viewmodel;
+            ListView.SelectedIndex = 0;         
             //combobox的刷新
             var user = unitOfWork.SysUserRepository.Get();
             tbxUserName.ItemsSource = user.ToList();       //combobox数据源连接数据库
@@ -739,7 +740,6 @@ namespace WpfUserOrRoleManager
             loginsystem.Width = 350.841;
             var viewModel = (ViewModelUserManager)ListView.SelectedItem;
             LabTextChangeRole.Content = "更改" + viewModel.ViewUserAccount + "用户的角色";
-
         }
 
 
@@ -758,45 +758,40 @@ namespace WpfUserOrRoleManager
                 }
                 else if (cheTeacherChangeRole.IsChecked == false && cheAdminChangeRole.IsChecked == true && cheStudentChangeRole.IsChecked == false || cheTeacherChangeRole.IsChecked == true && cheAdminChangeRole.IsChecked == false && cheStudentChangeRole.IsChecked == false || cheTeacherChangeRole.IsChecked == false && cheAdminChangeRole.IsChecked == false && cheStudentChangeRole.IsChecked == true)
                 {
-                    MessageBox.Show("修改成功！");
-                    //更改角色
-                    var viewModel = (ViewModelUserManager)ListView.SelectedItem;
-                    var UserRole = (from vm in unitOfWork.ViewModelUserManagerRepository.Get()
-                                    join u in unitOfWork.SysUserRepository.Get() on vm.ViewUserAccount equals u.Account
-                                    join ur in unitOfWork.SysUserRoleRepository.Get() on u.ID equals ur.SysUserID
-                                    where vm.ViewUserAccount.Equals(viewModel.ViewUserAccount)
-                                    select new { ID = ur.ID }).FirstOrDefault();
-                    var sysUserRole = unitOfWork.SysUserRoleRepository.Get().Where(s => s.ID == UserRole.ID).FirstOrDefault();
-                    //var sysUserRole = unitOfWork.SysUserRoleRepository.Get().Where(s => s.SysUserID == viewModel.ViewUserID).FirstOrDefault();    //寻找用户在表里的实例，返回对象                 
-
-
+                    MessageBox.Show("修改成功！");                                                    
+                    var viewModel = (ViewModelUserManager)ListView.SelectedItem;//获取listview选中的那一行数据
+                    var sysRole = unitOfWork.SysRoleRepository.Get().Where(s => s.RoleName == viewModel.ViewRoleName).FirstOrDefault();//获取listview选中的那一行数据在SysRole的实例对象
+                    var sysUserRole = unitOfWork.SysUserRoleRepository.Get().Where(s => s.SysRoleID == sysRole.ID).FirstOrDefault();//获取listview选中的那一行数据在SysUserRole的实例对象
                     if (cheTeacherChangeRole.IsChecked == true)
                     {
-                        viewModel.ViewRoleName = "教师";//更改viewModel表里的角色名
+                        viewModel.ViewRoleName = "教师";
                         unitOfWork.Save();
-                        var sysRole = unitOfWork.SysRoleRepository.Get().Where(s => s.RoleName.Equals("教师")).FirstOrDefault();//更改sysUserRole表的对应关系
-                        sysUserRole.SysRoleID = sysRole.ID;
+                        var sysRoles = unitOfWork.SysRoleRepository.Get().Where(s => s.RoleName.Equals("教师")).FirstOrDefault();//更改sysUserRole表的对应关系
+                        sysUserRole.SysRoleID = sysRoles.ID;
                         unitOfWork.Save();
                     }
                     else if (cheStudentChangeRole.IsChecked == true)
                     {
-                        viewModel.ViewRoleName = "学生";//更改viewModel表里的角色名
+                        viewModel.ViewRoleName = "学生";
                         unitOfWork.Save();
-                        var sysRole = unitOfWork.SysRoleRepository.Get().Where(s => s.RoleName.Equals("学生")).FirstOrDefault();//更改sysUserRole表的对应关系
-                        sysUserRole.SysRoleID = sysRole.ID;
+                        var sysRoles = unitOfWork.SysRoleRepository.Get().Where(s => s.RoleName.Equals("学生")).FirstOrDefault();//更改sysUserRole表的对应关系
+                        sysUserRole.SysRoleID = sysRoles.ID;
                         unitOfWork.Save();
                     }
                     else
                     {
-                        viewModel.ViewRoleName = "admin";//更改viewModel表里的角色名
+                        viewModel.ViewRoleName = "admin";
                         unitOfWork.Save();
-                        var sysRole = unitOfWork.SysRoleRepository.Get().Where(s => s.RoleName.Equals("admin")).FirstOrDefault();//更改sysUserRole表的对应关系
-                        sysUserRole.SysRoleID = sysRole.ID;
+                        var sysRoles = unitOfWork.SysRoleRepository.Get().Where(s => s.RoleName.Equals("admin")).FirstOrDefault();//更改sysUserRole表的对应关系
+                        sysUserRole.SysRoleID = sysRoles.ID;
                         unitOfWork.Save();
                     }
-                    //刷新列表
-                    var view = unitOfWork.ViewModelUserManagerRepository.Get().ToList();
-                    ListView.ItemsSource = view;
+                    
+                    var viewmodell = (from u in unitOfWork.SysUserRepository.Get()
+                                     join ur in unitOfWork.SysUserRoleRepository.Get() on u.ID equals ur.SysUserID
+                                     join r in unitOfWork.SysRoleRepository.Get() on ur.SysRoleID equals r.ID
+                                     select new ViewModelUserManager { ViewUserAccount = u.Account, ViewRoleName = r.RoleName, ViewRoleDec = r.RoleDec }).ToList();
+                    ListView.ItemsSource = viewmodell;
                     ListView.SelectedIndex = 0;
                     ListView.Items.Refresh();
                     //自动返回ListView界面
@@ -850,24 +845,7 @@ namespace WpfUserOrRoleManager
                     pbxPassword.Password = "";
                     rememberpwd.IsChecked = false;
                 }
-            }
-
-            /* if(e.RemovedItems.Count > 0)
-             {
-                 var users = unitOfWork.SysUserRepository.Get();
-                 var u = users.FirstOrDefault();
-                 if (u.LoginOrnot == "Yes" && tbxUserName.Text == u.Account)
-                 {
-                     pbxPassword.Password = CreateMD5.EncryptWithMD5(u.Password);//随便给passwordbox一串密码
-                 }
-                 else
-                 {
-                     pbxPassword.Password = "";
-                 }
-
-             }
-             */
-
+            }           
         }
 
         private void StudentWindowReturn_Click(object sender, RoutedEventArgs e)
@@ -878,13 +856,13 @@ namespace WpfUserOrRoleManager
             Width = 848.5;
         }//学生窗口返回事件
 
-        private void TeacherWindowReturn_Click(object sender, RoutedEventArgs e)
+        private void TeacherWindowReturn_Click(object sender, RoutedEventArgs e)//教师窗口返回事件
         {
             TeacherWindow.Visibility = Visibility.Collapsed;
             login.Visibility = Visibility.Visible;
             Height = 514.089;
             Width = 848.5;
-        }//教师窗口返回事件
+        }     
     }
 }
 

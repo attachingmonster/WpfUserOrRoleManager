@@ -191,7 +191,7 @@
             <Button Content="增加" HorizontalAlignment="Left" Margin="197,378,0,0" VerticalAlignment="Top" Width="122" Height="39" FontSize="20" Click="UserManagementWindowAdd_Click"/>
             <Button Content="删除" HorizontalAlignment="Left" Margin="343,378,0,0" VerticalAlignment="Top" Width="122" Height="39" FontSize="20" Click="UserManagementWindowDelete_Click" />
             <Button Content="返回" HorizontalAlignment="Left" Margin="492,378,0,0" VerticalAlignment="Top" Width="122" Height="39" FontSize="20" Click="UserManagementWindowReturn_Click"/>
-            <ListView Name="ListView" HorizontalAlignment="Left" Height="333" Margin="0,40,0,0" VerticalAlignment="Top" Width="642" FontSize="18">
+            <ListView Name="ListView" HorizontalAlignment="Left" Height="333" Margin="0,40,0,0" VerticalAlignment="Top" Width="642" FontSize="18" Loaded="ListView_Loaded">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="账号" Width="150" DisplayMemberBinding="{Binding Path=ViewUserAccount}"/>

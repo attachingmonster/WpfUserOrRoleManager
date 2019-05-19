@@ -20,7 +20,7 @@ namespace WpfUserOrRoleManager.DAL
         public DbSet<SysUser> SysUsers { get; set; }
         public DbSet<SysRole> SysRoles { get; set; }
         public DbSet<SysUserRole> SysUserRoles { get; set; }
-        public DbSet<ViewModelUserManager> ViewModelUserManagers { get; set; }
+    //    public DbSet<ViewModelUserManager> ViewModelUserManagers { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
