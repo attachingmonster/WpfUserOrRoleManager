@@ -65,10 +65,10 @@
     <Compile Include="DAL\UnitOfWork.cs" />
     <Compile Include="Models\SysRole.cs" />
     <Compile Include="Models\SysUserRole.cs" />
-    <Compile Include="Models\ViewModel.cs" />
     <Compile Include="Model\CreateMD5.cs" />
     <Compile Include="Repositories\GenericRepository.cs" />
     <Compile Include="Repositories\IGenericRepository.cs" />
+    <Compile Include="ViewModels\ViewModelUserManager.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -118,5 +118,6 @@
   <ItemGroup>
     <Resource Include="12.jpg" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

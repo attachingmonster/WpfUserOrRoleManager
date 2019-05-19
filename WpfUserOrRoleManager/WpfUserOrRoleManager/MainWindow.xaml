@@ -182,7 +182,7 @@
 
 
         <!--用户管理界面-->
-        <Grid Visibility="Collapsed" Name="UserManagementWindow">
+        <Grid Name="UserManagementWindow" Visibility="Collapsed">
             <Rectangle Fill="{DynamicResource {x:Static SystemColors.GradientActiveCaptionBrushKey}}" HorizontalAlignment="Left" Height="42" Stroke="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" VerticalAlignment="Top" Width="680" Margin="-17,-2,-21,0"/>
             <Button Content="一" HorizontalAlignment="Left" Margin="548,-2,0,0" VerticalAlignment="Top" Width="46" Height="42" RenderTransformOrigin="1.183,0.489" FontSize="20" BorderBrush="#FFDDDDDD" Click="UserManagementWindowMin_Click"/>
             <Button Content="X" Margin="595,-2,-2,0" VerticalAlignment="Top" RenderTransformOrigin="0.482,0.786" Height="42" FontSize="20" BorderBrush="#FFDDDDDD" Click="UserManagementWindowClose_Click"/>
@@ -195,7 +195,6 @@
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="账号" Width="150" DisplayMemberBinding="{Binding Path=ViewUserAccount}"/>
-                        <GridViewColumn Header="ID" Width="100"  DisplayMemberBinding="{Binding Path=ViewUserID}"/>
                         <GridViewColumn Header="角色" Width="100"  DisplayMemberBinding="{Binding Path=ViewRoleName}"/>
                         <GridViewColumn Header="角色权限" Width="300"  DisplayMemberBinding="{Binding Path=ViewRoleDec}"/>
                     </GridView>

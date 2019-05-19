@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using WpfUserOrRoleManager.DAL;
 using WpfUserOrRoleManager.Model;
 using WpfUserOrRoleManager.Models;
+using WpfUserOrRoleManager.ViewModels;
 
 namespace WpfUserOrRoleManager
 {
@@ -89,7 +90,7 @@ namespace WpfUserOrRoleManager
                         UserManagementWindow.Visibility = Visibility.Visible;
                         Height = 427.406;
                         Width = 641.841;
-                        var views = unitOfWork.ViewModelRepository.Get();    //listview的数据源绑定数据库                       
+                        var views = unitOfWork.ViewModelUserManagerRepository.Get();     //listview的数据源绑定数据库                       
                         ListView.ItemsSource = views.ToList();
                         ListView.SelectedIndex = 0;
                     }
@@ -378,7 +379,7 @@ namespace WpfUserOrRoleManager
 
         private void RegisterReturn2_Click(object sender, RoutedEventArgs e)//在用户管理界面点击“增加”按钮时出现的注册账号界面的“返回”按钮事件
         {
-            var view = unitOfWork.ViewModelRepository.Get().ToList();
+            var view = unitOfWork.ViewModelUserManagerRepository.Get().ToList();
             ListView.ItemsSource = view;
             //var view = unitOfWork.ViewModelRepository.Get();    //listview的数据源绑定数据库                       
             // ListView.ItemsSource = view.ToList();
@@ -435,12 +436,11 @@ namespace WpfUserOrRoleManager
                                                 unitOfWork.Save();
 
 
-                                                var CurrentViewModel = new ViewModel();
+                                                var CurrentViewModel = new ViewModelUserManager();
                                                 CurrentViewModel.ViewUserAccount = CurrentUser.Account;
-                                                CurrentViewModel.ViewUserID = CurrentUser.ID;
                                                 CurrentViewModel.ViewRoleName = sysRole.RoleName;
                                                 CurrentViewModel.ViewRoleDec = sysRole.RoleDec;
-                                                unitOfWork.ViewModelRepository.Insert(CurrentViewModel);    //增加新ViewModel
+                                                unitOfWork.ViewModelUserManagerRepository.Insert(CurrentViewModel);    //增加新ViewModel
                                                 unitOfWork.Save(); 
 
 
@@ -689,7 +689,7 @@ namespace WpfUserOrRoleManager
             loginsystem.Width = 424.623;
             unitOfWork.Save();
             //刷新列表
-            var view = unitOfWork.ViewModelRepository.Get().ToList();
+            var view = unitOfWork.ViewModelUserManagerRepository.Get().ToList();
             ListView.ItemsSource = view;
             ListView.SelectedIndex = 0;
             ListView.Items.Refresh();
@@ -703,11 +703,11 @@ namespace WpfUserOrRoleManager
 
         private void UserManagementWindowDelete_Click(object sender, RoutedEventArgs e)//用户管理界面的“删除”按钮事件
         {
-            var viewModel = (ViewModel)ListView.SelectedItem;
-            //找到选中用户ID在SysUser表里的实例
-            var sysUser = unitOfWork.SysUserRepository.Get().Where(s => s.ID == viewModel.ViewUserID).FirstOrDefault();
+            var viewModel = (ViewModelUserManager)ListView.SelectedItem;
+            //找到选中用户Account在SysUser表里的实例
+            var sysUser = unitOfWork.SysUserRepository.Get().Where(s => s.Account.Equals(viewModel.ViewUserAccount)).FirstOrDefault();
             //找到选中用户ID在SysUserRole表里的实例
-            var sysUserRole = unitOfWork.SysUserRoleRepository.Get().Where(s => s.SysUserID == viewModel.ViewUserID).FirstOrDefault();
+            var sysUserRole = unitOfWork.SysUserRoleRepository.Get().Where(s => s.SysUserID == sysUser.ID).FirstOrDefault();
             //删除数据库中SysUser表相应的值
             unitOfWork.SysUserRepository.Delete(sysUser);
             unitOfWork.Save();
@@ -715,11 +715,11 @@ namespace WpfUserOrRoleManager
             unitOfWork.SysUserRoleRepository.Delete(sysUserRole);
             unitOfWork.Save();
             //删除数据库中ViewModel表相应的值
-            unitOfWork.ViewModelRepository.Delete(viewModel);
+            unitOfWork.ViewModelUserManagerRepository.Delete(viewModel);
             unitOfWork.Save();
 
             //刷新列表
-            var view = unitOfWork.ViewModelRepository.Get().ToList();
+            var view = unitOfWork.ViewModelUserManagerRepository.Get().ToList();
             ListView.ItemsSource = view;
             ListView.SelectedIndex = 0;
             ListView.Items.Refresh();
@@ -737,7 +737,7 @@ namespace WpfUserOrRoleManager
             UserManagementWindow.Visibility = Visibility.Collapsed;
             loginsystem.Height = 354.131;
             loginsystem.Width = 350.841;
-            var viewModel = (ViewModel)ListView.SelectedItem;
+            var viewModel = (ViewModelUserManager)ListView.SelectedItem;
             LabTextChangeRole.Content = "更改" + viewModel.ViewUserAccount + "用户的角色";
 
         }
@@ -760,8 +760,15 @@ namespace WpfUserOrRoleManager
                 {
                     MessageBox.Show("修改成功！");
                     //更改角色
-                    var viewModel = (ViewModel)ListView.SelectedItem;
-                    var sysUserRole = unitOfWork.SysUserRoleRepository.Get().Where(s => s.SysUserID == viewModel.ViewUserID).FirstOrDefault();    //寻找用户在表里的实例，返回对象                 
+                    var viewModel = (ViewModelUserManager)ListView.SelectedItem;
+                    var UserRole = (from vm in unitOfWork.ViewModelUserManagerRepository.Get()
+                                    join u in unitOfWork.SysUserRepository.Get() on vm.ViewUserAccount equals u.Account
+                                    join ur in unitOfWork.SysUserRoleRepository.Get() on u.ID equals ur.SysUserID
+                                    where vm.ViewUserAccount.Equals(viewModel.ViewUserAccount)
+                                    select new { ID = ur.ID }).FirstOrDefault();
+                    var sysUserRole = unitOfWork.SysUserRoleRepository.Get().Where(s => s.ID == UserRole.ID).FirstOrDefault();
+                    //var sysUserRole = unitOfWork.SysUserRoleRepository.Get().Where(s => s.SysUserID == viewModel.ViewUserID).FirstOrDefault();    //寻找用户在表里的实例，返回对象                 
+
 
                     if (cheTeacherChangeRole.IsChecked == true)
                     {
@@ -788,7 +795,7 @@ namespace WpfUserOrRoleManager
                         unitOfWork.Save();
                     }
                     //刷新列表
-                    var view = unitOfWork.ViewModelRepository.Get().ToList();
+                    var view = unitOfWork.ViewModelUserManagerRepository.Get().ToList();
                     ListView.ItemsSource = view;
                     ListView.SelectedIndex = 0;
                     ListView.Items.Refresh();

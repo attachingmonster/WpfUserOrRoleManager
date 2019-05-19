@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WpfUserOrRoleManager.Models;
 using WpfUserOrRoleManager.Repositories;
+using WpfUserOrRoleManager.ViewModels;
 
 namespace WpfUserOrRoleManager.DAL
 {
@@ -15,7 +16,7 @@ namespace WpfUserOrRoleManager.DAL
         private GenericRepository<SysUser> sysUserRepository;
         private GenericRepository<SysRole> sysRoleRepository;
         private GenericRepository<SysUserRole> sysUserRoleRepository;
-        private GenericRepository<ViewModel> viewModelRepository;
+        private GenericRepository<ViewModelUserManager> viewModelUserManagerRepository;
 
         public GenericRepository<SysUser> SysUserRepository
         {
@@ -53,15 +54,15 @@ namespace WpfUserOrRoleManager.DAL
             }
         }
 
-        public GenericRepository<ViewModel> ViewModelRepository
+        public GenericRepository<ViewModelUserManager> ViewModelUserManagerRepository
         {
             get
             {
-                if (this.viewModelRepository == null)
+                if (this.viewModelUserManagerRepository == null)
                 {
-                    this.viewModelRepository = new GenericRepository<ViewModel>(context);
+                    this.viewModelUserManagerRepository = new GenericRepository<ViewModelUserManager>(context);
                 }
-                return viewModelRepository;
+                return viewModelUserManagerRepository;
             }
         }
 
