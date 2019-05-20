@@ -15,7 +15,7 @@ namespace WpfUserOrRoleManager.DAL
         {
             var sysRole = new List<SysRole>
             {
-                new SysRole {RoleName ="学生",RoleDec ="登录学生窗口"},
+               new SysRole {RoleName ="学生",RoleDec ="登录学生窗口"},
                new SysRole {RoleName ="教师",RoleDec ="登录教师窗口"},
                new SysRole{RoleName="admin",RoleDec="admin登录用户管理界面" }
             };

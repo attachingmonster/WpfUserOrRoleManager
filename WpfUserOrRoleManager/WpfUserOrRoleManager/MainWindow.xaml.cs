@@ -416,7 +416,13 @@ namespace WpfUserOrRoleManager
             viewModelRegister.RememberPasswerd = "0";
             viewModelRegister.RoleName = cbxUserRoleRegister.Text;
             viewModelRegister.Answer = UserAnswer;
-            viewModelRegister = ViewRegister(viewModelRegister);
+
+            var vMregisterInfomation= ViewRegister(viewModelRegister);
+            if (vMregisterInfomation != null)
+            {
+                MessageBox.Show(vMregisterInfomation.ToString());
+            }
+
             #region 注释
             /*try
             {
@@ -834,7 +840,7 @@ namespace WpfUserOrRoleManager
         }
        
         //异步登陆方法
-        private async Task<ViewModelRegister> ViewRegister(ViewModelRegister viewModelRegister )
+        private async Task<VMregisterInfomation> ViewRegister(ViewModelRegister viewModelRegister )
         {
             //将用户发送给api服务器，判断是否登录成功
             try
@@ -843,11 +849,11 @@ namespace WpfUserOrRoleManager
                 //Post提交数据时直接把要提交的数据格式要和Webapi的接收格式一致。不需要再转换了
                 var response = await client.PostAsJsonAsync("http://localhost:60033/api/Register/PostRegister", viewModelRegister);
                 response.EnsureSuccessStatusCode();
-                ViewModelRegister msgdto = await response.Content.ReadAsAsync<ViewModelRegister>();//MsgDTO需和WebApi的MSGHelper这个类保持一致
-                if (msgdto == null)
+                VMregisterInfomation vMregisterInfomation = await response.Content.ReadAsAsync<VMregisterInfomation>();//MsgDTO需和WebApi的MSGHelper这个类保持一致
+                if (vMregisterInfomation == null)
                 {
                     //this.msglbl.Text = "网络错误";
-                    return viewModelRegister;
+                    return vMregisterInfomation;
                 }
 
                 /*if (msgdto.ViewUserAccount.ToLower() == "error")
@@ -862,18 +868,16 @@ namespace WpfUserOrRoleManager
                 }*/
                 else
                 {
-                    
-
-                    return viewModelRegister ;
+                    return vMregisterInfomation;
                 }
             }
             catch (HttpRequestException ex)
             {
-                return viewModelRegister;
+                return null;
             }
             catch (System.FormatException)
             {
-                return viewModelRegister;
+                return null;
             }
         }
         public static string HttpPost(string Url, string postDataStr, ref bool isSuccess)
