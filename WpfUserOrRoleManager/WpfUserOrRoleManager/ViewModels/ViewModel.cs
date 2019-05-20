@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WpfUserOrRoleManager.ViewModels
 {
-    public class ViewModelUserManager
+    public class ViewModel
     {
         public string ViewUserAccount { get; set; }
         public string ViewRoleName { get; set; }

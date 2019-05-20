@@ -16,7 +16,7 @@ namespace WpfUserOrRoleManager.DAL
         private GenericRepository<SysUser> sysUserRepository;
         private GenericRepository<SysRole> sysRoleRepository;
         private GenericRepository<SysUserRole> sysUserRoleRepository;
-        private GenericRepository<ViewModelUserManager> viewModelUserManagerRepository;
+        
 
         public GenericRepository<SysUser> SysUserRepository
         {
@@ -51,17 +51,7 @@ namespace WpfUserOrRoleManager.DAL
                 return sysUserRoleRepository;
             }
         }
-        public GenericRepository<ViewModelUserManager> ViewModelUserManagerRepository
-        {
-            get
-            {
-                if (this.viewModelUserManagerRepository == null)
-                {
-                    this.viewModelUserManagerRepository = new GenericRepository<ViewModelUserManager>(context);
-                }
-                return viewModelUserManagerRepository;
-            }
-        }
+        
 
 
 

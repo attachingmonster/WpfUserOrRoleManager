@@ -18,6 +18,10 @@ using WpfUserOrRoleManager.DAL;
 using WpfUserOrRoleManager.Method;
 using WpfUserOrRoleManager.Models;
 using WpfUserOrRoleManager.ViewModels;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Net;
+using System.Security.Policy;
 
 namespace WpfUserOrRoleManager
 {
@@ -31,15 +35,27 @@ namespace WpfUserOrRoleManager
         UnitOfWork unitOfWork = new UnitOfWork();//单元工厂实例
 
         #endregion
+        HttpClient client = new HttpClient();
+        
         public MainWindow()
         {
             InitializeComponent();
             var user = unitOfWork.SysUserRepository.Get();
            
+        
+            
+           
         }
         
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            var viewModel = (from us in unitOfWork.SysUserRepository.Get()
+                             join ur in unitOfWork.SysUserRoleRepository.Get() on us.ID equals ur.SysUserID
+                             join r in unitOfWork.SysRoleRepository.Get() on ur.SysRoleID equals r.ID
+
+                             select new ViewModel { ViewUserAccount = us.UserAccount, ViewRoleName = r.RoleName, ViewRoleDec = r.RoleDec }).ToList();
+            ListView.ItemsSource = viewModel;
+            ListView.SelectedIndex = 0;
             var user = unitOfWork.SysUserRepository.Get();
             cbxUserAccountLogin.ItemsSource = user.ToList();       //combobox数据源连接数据库
             cbxUserAccountLogin.DisplayMemberPath = "UserAccount";  //combobox下拉显示的值
@@ -115,9 +131,8 @@ namespace WpfUserOrRoleManager
                         ListViewWindow.Visibility = Visibility.Visible;
                         Height = 421;
                         Width = 656;
-                        var views = unitOfWork.ViewModelUserManagerRepository.Get();    //listview的数据源绑定数据库                       
-                        ListView.ItemsSource =views.ToList();                       
-                        ListView.SelectedIndex = 0;
+                                           
+                        
                     }
                     else if (UserRole.RoleName.Equals("教师"))
                     {
@@ -186,7 +201,7 @@ namespace WpfUserOrRoleManager
 
         private void ListViewDelete_Click(object sender, RoutedEventArgs e) //Delete
         {
-            var viewModel = (ViewModelUserManager)ListView.SelectedItem;
+            var viewModel = (ViewModel)ListView.SelectedItem;
             //找到显示用户ID在SysUser表里的实例
             var sysUser = unitOfWork.SysUserRepository.Get().Where(s => s.UserAccount.Equals(viewModel.ViewUserAccount)).FirstOrDefault();
             //找到显示用户ID在SysUserRole表里的实例
@@ -197,13 +212,15 @@ namespace WpfUserOrRoleManager
             //删除数据库中SysUserRole表相应的值
             unitOfWork.SysUserRoleRepository.Delete(sysUserRole);
             unitOfWork.Save();
-            //删除数据库中ViewModel表相应的值
-            unitOfWork.ViewModelUserManagerRepository.Delete(viewModel);
-            unitOfWork.Save();
+           
 
             //刷新列表
-            var view = unitOfWork.ViewModelUserManagerRepository.Get().ToList();
-            ListView.ItemsSource = view;
+            var viewModels = (from us in unitOfWork.SysUserRepository.Get()
+                             join ur in unitOfWork.SysUserRoleRepository.Get() on us.ID equals ur.SysUserID
+                             join r in unitOfWork.SysRoleRepository.Get() on ur.SysRoleID equals r.ID
+
+                             select new ViewModel { ViewUserAccount = us.UserAccount, ViewRoleName = r.RoleName, ViewRoleDec = r.RoleDec }).ToList();
+            ListView.ItemsSource = viewModels;
             ListView.SelectedIndex = 0;
             ListView.Items.Refresh();
             //combobox的刷新
@@ -223,8 +240,12 @@ namespace WpfUserOrRoleManager
             Height = 441;
             unitOfWork.Save();
             //刷新列表
-            var view = unitOfWork.ViewModelUserManagerRepository.Get().ToList();
-            ListView.ItemsSource = view;
+            var viewModels = (from us in unitOfWork.SysUserRepository.Get()
+                              join ur in unitOfWork.SysUserRoleRepository.Get() on us.ID equals ur.SysUserID
+                              join r in unitOfWork.SysRoleRepository.Get() on ur.SysRoleID equals r.ID
+
+                              select new ViewModel { ViewUserAccount = us.UserAccount, ViewRoleName = r.RoleName, ViewRoleDec = r.RoleDec }).ToList();
+            ListView.ItemsSource = viewModels;
             ListView.SelectedIndex = 0;
             ListView.Items.Refresh();
             //combobox的刷新
@@ -243,7 +264,7 @@ namespace WpfUserOrRoleManager
             Height = 310;
             Width = 307;
 
-            var viewModel = (ViewModelUserManager)ListView.SelectedItem;
+            var viewModel = (ViewModel)ListView.SelectedItem;
             LabTextChangeRole.Content = "更改" + viewModel.ViewUserAccount + "用户的角色";
       
             if (viewModel.ViewRoleName.Equals(cheAdminChangeRole.Content))
@@ -293,15 +314,9 @@ namespace WpfUserOrRoleManager
                 {
                     MessageBox.Show("修改成功！");
                     //更改角色
-                    var viewModel = (ViewModelUserManager)ListView.SelectedItem;
-                    var UserRole = (from vm in unitOfWork.ViewModelUserManagerRepository.Get()
-                                       join u in unitOfWork.SysUserRepository.Get() on vm.ViewUserAccount equals u.UserAccount
-                                       join ur in unitOfWork.SysUserRoleRepository.Get() on u.ID equals ur.SysUserID
-                                       where vm.ViewUserAccount.Equals(viewModel.ViewUserAccount)
-                                       select new { ID = ur.ID }).FirstOrDefault();
-                    var sysUserRole = unitOfWork.SysUserRoleRepository.Get().Where(s => s.ID == UserRole.ID).FirstOrDefault();
-                    //var sysUserRole = unitOfWork.SysUserRoleRepository.Get().Where(s => s.SysUserID == viewModel.ViewUserID).FirstOrDefault();    //寻找用户在表里的实例，返回对象                 
-
+                    var viewModel = (ViewModel)ListView.SelectedItem;             
+                    var UserRole = unitOfWork.SysRoleRepository.Get().Where(s => s.RoleName.Equals(viewModel.ViewRoleName)).FirstOrDefault();
+                    var sysUserRole = unitOfWork.SysUserRoleRepository.Get().Where(s => s.ID == UserRole.ID).FirstOrDefault();            
                     if (cheTeacherChangeRole.IsChecked == true)
                     {
                         viewModel.ViewRoleName = "教师";//更改viewModel表里的角色名
@@ -327,8 +342,12 @@ namespace WpfUserOrRoleManager
                         unitOfWork.Save();
                     }
                     //刷新列表
-                    var view = unitOfWork.ViewModelUserManagerRepository.Get().ToList();
-                    ListView.ItemsSource = view;
+                    var viewModels = (from us in unitOfWork.SysUserRepository.Get()
+                                      join ur in unitOfWork.SysUserRoleRepository.Get() on us.ID equals ur.SysUserID
+                                      join r in unitOfWork.SysRoleRepository.Get() on ur.SysRoleID equals r.ID
+
+                                      select new ViewModel { ViewUserAccount = us.UserAccount, ViewRoleName = r.RoleName, ViewRoleDec = r.RoleDec }).ToList();
+                    ListView.ItemsSource = viewModels;
                     ListView.SelectedIndex = 0;
                     ListView.Items.Refresh();
                     //自动返回ListView界面
@@ -384,8 +403,24 @@ namespace WpfUserOrRoleManager
         }
         private void Registering_Click(object sender, RoutedEventArgs e)
         {
-            try
+            if (tbxUserPasswordRegister.Visibility != Visibility.Collapsed)    //如果显示密码按钮事件开始，则让显示密码值赋值给隐藏密码的值
             {
+                pbxUserPasswordRegister.Password = tbxUserPasswordRegister.Text;
+                pbxSurePasswordRegister.Password = tbxSurePasswordRegister.Text;
+            }
+            String UserAnswer = "1" + tbxUserAnswer1Register.Text + "2" + tbxUserAnswer2Register.Text + "3" + tbxUserAnswer3Register.Text + "4" + tbxUserAnswer4Register.Text + "5" + tbxUserAnswer5Register.Text;//拾回密码的各个答案与问题号的连接
+            ViewModelRegister viewModelRegister = new ViewModelRegister();
+            viewModelRegister.Account = tbxUserAccountRegister.Text;
+            viewModelRegister.Password = pbxUserPasswordRegister.Password;
+            viewModelRegister.RememberPasswerd = pbxSurePasswordRegister.Password;
+            viewModelRegister.RememberPasswerd = "0";
+            viewModelRegister.RoleName = cbxUserRoleRegister.Text;
+            viewModelRegister.Answer = UserAnswer;
+            viewModelRegister = ViewRegister(viewModelRegister);
+            #region 注释
+            /*try
+            {
+               
                 if (tbxUserPasswordRegister.Visibility != Visibility.Collapsed)    //如果显示密码按钮事件开始，则让显示密码值赋值给隐藏密码的值
                 {
                     pbxUserPasswordRegister.Password = tbxUserPasswordRegister.Text;
@@ -399,7 +434,7 @@ namespace WpfUserOrRoleManager
                         #region 账号规范
                         foreach (char c in tbxUserAccountRegister.Text)   //规范账号必须由字母和数字构成
                         {
-                            if (  !(  ('0' <= c && c <= '9') || ('A' <= c && c <= 'Z') || ('a' <= c && c <= 'z')  )  )
+                            if (!(('0' <= c && c <= '9') || ('A' <= c && c <= 'Z') || ('a' <= c && c <= 'z')))
                             {
                                 throw new Exception("账号必须只由字母和数字构成！");
                             }
@@ -432,7 +467,7 @@ namespace WpfUserOrRoleManager
                             if (pbxSurePasswordRegister.Password.Equals(pbxUserPasswordRegister.Password))    //判断密码与确认密码是否相等
                             {
                                 String UserAnswer = "1" + tbxUserAnswer1Register.Text + "2" + tbxUserAnswer2Register.Text + "3" + tbxUserAnswer3Register.Text + "4" + tbxUserAnswer4Register.Text + "5" + tbxUserAnswer5Register.Text;//拾回密码的各个答案与问题号的连接
-                                if (UserAnswer != "1"+"2"+"3"+"4"+"5")    //判断拾回密码是否为空
+                                if (UserAnswer != "1" + "2" + "3" + "4" + "5")    //判断拾回密码是否为空
                                 {
                                     var sysRole = unitOfWork.SysRoleRepository.Get().Where(s => s.RoleName.Equals(cbxUserRoleRegister.Text)).FirstOrDefault();    //寻找用户所选择角色在UserRole里的实例，返回对象
                                     if (sysRole != null)
@@ -450,20 +485,7 @@ namespace WpfUserOrRoleManager
                                         CurrentUserRole.SysRoleID = sysRole.ID;
                                         unitOfWork.SysUserRoleRepository.Insert(CurrentUserRole);    //增加新SysUserRole
                                         unitOfWork.Save();    //对更改进行保存
-
-
-                                        var CurrentViewModel = new ViewModelUserManager();
-                                        CurrentViewModel.ViewUserAccount = CurrentUser.UserAccount;                                       
-                                        CurrentViewModel.ViewRoleName = sysRole.RoleName;
-                                        CurrentViewModel.ViewRoleDec = sysRole.RoleDec;
-                                        unitOfWork.ViewModelUserManagerRepository.Insert(CurrentViewModel);    //增加新SysUserRole
-                                        unitOfWork.Save();    //对更改进行保存
-
-
                                         MessageBox.Show("注册成功");
-
-
-
                                         var user = unitOfWork.SysUserRepository.Get();         //combobox的更新
                                         cbxUserAccountLogin.ItemsSource = user.ToList();       //combobox数据源连接数据库
                                         cbxUserAccountLogin.DisplayMemberPath = "UserAccount";  //combobox下拉显示的值
@@ -495,13 +517,16 @@ namespace WpfUserOrRoleManager
                 {
                     throw new Exception("账号不能为空！");
                 }
-
+                
+                
             }
             catch (Exception ex)
             {
                 MessageBox.Show("注册失败！错误信息：\n" + ex.Message);
-            }
+            }*/
+            #endregion
         }
+
         private void registerBack1_Click(object sender, RoutedEventArgs e)   //返回事件
         {
             RegisterWindow.Visibility = Visibility.Collapsed;
@@ -521,8 +546,12 @@ namespace WpfUserOrRoleManager
         }
         private void registerBack2_Click(object sender, RoutedEventArgs e)
         {
-            var view = unitOfWork.ViewModelUserManagerRepository.Get().ToList();
-            ListView.ItemsSource = view;
+            var viewModels = (from us in unitOfWork.SysUserRepository.Get()
+                              join ur in unitOfWork.SysUserRoleRepository.Get() on us.ID equals ur.SysUserID
+                              join r in unitOfWork.SysRoleRepository.Get() on ur.SysRoleID equals r.ID
+
+                              select new ViewModel { ViewUserAccount = us.UserAccount, ViewRoleName = r.RoleName, ViewRoleDec = r.RoleDec }).ToList();
+            ListView.ItemsSource = viewModels;
             ListView.SelectedIndex = 0;
             ListView.Items.Refresh();
             LabTextListView.Content = cbxUserAccountLogin.Text + "用户为管理员";
@@ -785,9 +814,128 @@ namespace WpfUserOrRoleManager
 
 
 
-        #endregion
 
+        #endregion
+        private  void btn_(object sender, RoutedEventArgs e)
+        {
+
+            /*String Url = client.BaseAddress.ToString();
+            String postDataStr = "123";
+            bool isSuccess = false;
+            string f = HttpPost(Url, postDataStr, ref isSuccess);
+            var   viewModel = (from us in unitOfWork.SysUserRepository.Get()
+                             join ur in unitOfWork.SysUserRoleRepository.Get() on us.ID equals ur.SysUserID
+                             join r in unitOfWork.SysRoleRepository.Get() on ur.SysRoleID equals r.ID
+
+                             select new ViewModel { ViewUserAccount = us.UserAccount, ViewRoleName = r.RoleName, ViewRoleDec = r.RoleDec }).ToList();
+
+            Task<bool> flag =  Login(viewModel);*/
+            
+        }
        
+        //异步登陆方法
+        private async Task<ViewModelRegister> ViewRegister(ViewModelRegister viewModelRegister )
+        {
+            //将用户发送给api服务器，判断是否登录成功
+            try
+            {
+                
+                //Post提交数据时直接把要提交的数据格式要和Webapi的接收格式一致。不需要再转换了
+                var response = await client.PostAsJsonAsync("http://localhost:60033/api/Register/PostRegister", viewModelRegister);
+                response.EnsureSuccessStatusCode();
+                ViewModelRegister msgdto = await response.Content.ReadAsAsync<ViewModelRegister>();//MsgDTO需和WebApi的MSGHelper这个类保持一致
+                if (msgdto == null)
+                {
+                    //this.msglbl.Text = "网络错误";
+                    return viewModelRegister;
+                }
+
+                /*if (msgdto.ViewUserAccount.ToLower() == "error")
+                {
+                    //this.msglbl.Text = msgdto.message;
+                    return false;
+                }
+                if (msgdto.ViewUserAccount.ToLower() == "noright")
+                {
+                    //this.msglbl.Text = msgdto.message;
+                    return false;
+                }*/
+                else
+                {
+                    
+
+                    return viewModelRegister ;
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                return viewModelRegister;
+            }
+            catch (System.FormatException)
+            {
+                return viewModelRegister;
+            }
+        }
+        public static string HttpPost(string Url, string postDataStr, ref bool isSuccess)
+        {
+            try
+            {
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Url);
+                request.Method = "POST";
+                request.ContentType = "application/json";
+                request.ContentLength = Encoding.UTF8.GetByteCount(postDataStr);
+                //request.CookieContainer = cookie;
+                Stream myRequestStream = request.GetRequestStream();
+                StreamWriter myStreamWriter = new StreamWriter(myRequestStream, Encoding.GetEncoding("gb2312"));
+                myStreamWriter.Write(postDataStr);
+                myStreamWriter.Close();
+
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+                //response.Cookies = cookie.GetCookies(response.ResponseUri);
+                Stream myResponseStream = response.GetResponseStream();
+                StreamReader myStreamReader = new StreamReader(myResponseStream, Encoding.GetEncoding("utf-8"));
+                string retString = myStreamReader.ReadToEnd();
+                myStreamReader.Close();
+                myResponseStream.Close();
+
+                return retString;
+            }
+            catch (Exception e)
+            {
+                isSuccess = false;
+                Console.Write(e.Message);
+                return e.Message;
+            }
+        }
+        /*private async void GetProducts(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                btnGetProducts.IsEnabled = false;
+
+                var response = await client.GetAsync("api/products");
+                response.EnsureSuccessStatusCode(); // Throw on error code（有错误码时报出异常）.
+
+                var products = await response.Content.ReadAsAsync<IEnumerable<Product>>();
+                _products.CopyFrom(products);
+
+            }
+            catch (Newtonsoft.Json.JsonException jEx)
+            {
+                // This exception indicates a problem deserializing the request body.
+                // 这个异常指明了一个解序列化请求体的问题。
+                MessageBox.Show(jEx.Message);
+            }
+            catch (HttpRequestException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                btnGetProducts.IsEnabled = true;
+            }
+        }*/
     }
 }
 
